@@ -1,4 +1,5 @@
 import Head from "next/head";
+import MainHeroSection from "../components/HeroSection/MainHeroSection";
 
 export default function Home() {
 	return (
@@ -9,7 +10,9 @@ export default function Home() {
 				<meta name="viewport" content="width=device-width, initial-scale=1" />
 				<link rel="icon" href="/icons/simple-icons/icon logo.svg" />
 			</Head>
-			<main></main>
+			<main>
+				<MainHeroSection />
+			</main>
 		</>
 	);
 }
