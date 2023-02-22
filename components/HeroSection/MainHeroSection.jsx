@@ -52,6 +52,7 @@ const MainHeroSection = () => {
 				<div
 					className={`flex flex-col lg:flex-row justify-center lg:justify-evenly items-center absolute top-0 left-0 bg-gradient-to-l to-black from-transparent w-full h-full text-white`}
 				>
+					{/* TODO: Change the sizes of the logo and text after 2xl-width */}
 					<div className="flex flex-col justify-center items-center px-10">
 						<div className="flex flex-col justify-center items-center lg:items-start gap-6">
 							<div className="flex flex-col justify-center items-center lg:items-start gap-1 text-center lg:text-start">
