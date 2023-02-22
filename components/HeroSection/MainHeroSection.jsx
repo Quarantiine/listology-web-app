@@ -7,19 +7,17 @@ import SearchSystem from "./SearchSystem";
 
 const MainHeroSection = () => {
 	const [imageSizeChange, setImageSizeChange] = useState(false);
-	const [imageSizeChange2, setImageSizeChange2] = useState(false);
 	const [imgLoaded, setImgLoaded] = useState(false);
 	const [imgFailed, setImgFailed] = useState(false);
 
 	useEffect(() => {
 		const imagesSizeChanges = () => {
 			window.innerWidth > 1550 ? setImageSizeChange(true) : setImageSizeChange(false);
-			window.innerWidth < 1000 ? setImageSizeChange2(true) : setImageSizeChange2(false);
 		};
 
 		window.addEventListener("resize", imagesSizeChanges);
 		return () => window.removeEventListener("resize", imagesSizeChanges);
-	}, [setImageSizeChange, setImageSizeChange2]);
+	}, [setImageSizeChange]);
 
 	return (
 		<div className="relative w-full h-full">
