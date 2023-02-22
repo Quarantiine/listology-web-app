@@ -1,7 +1,12 @@
 import Head from "next/head";
 import MainHeroSection from "../components/HeroSection/MainHeroSection";
+import HeroGalleryModal from "@/components/HeroSection/HeroGalleryModal";
+import { useContext } from "react";
+import { StatesManagerCtx } from "@/components/Layout";
 
 export default function Home() {
+	const { openGalleryModal } = useContext(StatesManagerCtx);
+
 	return (
 		<>
 			<Head>
@@ -11,6 +16,7 @@ export default function Home() {
 				<link rel="icon" href="/icons/simple-icons/icon logo.svg" />
 			</Head>
 			<main>
+				{openGalleryModal && <HeroGalleryModal />}
 				<MainHeroSection />
 			</main>
 		</>

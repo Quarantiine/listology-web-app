@@ -35,7 +35,7 @@ const SearchSystem = ({}) => {
 				} relative w-full h-auto flex flex-col justify-center items-center lg:items-start`}
 			>
 				<Image
-					className="absolute top-1/2 -translate-y-1/2 left-4 h-auto btn"
+					className="absolute top-1/2 -translate-y-1/2 left-4 w-[20px] h-[20px] btn"
 					src="/icons/simple-icons/search.svg"
 					alt="search icon"
 					width={20}

@@ -7,4 +7,8 @@
 	@apply cursor-pointer hover:opacity-60 transition-all duration-300;
 }
 
+.base-bg {
+	@apply bg-[#0E51FF];
+}
+
 /* IMPO: CSS SECTION */

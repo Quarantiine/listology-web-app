@@ -20,7 +20,7 @@ const ThemeSystem = () => {
 				>
 					<Image
 						className="h-auto"
-						src={bodyBgColor ? `/icons/simple-icons/light-mode-filled.svg` : `/icons/simple-icons/light-mode.svg`}
+						src={`/icons/simple-icons/${bodyBgColor ? "light-mode-filled" : "light-mode"}.svg`}
 						alt="light mode btn"
 						width={20}
 						height={20}
@@ -36,7 +36,7 @@ const ThemeSystem = () => {
 				>
 					<Image
 						className="h-auto"
-						src={bodyBgColor ? "/icons/simple-icons/night-mode.svg" : "/icons/simple-icons/night-mode-filled.svg"}
+						src={`/icons/simple-icons/${bodyBgColor ? "night-mode" : "night-mode-filled"}.svg`}
 						alt="dark mode btn"
 						width={20}
 						height={20}
