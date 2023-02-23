@@ -3,7 +3,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { StatesManagerCtx } from "../Layout";
 
 const GallerySystem = () => {
-	const { positionImage, setPositionImage, setOpenGalleryModal, setHeroImgSrc } = useContext(StatesManagerCtx);
+	const { positionImage, setPositionImage, setUploadModal } = useContext(StatesManagerCtx);
 	const [galleryOpen, setGalleryOpen] = useState(false);
 
 	useEffect(() => {
@@ -20,9 +20,9 @@ const GallerySystem = () => {
 	return (
 		<>
 			<div
-				className={`z-10 w-fit h-fit px-5 py-3 gap-5 grid ${
+				className={`z-10 w-fit h-fit px-4 sm:px-5 py-1.5 sm:py-3 gap-5 grid ${
 					positionImage ? "" : "grid-cols-2"
-				} justify-center items-center bg-white rounded-full absolute right-5 bottom-4 ${
+				} justify-center items-center bg-white rounded-b-2xl sm:rounded-full absolute right-5 top-0 sm:bottom-4 sm:top-auto ${
 					positionImage ? "opacity-70" : ""
 				}`}
 			>
@@ -55,29 +55,13 @@ const GallerySystem = () => {
 						>
 							Save
 						</button>
-						<button
-							onClick={() => {
-								setOpenGalleryModal(true);
-							}}
-							className="btn text-center"
-						>
-							Gallery
-						</button>
 					</div>
 				)}
 				{galleryOpen && (
 					<div className="gallery-dropdown flex flex-col justify-center items-center gap-0 w-full h-fit bg-white shadow-lg rounded-md absolute left-0 top-12 overflow-hidden">
 						<p
 							onClick={(e) => {
-								setOpenGalleryModal(true);
-							}}
-							className="py-1 px-1 hover:bg-[#0E51FF] hover:text-white cursor-pointer transition-all w-full text-center"
-						>
-							Gallery
-						</p>
-						<p
-							onClick={(e) => {
-								null;
+								setUploadModal(true);
 							}}
 							className="py-1 px-1 hover:bg-[#0E51FF] hover:text-white cursor-pointer transition-all w-full text-center"
 						>

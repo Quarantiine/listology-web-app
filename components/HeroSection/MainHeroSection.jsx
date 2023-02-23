@@ -8,10 +8,12 @@ import { StatesManagerCtx } from "../Layout";
 
 const MainHeroSection = () => {
 	const { positionImage, heroImgSrc } = useContext(StatesManagerCtx);
+
 	const [imageSizeChange, setImageSizeChange] = useState(false);
-	const [imgLoaded, setImgLoaded] = useState(false);
 	const [imgFailed, setImgFailed] = useState(false);
-	// const [dragCoordiantes, setDragCoordiantes] = useState({ x: 0, y: 0 });
+
+	const [topArrow, setTopArrow] = useState(0);
+	const [rightArrow, setRightArrow] = useState(0);
 
 	useEffect(() => {
 		const imagesSizeChanges = () => {
@@ -21,13 +23,6 @@ const MainHeroSection = () => {
 		window.addEventListener("resize", imagesSizeChanges);
 		return () => window.removeEventListener("resize", imagesSizeChanges);
 	}, [setImageSizeChange]);
-
-	// const handleDrag = (xCoor, yCoor) => {
-	// 	setDragCoordiantes({ x: xCoor, y: yCoor});
-	// };
-	// const handleDrop = (xCoor, yCoor) => {
-	// 	setDragCoordiantes({ x: xCoor, y: yCoor });
-	// };
 
 	return (
 		<div className="relative w-full h-full">
@@ -45,23 +40,58 @@ const MainHeroSection = () => {
 						</div>
 					</>
 				)}
-				{imgLoaded && !imgFailed && <ImagePlaceholder removeAnimation={true} />}
+				{heroImgSrc && <ImagePlaceholder removeAnimation={true} />}
 				<Image
-					className={`object-cover h-full w-full`}
-					// onDrag={(e) => handleDrag()}
-					// style={{
-					// 	objectPosition: `${dragCoordiantes.x}px ${dragCoordiantes.y}px`,
-					// }}
-					draggable={true}
-					src={heroImgSrc ? heroImgSrc : `/images/bg-images/img-bg-1.jpg`}
+					className={`object-cover w-full h-[300%]`}
+					style={{
+						transform: `translate(${rightArrow}px, ${topArrow}px)`,
+					}}
+					src={heroImgSrc ? URL.createObjectURL(heroImgSrc) : `/images/bg-images/img-bg-1.jpg`}
 					alt="hero bg"
-					fill
-					sizes="(max-width: 1200px) 100vw"
+					width={1000}
+					height={1000}
 					priority={true}
 					quality={100}
-					onLoad={() => setImgLoaded(true)}
 					onError={() => setImgFailed(true)}
 				/>
+				{positionImage && (
+					<div className="flex justify-between items-center gap-2 absolute w-full h-full bg-transparent px-5 opacity-50">
+						{/* <Image
+							src="/icons/simple-icons/dropdown-btn.svg"
+							className="bg-black rounded-full w-10 h-10 sm:w-12 sm:h-12 p-1 sm:p-2 border-4 btn text-center -rotate-90"
+							alt="arrow"
+							width={10}
+							height={10}
+							onClick={(e) => setRightArrow(rightArrow + 50)}
+						/> */}
+						<div className="mx-auto flex flex-col justify-evenly sm:justify-between items-center gap-32 h-full py-5">
+							<Image
+								src="/icons/simple-icons/dropdown-btn.svg"
+								className="bg-black rounded-full w-10 h-10 sm:w-12 sm:h-12 p-1 sm:p-2 border-4 btn text-center"
+								alt="arrow"
+								width={10}
+								height={10}
+								onClick={(e) => setTopArrow(topArrow + 50)}
+							/>
+							<Image
+								src="/icons/simple-icons/dropdown-btn.svg"
+								className="bg-black rounded-full w-10 h-10 sm:w-12 sm:h-12 p-1 sm:p-2 border-4 btn text-center rotate-180"
+								alt="arrow"
+								width={10}
+								height={10}
+								onClick={(e) => setTopArrow(topArrow - 50)}
+							/>
+						</div>
+						{/* <Image
+							src="/icons/simple-icons/dropdown-btn.svg"
+							className="bg-black rounded-full w-10 h-10 sm:w-12 sm:h-12 p-1 sm:p-2 border-4 btn text-center rotate-90"
+							alt="arrow"
+							width={10}
+							height={10}
+							onClick={(e) => setRightArrow(rightArrow - 50)}
+						/> */}
+					</div>
+				)}
 				{!positionImage && (
 					<div
 						className={`flex flex-col lg:flex-row justify-center lg:justify-evenly items-center absolute top-0 left-0 bg-gradient-to-l to-black from-transparent w-full h-full text-white`}

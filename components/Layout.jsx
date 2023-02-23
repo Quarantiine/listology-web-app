@@ -1,13 +1,24 @@
+import Head from "next/head";
 import React, { createContext, useState } from "react";
 
 const StatesManagerCtx = createContext();
 const Layout = ({ children }) => {
-	const [bodyBgColor, setBodyBgColor] = useState(false);
-	const [seachQuery, setSeachQuery] = useState(``);
-	const [searched, setSearched] = useState(false);
-	const [positionImage, setPositionImage] = useState(false);
-	const [openGalleryModal, setOpenGalleryModal] = useState(false);
-	const [heroImgSrc, setHeroImgSrc] = useState(``);
+	const {
+		bodyBgColor,
+		setBodyBgColor,
+		seachQuery,
+		setSeachQuery,
+		searched,
+		setSearched,
+		positionImage,
+		setPositionImage,
+		heroImgSrc,
+		setHeroImgSrc,
+		uploadedImage,
+		setUploadedImage,
+		uploadModal,
+		setUploadModal,
+	} = HeroSectionStates();
 
 	return (
 		<StatesManagerCtx.Provider
@@ -20,12 +31,19 @@ const Layout = ({ children }) => {
 				setSearched,
 				positionImage,
 				setPositionImage,
-				openGalleryModal,
-				setOpenGalleryModal,
 				heroImgSrc,
 				setHeroImgSrc,
+				uploadModal,
+				setUploadModal,
+				uploadedImage,
+				setUploadedImage,
 			}}
 		>
+			<Head>
+				<title>Listology</title>
+				<meta name="description" content="Welcome to Listology, The Todo List Web Application" />
+				<link rel="icon" href="/icons/simple-icons/icon-logo.svg" />
+			</Head>
 			<div
 				className={`${
 					bodyBgColor ? "bg-[#111]" : "bg-white"
@@ -37,3 +55,30 @@ const Layout = ({ children }) => {
 };
 export { StatesManagerCtx };
 export default Layout;
+
+const HeroSectionStates = () => {
+	const [bodyBgColor, setBodyBgColor] = useState(false);
+	const [seachQuery, setSeachQuery] = useState(``);
+	const [searched, setSearched] = useState(false);
+	const [positionImage, setPositionImage] = useState(false);
+	const [heroImgSrc, setHeroImgSrc] = useState(``);
+	const [uploadedImage, setUploadedImage] = useState(``);
+	const [uploadModal, setUploadModal] = useState(false);
+
+	return {
+		bodyBgColor,
+		setBodyBgColor,
+		seachQuery,
+		setSeachQuery,
+		searched,
+		setSearched,
+		positionImage,
+		setPositionImage,
+		heroImgSrc,
+		setHeroImgSrc,
+		uploadedImage,
+		setUploadedImage,
+		uploadModal,
+		setUploadModal,
+	};
+};

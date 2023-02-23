@@ -4,7 +4,7 @@ export default function ImagePlaceholder({ removeAnimation }) {
 	return (
 		<>
 			<div
-				className={`flex justify-center items-center flex-col w-full h-full absolute top-0 left-0 bg-gray-400 ${
+				className={`flex justify-center items-center flex-col w-full h-full absolute top-0 left-0 bg-black ${
 					removeAnimation ? "" : "animate-pulse"
 				}`}
 			>

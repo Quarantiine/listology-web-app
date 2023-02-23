@@ -3,12 +3,14 @@ import React, { useContext } from "react";
 import { StatesManagerCtx } from "../Layout";
 
 const ThemeSystem = () => {
-	const { bodyBgColor, setBodyBgColor } = useContext(StatesManagerCtx);
+	const { bodyBgColor, setBodyBgColor, positionImage } = useContext(StatesManagerCtx);
 
 	return (
 		<>
 			<div
-				className={`grid grid-cols-2 justify-center items-center w-16 overflow-hidden rounded-b-2xl fixed right-5 top-0 z-10`}
+				className={`grid grid-cols-2 justify-center items-center w-16 overflow-hidden rounded-b-2xl fixed ${
+					positionImage ? "right-48" : "right-32"
+				} sm:right-5 top-0 z-10`}
 			>
 				<div
 					onClick={() => {
