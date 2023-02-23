@@ -1,20 +1,22 @@
 import Image from "next/image";
 import React, { useCallback, useContext, useEffect, useState } from "react";
 import { StatesManagerCtx } from "../Layout";
+import FirebaseAPI from "../FirebaseAPI";
 
 const UploadModal = () => {
-	const { uploadedImage, setUploadedImage, setUploadModal, setHeroImgSrc } = useContext(StatesManagerCtx);
-	const [saved, setSaved] = useState(false);
+	const { uploadedImage, setUploadedImage, setUploadModal, setHeroImgSrc, saved, setSaved } =
+		useContext(StatesManagerCtx);
+	const { saveBgImg } = FirebaseAPI();
 
 	const handleSave = useCallback(() => {
 		if (uploadedImage) {
 			setSaved(true);
 			setUploadModal(false);
 			setHeroImgSrc(uploadedImage);
+			saveBgImg(uploadedImage);
 			setTimeout(() => {
 				setSaved(false);
-				setUploadedImage(``);
-			}, 1500);
+			}, 3000);
 		}
 	}, [setHeroImgSrc, uploadedImage, setUploadModal, setUploadedImage]);
 

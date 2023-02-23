@@ -18,6 +18,8 @@ const Layout = ({ children }) => {
 		setUploadedImage,
 		uploadModal,
 		setUploadModal,
+		saved,
+		setSaved,
 	} = HeroSectionStates();
 
 	return (
@@ -37,6 +39,8 @@ const Layout = ({ children }) => {
 				setUploadModal,
 				uploadedImage,
 				setUploadedImage,
+				saved,
+				setSaved,
 			}}
 		>
 			<Head>
@@ -64,6 +68,7 @@ const HeroSectionStates = () => {
 	const [heroImgSrc, setHeroImgSrc] = useState(``);
 	const [uploadedImage, setUploadedImage] = useState(``);
 	const [uploadModal, setUploadModal] = useState(false);
+	const [saved, setSaved] = useState(false);
 
 	return {
 		bodyBgColor,
@@ -80,5 +85,7 @@ const HeroSectionStates = () => {
 		setUploadedImage,
 		uploadModal,
 		setUploadModal,
+		saved,
+		setSaved,
 	};
 };
