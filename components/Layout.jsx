@@ -3,9 +3,11 @@ import React, { createContext, useState } from "react";
 
 const StatesManagerCtx = createContext();
 const Layout = ({ children }) => {
+	const [bodyBgColor, setBodyBgColor] = useState(false);
+	// FOLDER STATES:
+	const [folderModal, setFolderModal] = useState(false);
+
 	const {
-		bodyBgColor,
-		setBodyBgColor,
 		seachQuery,
 		setSeachQuery,
 		searched,
@@ -21,6 +23,9 @@ const Layout = ({ children }) => {
 		saved,
 		setSaved,
 	} = HeroSectionStates();
+
+	const { layoutView, setLayoutView, checkFilterBtnClick, setCheckFilterBtnClick, filterModal, setFilterModal } =
+		FilterStates();
 
 	return (
 		<StatesManagerCtx.Provider
@@ -41,6 +46,14 @@ const Layout = ({ children }) => {
 				setUploadedImage,
 				saved,
 				setSaved,
+				layoutView,
+				setLayoutView,
+				checkFilterBtnClick,
+				setCheckFilterBtnClick,
+				filterModal,
+				setFilterModal,
+				folderModal,
+				setFolderModal,
 			}}
 		>
 			<Head>
@@ -61,7 +74,6 @@ export { StatesManagerCtx };
 export default Layout;
 
 const HeroSectionStates = () => {
-	const [bodyBgColor, setBodyBgColor] = useState(false);
 	const [seachQuery, setSeachQuery] = useState(``);
 	const [searched, setSearched] = useState(false);
 	const [positionImage, setPositionImage] = useState(false);
@@ -71,8 +83,6 @@ const HeroSectionStates = () => {
 	const [saved, setSaved] = useState(false);
 
 	return {
-		bodyBgColor,
-		setBodyBgColor,
 		seachQuery,
 		setSeachQuery,
 		searched,
@@ -88,4 +98,12 @@ const HeroSectionStates = () => {
 		saved,
 		setSaved,
 	};
+};
+
+const FilterStates = () => {
+	const [checkFilterBtnClick, setCheckFilterBtnClick] = useState(``);
+	const [layoutView, setLayoutView] = useState(`grid`);
+	const [filterModal, setFilterModal] = useState(false);
+
+	return { layoutView, setLayoutView, checkFilterBtnClick, setCheckFilterBtnClick, filterModal, setFilterModal };
 };

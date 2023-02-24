@@ -31,7 +31,7 @@ const MainHeroSection = () => {
 			<GallerySystem />
 			<div
 				className={`w-full ${
-					imageSizeChange ? "h-[700px]" : "h-[400px]"
+					imageSizeChange ? "h-[550px]" : "h-[400px]"
 				} flex flex-col justify-center items-center relative overflow-hidden`}
 			>
 				{imgFailed && (
@@ -43,7 +43,7 @@ const MainHeroSection = () => {
 				)}
 				{heroImgSrc && <ImagePlaceholder removeAnimation={true} />}
 				<Image
-					className={`object-cover w-full h-[300%]`}
+					className={`object-cover w-full h-[300%] transition-all duration-150`}
 					style={{
 						transform: `translate(${rightArrow}px, ${topArrow}px)`,
 					}}

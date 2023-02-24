@@ -10,6 +10,9 @@
   },
   "dependencies": {
     "@next/font": "13.1.6",
+    "@tailwindcss/line-clamp": "^0.4.2",
+    "browser-image-compression": "^2.0.0",
+    "compressorjs": "^1.1.1",
     "emoji-mart": "^5.5.2",
     "eslint": "8.34.0",
     "eslint-config-next": "13.1.6",
