@@ -44,7 +44,7 @@ const MainTodoListIcons = () => {
 						<>
 							<div className="flex justify-center items-center gap-2">
 								<p>Waiting on Todo List</p>
-								<div className="border-2 w-7 h-7 border-t-transparent border-[#222] animate-spin rounded-full" />
+								<div className="border-4 w-5 h-5 border-t-transparent border-[#0E51FF] animate-spin rounded-full" />
 							</div>
 						</>
 					)}
