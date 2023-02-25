@@ -1,10 +1,21 @@
 import React, { useContext, useEffect, useState } from "react";
 import { StatesManagerCtx } from "../Layout";
 import Image from "next/image";
+import FirebaseAPI from "../FirebaseAPI";
 
 const FilterBar = () => {
-	const { bodyBgColor, layoutView, setLayoutView, checkFilterBtnClick, setCheckFilterBtnClick, setFilterModal } =
-		useContext(StatesManagerCtx);
+	const {
+		bodyBgColor,
+		layoutView,
+		setLayoutView,
+		checkFilterBtnClick,
+		setCheckFilterBtnClick,
+		setFilterModal,
+		allChecked,
+		setAllChecked,
+	} = useContext(StatesManagerCtx);
+
+	const { addTodos } = FirebaseAPI();
 
 	const { addTodo, dropdown, completed, activeAssignment, label, heart, grid, list, deselectAll, selectedAll } =
 		FilterIcons({
@@ -12,7 +23,6 @@ const FilterBar = () => {
 			layoutView,
 		});
 	const [addTodoList, setAddTodoList] = useState();
-	const [allChecked, setAllChecked] = useState(false);
 	// useEffect(() => console.log(checkFilterBtnClick));
 
 	return (
@@ -23,7 +33,7 @@ const FilterBar = () => {
 				} flex flex-col justify-center items-center`}
 			>
 				<div className="w-full h-fit p-1 flex justify-around items-center gap-5 px-3">
-					<button>{addTodo}</button>
+					<button onClick={addTodos}>{addTodo}</button>
 					<div className="filter-scroll-bar flex justify-start items-center pb-2 lg:pb-0 overflow-x-scroll overflow-y-hidden gap-5">
 						<button
 							onClick={(e) => {

@@ -4,7 +4,6 @@ import React, { createContext, useState } from "react";
 const StatesManagerCtx = createContext();
 const Layout = ({ children }) => {
 	const [bodyBgColor, setBodyBgColor] = useState(false);
-	// FOLDER STATES:
 	const [folderModal, setFolderModal] = useState(false);
 
 	const {
@@ -24,8 +23,18 @@ const Layout = ({ children }) => {
 		setSaved,
 	} = HeroSectionStates();
 
-	const { layoutView, setLayoutView, checkFilterBtnClick, setCheckFilterBtnClick, filterModal, setFilterModal } =
-		FilterStates();
+	const {
+		layoutView,
+		setLayoutView,
+		checkFilterBtnClick,
+		setCheckFilterBtnClick,
+		filterModal,
+		setFilterModal,
+		allChecked,
+		setAllChecked,
+	} = FilterStates();
+
+	const { checked, setChecked } = FoldersStates();
 
 	return (
 		<StatesManagerCtx.Provider
@@ -54,6 +63,10 @@ const Layout = ({ children }) => {
 				setFilterModal,
 				folderModal,
 				setFolderModal,
+				checked,
+				setChecked,
+				allChecked,
+				setAllChecked,
 			}}
 		>
 			<Head>
@@ -104,6 +117,22 @@ const FilterStates = () => {
 	const [checkFilterBtnClick, setCheckFilterBtnClick] = useState(``);
 	const [layoutView, setLayoutView] = useState(`grid`);
 	const [filterModal, setFilterModal] = useState(false);
+	const [allChecked, setAllChecked] = useState(false);
 
-	return { layoutView, setLayoutView, checkFilterBtnClick, setCheckFilterBtnClick, filterModal, setFilterModal };
+	return {
+		layoutView,
+		setLayoutView,
+		checkFilterBtnClick,
+		setCheckFilterBtnClick,
+		filterModal,
+		setFilterModal,
+		allChecked,
+		setAllChecked,
+	};
+};
+
+const FoldersStates = () => {
+	const [checked, setChecked] = useState(false);
+
+	return { checked, setChecked };
 };

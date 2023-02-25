@@ -29,17 +29,58 @@ const FirebaseAPI = () => {
 	const app = initializeApp(firebaseConfig);
 	const db = getFirestore(app);
 
-	useEffect(() => {}, []);
+	const todoListPath = "main-todos/todo-list-section/todo-list";
+	const colRefTodoList = collection(db, todoListPath);
+	const qTodoList = query(colRefTodoList, orderBy("createdTime"));
+
+	const [todoLists, setTodoLists] = useState();
+
+	useEffect(() => {
+		onSnapshot(qTodoList, (ss) => {
+			let todoLists: any = [];
+			setTodoLists(todoLists);
+			ss.docs.map((doc) => {
+				todoLists.unshift({
+					...doc.data(),
+					id: doc.id,
+				});
+				// console.log(todoLists);
+			});
+		});
+	}, []);
 
 	class TodoListSystem {
 		constructor() {}
+
+		addTodo = async () => {
+			await addDoc(colRefTodoList, {
+				todo: "Untitled",
+				createdTime: serverTimestamp(),
+			});
+		};
+
+		editTodo = async (text: string, id: string) => {
+			const docRef = doc(colRefTodoList, id);
+			await updateDoc(docRef, {
+				todo: text.trim(),
+			});
+		};
+
+		deleteTodo = async (id: string) => {
+			const docRef = doc(colRefTodoList, id);
+			await deleteDoc(docRef);
+		};
 	}
+	const TLS = new TodoListSystem();
+	const addTodos = TLS.addTodo;
+	const editTodos = TLS.editTodo;
+	const deleteTodos = TLS.deleteTodo;
 
 	class FolderSystem {
 		constructor() {}
 	}
 
-	return {};
+	return { addTodos, todoLists, editTodos, deleteTodos };
 };
 
 export default FirebaseAPI;
