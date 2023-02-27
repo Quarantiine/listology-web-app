@@ -14,27 +14,28 @@ import FolderModal from "@/components/FolderSidebar/FolderModal";
 gsap.registerPlugin(ScrollTrigger);
 
 export default function Home() {
-	const { uploadModal, filterModal, folderModal, setFolderModal, addFolderModal } = useContext(StatesManagerCtx);
+	const { uploadModal, filterModal, folderModal, setFolderModal, addFolderModal, folders, folderClicked } =
+		useContext(StatesManagerCtx);
 
-	const tailwindGSAP = "opacity-0";
-	useEffect(() => {
-		const ctx = gsap.context(() => {
-			if (!folderModal) {
-				gsap.timeline().to(".folder-icon", {
-					scrollTrigger: {
-						scrub: true,
-						// markers: true,
-						trigger: ".main-content-section",
-						start: "top 60%",
-						end: "top 60%",
-					},
-					opacity: 1,
-				});
-			}
-		});
+	const tailwindGSAP = "opacity-100";
+	// useEffect(() => {
+	// 	const ctx = gsap.context(() => {
+	// 		if (!folderModal) {
+	// 			gsap.timeline().to(".folder-icon", {
+	// 				scrollTrigger: {
+	// 					scrub: true,
+	// 					// markers: true,
+	// 					trigger: ".main-content-section",
+	// 					start: "top 60%",
+	// 					end: "top 60%",
+	// 				},
+	// 				opacity: 1,
+	// 			});
+	// 		}
+	// 	});
 
-		return () => ctx.revert();
-	});
+	// 	return () => ctx.revert();
+	// });
 
 	return (
 		<>
@@ -50,7 +51,7 @@ export default function Home() {
 			<>
 				{/* FOLDER SYSTEM */}
 				{folderModal ? (
-					<FolderSystem />
+					<FolderSystem folders={folders} />
 				) : (
 					<>
 						<div
@@ -65,7 +66,18 @@ export default function Home() {
 			<MainHeroSection />
 			<main className="main-content-section relative flex flex-col justify-center items-center gap-16 my-32 mx-auto w-[90%] sm:w-[70%] 2xl:w-[1200px]">
 				<FilterBar />
-				<MainTodoList />
+				{/* {<MainTodoList />} */}
+				{folders.length > 0 ? (
+					folders.map((folder, i) => {
+						if (folder.folderName === folderClicked) {
+							return <MainTodoList key={folder.id} folder={folder} />;
+						}
+					})
+				) : (
+					<>
+						<div>Waiting on folder data...</div>
+					</>
+				)}
 			</main>
 		</>
 	);

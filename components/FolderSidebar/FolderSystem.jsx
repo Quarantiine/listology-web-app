@@ -2,8 +2,9 @@ import React, { useContext, useEffect, useState } from "react";
 import { StatesManagerCtx } from "../Layout";
 import Image from "next/image";
 
-const FolderSystem = () => {
-	const { bodyBgColor, setFolderModal, deleteFolder, setAddFolderModal } = useContext(StatesManagerCtx);
+const FolderSystem = ({ folders }) => {
+	const { addTodos, setValue, bodyBgColor, setFolderModal, setAddFolderModal, folderClicked, setFolderClicked } =
+		useContext(StatesManagerCtx);
 	const { disabledCheckbox, filledCheckbox } = FolderIcons({ bodyBgColor });
 
 	useEffect(() => {
@@ -16,6 +17,11 @@ const FolderSystem = () => {
 		document.addEventListener("mousedown", closeFolderModal);
 		return () => document.removeEventListener("mousedown", closeFolderModal);
 	}, [setFolderModal]);
+
+	const handleAddingFolder = () => {
+		setAddFolderModal(true);
+		setFolderModal(false);
+	};
 
 	return (
 		<>
@@ -36,30 +42,36 @@ const FolderSystem = () => {
 							<Image src="/icons/simple-icons/folder_open.svg" alt="folder icon" width={25} height={25} />
 						</div>
 					</div>
-					<div className="folder-modal-scroll flex flex-col justify-start items-start gap-10 overflow-y-scroll overflow-x-hidden w-full px-5">
+					<div className="folder-modal-scroll flex flex-col justify-start items-start gap-3 overflow-y-scroll overflow-x-hidden w-full px-5">
 						<div
-							className={`btn w-full h-fit py-1 px-2 rounded-md text-center text-lg font-medium ${
+							className={`btn w-full h-fit py-1 px-2 rounded-md text-center text-lg font-medium mb-10 ${
 								bodyBgColor ? "bg-[#444] hover:bg-[#555]" : "bg-[#eee] hover:bg-[#ccc]"
 							}`}
 						>
-							<p
-								onClick={() => {
-									setAddFolderModal(true);
-									setFolderModal(false);
-								}}
-							>
-								ADD FOLDER
-							</p>
+							<p onClick={handleAddingFolder}>ADD FOLDER</p>
 						</div>
-						{
-							<FolderTodoList
-								// key={}
-								deleteFolder={deleteFolder}
-								bodyBgColor={bodyBgColor}
-								filledCheckbox={filledCheckbox}
-								disabledCheckbox={disabledCheckbox}
-							/>
-						}
+						{/* TODO: **************** Map out the folder database here */}
+						{folders.length > 0 ? (
+							folders.map((folder, i) => {
+								return (
+									<FolderTodoList
+										key={folder.id}
+										addTodos={addTodos}
+										setValue={setValue}
+										setAddFolderModal={setAddFolderModal}
+										setFolderClicked={setFolderClicked}
+										folder={folder}
+										bodyBgColor={bodyBgColor}
+										filledCheckbox={filledCheckbox}
+										disabledCheckbox={disabledCheckbox}
+									/>
+								);
+							})
+						) : (
+							<>
+								<div>Waiting on folders...</div>
+							</>
+						)}
 					</div>
 				</div>
 			</div>
@@ -67,22 +79,44 @@ const FolderSystem = () => {
 	);
 };
 
-const FolderTodoList = ({ deleteFolder, bodyBgColor, filledCheckbox, disabledCheckbox }) => {
+const FolderTodoList = ({
+	addTodos,
+	setValue,
+	setAddFolderModal,
+	folder,
+	bodyBgColor,
+	filledCheckbox,
+	disabledCheckbox,
+	setFolderClicked,
+}) => {
 	const [check, setCheck] = useState(false);
+
+	const handleChangingFolders = () => {
+		setFolderClicked(folder.folderName);
+		setAddFolderModal(false);
+		setValue(folder.folderName);
+		// addTodos();
+	};
 
 	return (
 		<React.Fragment>
-			<div className="flex flex-col justify-start items-start gap-2 w-full">
+			<div
+				onClick={() => {
+					null;
+				}}
+				className="flex flex-col justify-start items-start gap-2 w-full"
+			>
 				<div
+					onClick={handleChangingFolders}
 					className={`flex btn justify-center items-center gap-5 cursor-pointer ${
 						bodyBgColor ? "bg-[#444]" : "bg-[#eee]"
 					} px-6 py-2 rounded-md text-lg`}
 				>
-					<h1 className="text-xl font-base">{"Todo Title"}</h1>
+					<h1 className="text-xl font-base">{folder.folderName}</h1>
 					<div className="flex justify-center items-center gap-2">
 						<button onClick={() => setCheck(!check)}>{check ? filledCheckbox : disabledCheckbox}</button>
 						<Image
-							// onClick={deleteFolder()}
+							// onClick={deleteFolder(.id)}
 							className="btn"
 							src={"/icons/simple-icons/Delete.svg"}
 							alt=""

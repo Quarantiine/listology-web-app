@@ -12,6 +12,7 @@ const FilterBar = () => {
 		allChecked,
 		setAllChecked,
 		addTodos,
+		folderClicked,
 	} = useContext(StatesManagerCtx);
 
 	const { addTodo, dropdown, completed, activeAssignment, label, heart, grid, list, deselectAll, selectedAll } =
@@ -28,7 +29,13 @@ const FilterBar = () => {
 				} flex flex-col justify-center items-center`}
 			>
 				<div className="w-full h-fit p-1 flex justify-around items-center gap-5 px-3">
-					<button onClick={addTodos}>{addTodo}</button>
+					<button
+						onClick={() => {
+							addTodos(folderClicked);
+						}}
+					>
+						{addTodo}
+					</button>
 					<div className="filter-scroll-bar flex justify-start items-center pb-2 lg:pb-0 overflow-x-scroll overflow-y-hidden gap-5">
 						<button
 							onClick={(e) => {

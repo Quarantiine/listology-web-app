@@ -7,8 +7,6 @@ const Layout = ({ children }) => {
 	const [bodyBgColor, setBodyBgColor] = useState(false);
 	const [folderModal, setFolderModal] = useState(false);
 
-	const { deleteFolder, addFolder, addTodos, editTodos, deleteTodos, todoLists, setPathFolderName } = FirebaseAPI();
-
 	const {
 		seachQuery,
 		setSeachQuery,
@@ -27,6 +25,8 @@ const Layout = ({ children }) => {
 	} = HeroSectionStates();
 
 	const {
+		folderClicked,
+		setFolderClicked,
 		layoutView,
 		setLayoutView,
 		checkFilterBtnClick,
@@ -37,16 +37,38 @@ const Layout = ({ children }) => {
 		setAllChecked,
 	} = FilterStates();
 
-	const { checked, setChecked, addFolderModal, setAddFolderModal } = FoldersStates();
+	const {
+		checked,
+		setChecked,
+		addFolderModal,
+		setAddFolderModal,
+		folderName,
+		setFolderName,
+		todoTitle,
+		setTodoTitle,
+		description,
+		setDescription,
+	} = FoldersStates();
+
+	const { addTodos, editTodos, deleteTodos, todoLists, folders, addFolders, deleteFolders, setValue } = FirebaseAPI();
 
 	return (
 		<StatesManagerCtx.Provider
 			value={{
-				setPathFolderName,
+				setValue,
+				folderName,
+				setFolderName,
+				todoTitle,
+				setTodoTitle,
+				description,
+				setDescription,
+				folderClicked,
+				setFolderClicked,
+				addFolders,
+				deleteFolders,
+				folders,
 				addFolderModal,
 				setAddFolderModal,
-				deleteFolder,
-				addFolder,
 				editTodos,
 				deleteTodos,
 				todoLists,
@@ -130,8 +152,11 @@ const FilterStates = () => {
 	const [layoutView, setLayoutView] = useState(`grid`);
 	const [filterModal, setFilterModal] = useState(false);
 	const [allChecked, setAllChecked] = useState(false);
+	const [folderClicked, setFolderClicked] = useState(``);
 
 	return {
+		folderClicked,
+		setFolderClicked,
 		layoutView,
 		setLayoutView,
 		checkFilterBtnClick,
@@ -146,6 +171,20 @@ const FilterStates = () => {
 const FoldersStates = () => {
 	const [checked, setChecked] = useState(false);
 	const [addFolderModal, setAddFolderModal] = useState(false);
+	const [folderName, setFolderName] = useState(``);
+	const [todoTitle, setTodoTitle] = useState(``);
+	const [description, setDescription] = useState(``);
 
-	return { checked, setChecked, addFolderModal, setAddFolderModal };
+	return {
+		checked,
+		setChecked,
+		addFolderModal,
+		setAddFolderModal,
+		folderName,
+		setFolderName,
+		todoTitle,
+		setTodoTitle,
+		description,
+		setDescription,
+	};
 };

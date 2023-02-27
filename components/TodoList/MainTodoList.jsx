@@ -4,7 +4,7 @@ import FirebaseAPI from "../FirebaseAPI";
 import data from "@emoji-mart/data";
 import Picker from "@emoji-mart/react";
 
-const MainTodoListIcons = () => {
+const MainTodoListIcons = ({ folder }) => {
 	const { bodyBgColor } = useContext(StatesManagerCtx);
 	const { dropdown, editing, heart, heartFilled, trash, undo, del } = TodoListIcons({ bodyBgColor });
 	const { editTodos, deleteTodos, todoLists } = FirebaseAPI();
@@ -15,8 +15,6 @@ const MainTodoListIcons = () => {
 	const [descriptionChanged, setDescriptionChanged] = useState(`Write a description about this todo list`);
 	const [emoji, setEmoji] = useState(``);
 	const [emojiPalette, setEmojiPalette] = useState(false);
-
-	// useEffect(() => console.log(emoji));
 
 	const handleEnter = (key) => {
 		if (key === "Enter") {
@@ -73,11 +71,13 @@ const MainTodoListIcons = () => {
 									} w-full h-full px-2 py-1 text-center sm:text-start rounded-md`}
 									type="text"
 									name="text"
-									value={folderTitleChanged}
-									onChange={(e) => setFolderTitleChanged(e.target.value)}
+									value={folder.folderName}
+									onChange={(e) => {
+										// setFolderTitleChanged(e.target.value)
+									}}
 								/>
 							) : (
-								<h3 className="text-center sm:text-start">{`FOLDER: ${folderTitleChanged.toUpperCase()}`}</h3>
+								<h3 className="text-center sm:text-start">{`FOLDER: ${folder.folderName.toUpperCase()}`}</h3>
 							)}
 						</div>
 						<div className="flex flex-col sm:flex-row justify-center sm:justify-between items-center gap-5 w-full">
@@ -89,18 +89,20 @@ const MainTodoListIcons = () => {
 										} w-full h-full px-2 py-1 text-center sm:text-start rounded-md`}
 										type="text"
 										name="text"
-										value={todoTitleChanged}
-										onChange={(e) => setTodoTitleChanged(e.target.value)}
+										value={folder.todoTitle}
+										onChange={(e) => {
+											// setTodoTitleChanged(e.target.value)
+										}}
 									/>
 								) : (
 									<div className="flex flex-col justify-ceter items-center sm:items-start">
 										<h1
-											title={todoTitleChanged}
+											title={folder.todoTitle}
 											className={`text-3xl sm:text-5xl font-semibold text-center sm:text-start ${
 												showTodoTitle ? "line-clamp-none" : "line-clamp-1"
 											}`}
 										>
-											{todoTitleChanged}
+											{folder.todoTitle}
 										</h1>
 										<p
 											onClick={() => setShowTodoTitle(!showTodoTitle)}
@@ -139,16 +141,20 @@ const MainTodoListIcons = () => {
 									} w-full h-full px-2 py-1 text-center sm:text-start rounded-md`}
 									type="text"
 									name="text"
-									value={descriptionChanged}
-									onChange={(e) => setDescriptionChanged(e.target.value)}
+									value={folder.description}
+									onChange={(e) => {
+										// setDescriptionChanged(e.target.value)
+									}}
 								/>
 							) : (
-								<p className={`text-sm text-center sm:text-start`}>{descriptionChanged}</p>
+								<p className={`text-sm text-center sm:text-start`}>{folder.description}</p>
 							)}
 						</div>
 					</div>
 					<svg
-						onClick={() => setTitleSectionEdit(!titleSectionEdit)}
+						onClick={() => {
+							// setTitleSectionEdit(!titleSectionEdit)
+						}}
 						className="btn absolute sm:relative top-0 right-0"
 						width="15"
 						height="15"
@@ -168,21 +174,25 @@ const MainTodoListIcons = () => {
 				</div>
 				<div className="flex flex-col justify-center items-start w-full h-fit gap-6 text-lg">
 					{todoLists?.length > 0 ? (
-						todoLists?.map((todoLists) => (
-							<TodoLists
-								key={todoLists.id}
-								todoLists={todoLists}
-								bodyBgColor={bodyBgColor}
-								editing={editing}
-								heart={heart}
-								heartFilled={heartFilled}
-								trash={trash}
-								editTodos={editTodos}
-								deleteTodos={deleteTodos}
-								undo={undo}
-								del={del}
-							/>
-						))
+						todoLists?.map((todoLists) => {
+							if (todoLists.folder === folder.folderName) {
+								return (
+									<TodoLists
+										key={todoLists.id}
+										todoLists={todoLists}
+										bodyBgColor={bodyBgColor}
+										editing={editing}
+										heart={heart}
+										heartFilled={heartFilled}
+										trash={trash}
+										editTodos={editTodos}
+										deleteTodos={deleteTodos}
+										undo={undo}
+										del={del}
+									/>
+								);
+							}
+						})
 					) : (
 						<>
 							<div className="flex justify-center items-center gap-2 mx-auto">

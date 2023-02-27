@@ -3,11 +3,23 @@ import { StatesManagerCtx } from "../Layout";
 import Image from "next/image";
 
 const FolderModal = () => {
-	const { addFolderModal, setAddFolderModal, setFolderModal, addFolder, setPathFolderName } =
-		useContext(StatesManagerCtx);
-	const [folderName, setFolderName] = useState(``);
-	const [todoTitle, setTodoTitle] = useState(``);
-	const [description, setDescription] = useState(``);
+	// TODO: Make it required for user to input all fields before submitting
+
+	const {
+		description,
+		setDescription,
+		todoTitle,
+		setTodoTitle,
+		folderName,
+		setFolderName,
+		folderClicked,
+		setFolderClicked,
+		setAddFolderModal,
+		setFolderModal,
+		folders,
+		addFolders,
+		deleteFolders,
+	} = useContext(StatesManagerCtx);
 
 	useEffect(() => {
 		const closeAddFolderModal = (e) => {
@@ -25,7 +37,16 @@ const FolderModal = () => {
 		setFolderName(``);
 		setTodoTitle(``);
 		setDescription(``);
+		setAddFolderModal(false);
 	};
+
+	const handleAddingFolder = () => {
+		setAddFolderModal(false);
+		addFolders(folderName, todoTitle, description);
+		setFolderClicked(folderName);
+	};
+
+	useEffect(() => console.log(folders));
 
 	return (
 		<>
@@ -58,7 +79,6 @@ const FolderModal = () => {
 										value={folderName}
 										onChange={(e) => {
 											setFolderName(e.target.value);
-											setPathFolderName(e.target.value);
 										}}
 										placeholder="Folder Title"
 									/>
@@ -94,21 +114,20 @@ const FolderModal = () => {
 								<input
 									onClick={(e) => {
 										e.preventDefault();
-										addFolder(folderName, todoTitle, description);
-										setAddFolderModal(false);
-									}}
-									className="btn px-5 py-1 rounded-md base-bg text-white w-full"
-									type="submit"
-									value={"Add Folder"}
-								/>
-								<input
-									onClick={(e) => {
-										e.preventDefault();
 										handleCancelBtn();
 									}}
 									className="btn px-5 py-1 rounded-md border-2 border-[#] w-full"
 									type="submit"
 									value={"Cancel"}
+								/>
+								<input
+									onClick={(e) => {
+										e.preventDefault();
+										handleAddingFolder();
+									}}
+									className="btn px-5 py-1 rounded-md base-bg text-white w-full"
+									type="submit"
+									value={"Add Folder"}
 								/>
 							</div>
 						</form>

@@ -13,13 +13,12 @@ import {
 	query,
 	serverTimestamp,
 } from "firebase/firestore";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 
 const FirebaseAPI = () => {
-	const [pathFolderName, setPathFolderName] = useState();
 	const [todoLists, setTodoLists] = useState([]);
-	const [folderList, setFolderList] = useState([]);
-	// const [foldersLists, setFoldersLists] = useState([]);
+	const [folders, setFolders] = useState([]);
+	const [value, setValue] = useState<string>(``);
 
 	const firebaseConfig = {
 		apiKey: "AIzaSyAs56GPO60nYErJxefy9853HWz17bGPSho",
@@ -33,36 +32,33 @@ const FirebaseAPI = () => {
 	const app = initializeApp(firebaseConfig);
 	const db = getFirestore(app);
 
-	const todoListPath = `todos/folder-name: ${pathFolderName}/todo-items`;
-	const colRefTodoList = collection(db, todoListPath);
-	const qTodoList = query(colRefTodoList, orderBy("createdTime"));
+	const colRefFolders = collection(db, `folders/folder/item`);
+	const qFolders = query(colRefFolders, orderBy("createdTime"));
 
-	const folderPath = `folders/folder-name: ${pathFolderName}/folder-items`;
-	const colRefFolder = collection(db, folderPath);
-	const qFolder = query(colRefFolder, orderBy("createdTime"));
+	const colRefTodoList = collection(db, `todos/folder/todo-items`);
+	const qTodoList = query(colRefTodoList, orderBy("createdTime"));
 
 	useEffect(() => {
 		// Todo List =====
 		onSnapshot(qTodoList, (ss) => {
-			let todoList: any = [];
+			let todoList = [];
 			setTodoLists(todoList);
 			ss.docs.map((doc) => {
 				todoList.unshift({
 					...doc.data(),
 					id: doc.id,
 				});
-				console.log(todoLists);
 			});
+			console.log(todoList);
 		});
 	}, []);
 
 	useEffect(() => {
-		// Folder List =====
-		onSnapshot(qFolder, (ss) => {
-			let folders = [];
-			setFolderList(folders);
+		onSnapshot(qFolders, (ss) => {
+			let folderList = [];
+			setFolders(folderList);
 			ss.docs.map((doc) => {
-				folderList.push({
+				folderList.unshift({
 					...doc.data(),
 					id: doc.id,
 				});
@@ -74,22 +70,23 @@ const FirebaseAPI = () => {
 	class TodoListSystem {
 		constructor() {}
 
-		addTodo = async () => {
+		addTodo = async (folder: string) => {
 			await addDoc(colRefTodoList, {
 				todo: "Untitled",
+				folder: folder,
 				createdTime: serverTimestamp(),
 			});
 		};
 
 		editTodo = async (text: string, id: string) => {
-			const docRef = doc(db, todoListPath, id);
+			const docRef = doc(colRefTodoList, id);
 			await updateDoc(docRef, {
 				todo: text.trim(),
 			});
 		};
 
 		deleteTodo = async (id: string) => {
-			const docRef = doc(db, todoListPath, id);
+			const docRef = doc(colRefTodoList, id);
 			await deleteDoc(docRef);
 		};
 	}
@@ -101,32 +98,33 @@ const FirebaseAPI = () => {
 	class FolderSystem {
 		constructor() {}
 
-		addFolder = async (folder_title: string, todo_title: string, description: string) => {
-			addDoc(colRefFolder, {
-				folderTitle: folder_title,
-				todoTitle: todo_title,
+		addFolders = async (folderName: string, todoTitle: string, description: string) => {
+			await addDoc(colRefFolders, {
+				folderName: folderName,
+				todoTitle: todoTitle,
 				description: description,
+				createdTime: serverTimestamp(),
 			});
 		};
 
-		deleteFolder = async (id: string) => {
-			const docRef = doc(db, folderPath, id);
-			deleteDoc(docRef);
+		deleteFolders = async (id: string) => {
+			const docRef = doc(colRefFolders, id);
+			await deleteDoc(docRef);
 		};
 	}
 	const FS = new FolderSystem();
-	const addFolder = FS.addFolder;
-	const deleteFolder = FS.deleteFolder;
+	const addFolders = FS.addFolders;
+	const deleteFolders = FS.deleteFolders;
 
 	return {
-		folderList,
-		deleteFolder,
-		addFolder,
+		setValue,
+		addFolders,
+		deleteFolders,
+		folders,
 		todoLists,
 		deleteTodos,
 		editTodos,
 		addTodos,
-		setPathFolderName,
 	};
 };
 
