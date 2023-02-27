@@ -1,10 +1,13 @@
 import Head from "next/head";
 import React, { createContext, useState } from "react";
+import FirebaseAPI from "./FirebaseAPI";
 
 const StatesManagerCtx = createContext();
 const Layout = ({ children }) => {
 	const [bodyBgColor, setBodyBgColor] = useState(false);
 	const [folderModal, setFolderModal] = useState(false);
+
+	const { deleteFolder, addFolder, addTodos, editTodos, deleteTodos, todoLists, setPathFolderName } = FirebaseAPI();
 
 	const {
 		seachQuery,
@@ -34,11 +37,20 @@ const Layout = ({ children }) => {
 		setAllChecked,
 	} = FilterStates();
 
-	const { checked, setChecked } = FoldersStates();
+	const { checked, setChecked, addFolderModal, setAddFolderModal } = FoldersStates();
 
 	return (
 		<StatesManagerCtx.Provider
 			value={{
+				setPathFolderName,
+				addFolderModal,
+				setAddFolderModal,
+				deleteFolder,
+				addFolder,
+				editTodos,
+				deleteTodos,
+				todoLists,
+				addTodos,
 				bodyBgColor,
 				setBodyBgColor,
 				seachQuery,
@@ -133,6 +145,7 @@ const FilterStates = () => {
 
 const FoldersStates = () => {
 	const [checked, setChecked] = useState(false);
+	const [addFolderModal, setAddFolderModal] = useState(false);
 
-	return { checked, setChecked };
+	return { checked, setChecked, addFolderModal, setAddFolderModal };
 };

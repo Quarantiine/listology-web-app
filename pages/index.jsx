@@ -10,10 +10,11 @@ import Image from "next/image";
 import MainTodoList from "@/components/TodoList/MainTodoList";
 import { gsap } from "gsap/dist/gsap";
 import { ScrollTrigger } from "gsap/dist/ScrollTrigger";
+import FolderModal from "@/components/FolderSidebar/FolderModal";
 gsap.registerPlugin(ScrollTrigger);
 
 export default function Home() {
-	const { uploadModal, filterModal, folderModal, setFolderModal } = useContext(StatesManagerCtx);
+	const { uploadModal, filterModal, folderModal, setFolderModal, addFolderModal } = useContext(StatesManagerCtx);
 
 	const tailwindGSAP = "opacity-0";
 	useEffect(() => {
@@ -44,6 +45,7 @@ export default function Home() {
 				{/* MODAL COMPONTENTS */}
 				{uploadModal && <UploadModal />}
 				{filterModal && <FilterModal />}
+				{addFolderModal && <FolderModal />}
 			</>
 			<>
 				{/* FOLDER SYSTEM */}

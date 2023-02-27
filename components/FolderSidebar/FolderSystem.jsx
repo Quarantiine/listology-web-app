@@ -3,25 +3,8 @@ import { StatesManagerCtx } from "../Layout";
 import Image from "next/image";
 
 const FolderSystem = () => {
-	const { bodyBgColor, folderModal, setFolderModal } = useContext(StatesManagerCtx);
+	const { bodyBgColor, setFolderModal, deleteFolder, setAddFolderModal } = useContext(StatesManagerCtx);
 	const { disabledCheckbox, filledCheckbox } = FolderIcons({ bodyBgColor });
-	const todoList = [
-		{
-			title: "Folder 1",
-			todosNames: [
-				{ text: "Lorem ipsum" },
-				{ text: "Lorem ipsum" },
-				{ text: "Lorem ipsum" },
-				{ text: "Lorem ipsum" },
-				{ text: "Lorem ipsum" },
-			],
-		},
-		{
-			title: "Folder 2",
-			todosNames: [{ text: "Lorem ipsum" }, { text: "Lorem ipsum" }, { text: "Lorem ipsum" }],
-		},
-	];
-	const [check, setCheck] = useState(false);
 
 	useEffect(() => {
 		const closeFolderModal = (e) => {
@@ -54,42 +37,62 @@ const FolderSystem = () => {
 						</div>
 					</div>
 					<div className="folder-modal-scroll flex flex-col justify-start items-start gap-10 overflow-y-scroll overflow-x-hidden w-full px-5">
-						{todoList.map((list, i) => (
-							<React.Fragment key={i}>
-								<div className="flex flex-col justify-start items-start gap-2">
-									<h1 className="text-xl font-medium">{list.title}</h1>
-									<div className="flex flex-col justify-start items-start gap-2">
-										{list.todosNames.map((todos, i) => (
-											<React.Fragment key={i}>
-												<div
-													className={`flex justify-center items-center gap-5 cursor-pointer ${
-														bodyBgColor ? "bg-[#444] hover:bg-[#555]" : "bg-[#eee] hover:bg-[#ccc]"
-													} px-6 py-2 rounded-md text-lg`}
-												>
-													<p className="line-clamp-1">{todos.text}</p>
-													<div className="flex justify-center items-center gap-2">
-														<button onClick={() => setCheck(!check)}>
-															{check ? filledCheckbox : disabledCheckbox}
-														</button>
-														<Image
-															className="btn"
-															src={"/icons/simple-icons/Delete.svg"}
-															alt=""
-															width={20}
-															height={20}
-														/>
-													</div>
-												</div>
-											</React.Fragment>
-										))}
-									</div>
-								</div>
-							</React.Fragment>
-						))}
+						<div
+							className={`btn w-full h-fit py-1 px-2 rounded-md text-center text-lg font-medium ${
+								bodyBgColor ? "bg-[#444] hover:bg-[#555]" : "bg-[#eee] hover:bg-[#ccc]"
+							}`}
+						>
+							<p
+								onClick={() => {
+									setAddFolderModal(true);
+									setFolderModal(false);
+								}}
+							>
+								ADD FOLDER
+							</p>
+						</div>
+						{
+							<FolderTodoList
+								// key={}
+								deleteFolder={deleteFolder}
+								bodyBgColor={bodyBgColor}
+								filledCheckbox={filledCheckbox}
+								disabledCheckbox={disabledCheckbox}
+							/>
+						}
 					</div>
 				</div>
 			</div>
 		</>
+	);
+};
+
+const FolderTodoList = ({ deleteFolder, bodyBgColor, filledCheckbox, disabledCheckbox }) => {
+	const [check, setCheck] = useState(false);
+
+	return (
+		<React.Fragment>
+			<div className="flex flex-col justify-start items-start gap-2 w-full">
+				<div
+					className={`flex btn justify-center items-center gap-5 cursor-pointer ${
+						bodyBgColor ? "bg-[#444]" : "bg-[#eee]"
+					} px-6 py-2 rounded-md text-lg`}
+				>
+					<h1 className="text-xl font-base">{"Todo Title"}</h1>
+					<div className="flex justify-center items-center gap-2">
+						<button onClick={() => setCheck(!check)}>{check ? filledCheckbox : disabledCheckbox}</button>
+						<Image
+							// onClick={deleteFolder()}
+							className="btn"
+							src={"/icons/simple-icons/Delete.svg"}
+							alt=""
+							width={20}
+							height={20}
+						/>
+					</div>
+				</div>
+			</div>
+		</React.Fragment>
 	);
 };
 

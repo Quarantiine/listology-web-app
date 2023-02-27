@@ -5,7 +5,6 @@ import ThemeSystem from "./ThemeSystem";
 import GallerySystem from "./GallerySystem";
 import SearchSystem from "./SearchSystem";
 import { StatesManagerCtx } from "../Layout";
-import FirebaseAPI from "../FirebaseAPI";
 
 const MainHeroSection = () => {
 	const { positionImage, heroImgSrc } = useContext(StatesManagerCtx);

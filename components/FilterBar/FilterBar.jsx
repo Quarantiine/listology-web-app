@@ -1,7 +1,5 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect } from "react";
 import { StatesManagerCtx } from "../Layout";
-import Image from "next/image";
-import FirebaseAPI from "../FirebaseAPI";
 
 const FilterBar = () => {
 	const {
@@ -13,17 +11,14 @@ const FilterBar = () => {
 		setFilterModal,
 		allChecked,
 		setAllChecked,
+		addTodos,
 	} = useContext(StatesManagerCtx);
-
-	const { addTodos } = FirebaseAPI();
 
 	const { addTodo, dropdown, completed, activeAssignment, label, heart, grid, list, deselectAll, selectedAll } =
 		FilterIcons({
 			bodyBgColor,
 			layoutView,
 		});
-	const [addTodoList, setAddTodoList] = useState();
-	// useEffect(() => console.log(checkFilterBtnClick));
 
 	return (
 		<div className="flex flex-col justify-center items-start gap-5 w-full">
@@ -40,7 +35,7 @@ const FilterBar = () => {
 								setCheckFilterBtnClick(e.currentTarget.id);
 								setAllChecked(!allChecked);
 							}}
-							id="all"
+							id={`all`}
 							className={`btn text-lg flex justify-center items-center gap-1 ${
 								checkFilterBtnClick === "all" ? "text-[#0E51FF]" : ""
 							}`}
@@ -123,17 +118,21 @@ const FilterBar = () => {
 					</div>
 				</div>
 			</div>
-			<div className={`flex justify-center items-center gap-3 ${bodyBgColor ? "text-white" : "text-black"}`}>
+			<div
+				className={`flex flex-col sm:flex-row justify-center items-center gap-3 w-full ${
+					bodyBgColor ? "text-white" : "text-black"
+				}`}
+			>
 				{checkFilterBtnClick && (
 					<button
 						onClick={() => setCheckFilterBtnClick(false)}
-						className="text-xl font-semibold btn base-bg px-4 py-1 rounded-md text-white"
+						className="text-xl font-semibold btn base-bg px-4 py-1 rounded-md text-white w-full"
 					>{`Clear Filters`}</button>
 				)}
 				{checkFilterBtnClick && (
 					<button
 						onClick={() => setCheckFilterBtnClick(false)}
-						className="text-xl font-semibold btn bg-red-500 px-4 py-1 rounded-md text-white"
+						className="text-xl font-semibold btn bg-red-500 px-4 py-1 rounded-md text-white w-full"
 					>{`Delete All`}</button>
 				)}
 				<h1 className="text-xl font-semibold">{layoutView.toUpperCase()}</h1>

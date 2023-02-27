@@ -1,12 +1,39 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { StatesManagerCtx } from "../Layout";
 import FirebaseAPI from "../FirebaseAPI";
+import data from "@emoji-mart/data";
+import Picker from "@emoji-mart/react";
 
 const MainTodoListIcons = () => {
 	const { bodyBgColor } = useContext(StatesManagerCtx);
-	const { dropdown, editing, heart, heartFilled, trash, checkboxOutlined } = TodoListIcons({ bodyBgColor });
+	const { dropdown, editing, heart, heartFilled, trash, undo, del } = TodoListIcons({ bodyBgColor });
 	const { editTodos, deleteTodos, todoLists } = FirebaseAPI();
-	const [loadingTodoLists, setLoadingTodoLists] = useState(false);
+	const [titleSectionEdit, setTitleSectionEdit] = useState(false);
+	const [showTodoTitle, setShowTodoTitle] = useState(false);
+	const [folderTitleChanged, setFolderTitleChanged] = useState(`UNTITLED FOLDER TITLE`);
+	const [todoTitleChanged, setTodoTitleChanged] = useState(`Untitled Title`);
+	const [descriptionChanged, setDescriptionChanged] = useState(`Write a description about this todo list`);
+	const [emoji, setEmoji] = useState(``);
+	const [emojiPalette, setEmojiPalette] = useState(false);
+
+	// useEffect(() => console.log(emoji));
+
+	const handleEnter = (key) => {
+		if (key === "Enter") {
+			setTitleSectionEdit(false);
+		}
+	};
+
+	useEffect(() => {
+		const closeEmojiPalette = (e) => {
+			if (!e.target.closest(".emoji-palette")) {
+				setEmojiPalette(false);
+			}
+		};
+
+		document.addEventListener("mousedown", closeEmojiPalette);
+		return () => document.removeEventListener("mousedown", closeEmojiPalette);
+	});
 
 	return (
 		<>
@@ -15,15 +42,129 @@ const MainTodoListIcons = () => {
 					bodyBgColor ? "text-white" : "text-black"
 				}`}
 			>
-				<div className="w-full flex flex-col justify-center items-start gap-3">
-					<h3>FOLDER TITLE 1</h3>
-					<div className="flex justify-center items-center gap-3">
-						<h1 className="text-5xl font-semibold">Todo List Title</h1>
-						<div className="flex justify-center items-center gap-2 cursor-pointer">
-							<div className="bg-gray-400 w-10 h-10 rounded-full" />
-							{dropdown}
+				<div className="flex justify-center sm:justify-between items-start gap-5 w-full relative">
+					<div
+						onKeyDown={(e) => handleEnter(e.key)}
+						className="w-full flex flex-col justify-center items-center sm:items-start gap-3"
+					>
+						<div className="flex sm:hidden justify-center items-center gap-2 cursor-pointer relative z-10">
+							{emoji ? (
+								<p onClick={() => setEmojiPalette(!emojiPalette)} className="text-5xl">
+									{emoji.native}
+								</p>
+							) : (
+								<div
+									onClick={() => setEmojiPalette(!emojiPalette)}
+									className="bg-gray-400 w-10 h-10 rounded-full animate-pulse"
+								/>
+							)}
+
+							{emojiPalette && (
+								<div className="emoji-palette w-fit h-full absolute top-12 -left-36">
+									<Picker data={data} onEmojiSelect={setEmoji}></Picker>
+								</div>
+							)}
+						</div>
+						<div className={`flex justify-center sm:justify-start items-center gap-3 w-full`}>
+							{titleSectionEdit ? (
+								<input
+									className={`${
+										bodyBgColor ? "bg-[#333]" : "bg-gray-200 border"
+									} w-full h-full px-2 py-1 text-center sm:text-start rounded-md`}
+									type="text"
+									name="text"
+									value={folderTitleChanged}
+									onChange={(e) => setFolderTitleChanged(e.target.value)}
+								/>
+							) : (
+								<h3 className="text-center sm:text-start">{`FOLDER: ${folderTitleChanged.toUpperCase()}`}</h3>
+							)}
+						</div>
+						<div className="flex flex-col sm:flex-row justify-center sm:justify-between items-center gap-5 w-full">
+							<div className={`flex justify-center sm:justify-start items-center gap-3 w-full`}>
+								{titleSectionEdit ? (
+									<input
+										className={`${
+											bodyBgColor ? "bg-[#333]" : "bg-gray-200 border"
+										} w-full h-full px-2 py-1 text-center sm:text-start rounded-md`}
+										type="text"
+										name="text"
+										value={todoTitleChanged}
+										onChange={(e) => setTodoTitleChanged(e.target.value)}
+									/>
+								) : (
+									<div className="flex flex-col justify-ceter items-center sm:items-start">
+										<h1
+											title={todoTitleChanged}
+											className={`text-3xl sm:text-5xl font-semibold text-center sm:text-start ${
+												showTodoTitle ? "line-clamp-none" : "line-clamp-1"
+											}`}
+										>
+											{todoTitleChanged}
+										</h1>
+										<p
+											onClick={() => setShowTodoTitle(!showTodoTitle)}
+											className={`${bodyBgColor ? "text-[#444]" : "text-gray-300"} text-sm cursor-pointer`}
+										>
+											{showTodoTitle ? "show less" : "show more"}
+										</p>
+									</div>
+								)}
+							</div>
+							<div className="hidden sm:flex justify-center items-center gap-2 cursor-pointer relative z-10">
+								{emoji ? (
+									<p onClick={() => setEmojiPalette(!emojiPalette)} className="text-5xl">
+										{emoji.native}
+									</p>
+								) : (
+									<div
+										onClick={() => setEmojiPalette(!emojiPalette)}
+										className="bg-gray-400 w-10 h-10 rounded-full animate-pulse"
+									/>
+								)}
+
+								{emojiPalette && (
+									<div className="emoji-palette w-fit h-full absolute top-12 right-0">
+										<Picker data={data} onEmojiSelect={setEmoji}></Picker>
+									</div>
+								)}
+							</div>
+						</div>
+						<div className={`flex justify-center sm:justify-start items-center gap-3 w-full`}>
+							{/* TODO: make this apart of the of the settings to give user an option to: diable todo list description */}
+							{titleSectionEdit ? (
+								<textarea
+									className={`${
+										bodyBgColor ? "bg-[#333]" : "bg-gray-200 border"
+									} w-full h-full px-2 py-1 text-center sm:text-start rounded-md`}
+									type="text"
+									name="text"
+									value={descriptionChanged}
+									onChange={(e) => setDescriptionChanged(e.target.value)}
+								/>
+							) : (
+								<p className={`text-sm text-center sm:text-start`}>{descriptionChanged}</p>
+							)}
 						</div>
 					</div>
+					<svg
+						onClick={() => setTitleSectionEdit(!titleSectionEdit)}
+						className="btn absolute sm:relative top-0 right-0"
+						width="15"
+						height="15"
+						viewBox="0 0 25 25"
+						fill="none"
+						xmlns="http://www.w3.org/2000/svg"
+					>
+						<path
+							d="M0 24.9998H5.20761L20.5666 9.64078L15.359 4.43317L0 19.7922V24.9998ZM2.77739 20.9448L15.359 8.36318L16.6366 9.64078L4.055 22.2224H2.77739V20.9448Z"
+							fill={bodyBgColor ? `white` : `black`}
+						/>
+						<path
+							d="M21.344 0.406194C20.8024 -0.135398 19.9275 -0.135398 19.3859 0.406194L16.8446 2.94751L22.0522 8.15512L24.5935 5.61381C25.1351 5.07222 25.1351 4.19734 24.5935 3.65574L21.344 0.406194Z"
+							fill={bodyBgColor ? `white` : `black`}
+						/>
+					</svg>
 				</div>
 				<div className="flex flex-col justify-center items-start w-full h-fit gap-6 text-lg">
 					{todoLists?.length > 0 ? (
@@ -38,11 +179,13 @@ const MainTodoListIcons = () => {
 								trash={trash}
 								editTodos={editTodos}
 								deleteTodos={deleteTodos}
+								undo={undo}
+								del={del}
 							/>
 						))
 					) : (
 						<>
-							<div className="flex justify-center items-center gap-2">
+							<div className="flex justify-center items-center gap-2 mx-auto">
 								<p>Waiting on Todo List</p>
 								<div className="border-4 w-5 h-5 border-t-transparent border-[#0E51FF] animate-spin rounded-full" />
 							</div>
@@ -54,8 +197,22 @@ const MainTodoListIcons = () => {
 	);
 };
 
-const TodoLists = ({ todoLists, bodyBgColor, editing, heart, heartFilled, trash, editTodos, deleteTodos }) => {
+const TodoLists = ({
+	todoLists,
+	bodyBgColor,
+	editing,
+	heart,
+	heartFilled,
+	trash,
+	editTodos,
+	deleteTodos,
+	undo,
+	del,
+}) => {
 	const todoRef = useRef();
+	const todoListRef = useRef();
+	const deleteRef = useRef();
+	const deleteTimerRef = useRef();
 	const editRef = useRef();
 	const [hearted, setHearted] = useState(false);
 	const [showMore, setShowMore] = useState(false);
@@ -64,11 +221,14 @@ const TodoLists = ({ todoLists, bodyBgColor, editing, heart, heartFilled, trash,
 	const [edit, setEdit] = useState(false);
 	const [changedTodo, setChangedTodo] = useState(``);
 	const [deleted, setDeleted] = useState(false);
-	const [undoDelete, setUndoDelete] = useState(true);
+	const [deletionTime, setDeletionTime] = useState(5000);
+	let [deletionTimer, setDeletionTimer] = useState(5);
+	const [copied, setCopied] = useState(false);
 
 	const handleKey = (key) => {
 		if (key === "Enter") {
 			setEdit(false);
+			setChangedTodo(``);
 		}
 	};
 
@@ -94,8 +254,83 @@ const TodoLists = ({ todoLists, bodyBgColor, editing, heart, heartFilled, trash,
 
 	useEffect(() => (changedTodo.length > 80 ? setHideShowMore(true) : setHideShowMore(false)), [changedTodo]);
 
+	const handleCopyingText = () => {
+		// TODO: Add in settings if they want to turn on: copying mode
+		setCopied(true);
+		clearTimeout(todoListRef.current);
+		todoListRef.current = setTimeout(() => {
+			setCopied(false);
+		}, 2000);
+	};
+
+	const handleDeletionSystem = () => {
+		// TODO: Add this in settings as: disable timer
+		clearTimeout(deleteRef.current);
+		setDeleted(true);
+		deleteTimerRef.current = setInterval(() => {
+			setDeletionTimer((deletionTimer -= 1));
+			if (deletionTimer <= 0) {
+				setDeletionTimer((deletionTimer = 5));
+				clearInterval(deleteTimerRef.current);
+			}
+		}, 1000);
+		deleteRef.current = setTimeout(() => {
+			deleteTodos(todoLists.id);
+		}, deletionTime);
+	};
+
+	const handleUndoDeletionSystem = () => {
+		clearTimeout(deleteRef.current);
+		clearTimeout(deleteTimerRef.current);
+		setDeletionTimer((deletionTimer = 5));
+		setDeleted(false);
+	};
+
+	const handleTimeSystem = () => {
+		// TODO: Add in settings if they want to turn on: display time stamps
+		const timeSystem = () => {
+			const date = new Date(todoLists?.createdTime?.seconds * 1000);
+			const hour = date.getHours();
+			const min = date.getMinutes();
+			// const sec = date.getSeconds();
+			const time = `${hour > 12 ? hour - 12 : hour}:${
+				hour > 11 ? (min < 10 ? `0${min} pm` : `${min} pm`) : min < 10 ? `0${min} am` : `${min} am`
+			}`;
+			// console.log(time);
+
+			return time;
+		};
+
+		const dateSystem = () => {
+			const date = new Date();
+			const day = date.getDate();
+			const month = date.getMonth();
+			const year = date.getFullYear();
+			const fullDate = `${month + 1}/${day}/${year}`;
+			// console.log(fullDate);
+
+			return fullDate;
+		};
+
+		// console.log(`${timeSystem()} - ${dateSystem()}`);
+		return `${timeSystem() || "time"} - ${dateSystem() || "date"}`;
+	};
+
 	return (
-		<React.Fragment>
+		<div
+			className={`relative flex flex-col justify-center items-start w-full h-fit p-2 rounded-md border-2 ${
+				deleted ? "border-red-500" : "border-transparent"
+			}`}
+		>
+			{deleted && (
+				<button
+					onClick={handleUndoDeletionSystem}
+					className={`absolute top-10 right-0 rounded-md p-1 w-fit h-fit bg-red-500 text-white flex justify-center items-center gap-1`}
+				>
+					<p>{undo}</p>
+					<p>{deletionTimer}</p>
+				</button>
+			)}
 			<div ref={todoRef} className="grid lg:grid-cols-[90%_10%] w-full justify-between items-center gap-2">
 				<div className="flex justify-start items-center gap-2 w-full">
 					{checked ? (
@@ -120,17 +355,29 @@ const TodoLists = ({ todoLists, bodyBgColor, editing, heart, heartFilled, trash,
 							autoComplete="off"
 						/>
 						{!edit && (
-							<p
-								onDoubleClick={() => {
-									setEdit(true);
-									setTimeout(() => {
-										editRef.current.focus();
-									}, 100);
-								}}
-								className={`${showMore ? "line-clamp-none" : "line-clamp-1"} text-xl w-full`}
-							>
-								{todoLists.todo.trim()}
-							</p>
+							<div className="relative w-full h-fit">
+								{copied && null && (
+									<div className={`bg-green-500 absolute -top-7 left-0 w-fit h-fit px-2 rounded-md`}>
+										<p className="text-[10px]">COPIED!</p>
+									</div>
+								)}
+								<p
+									ref={todoListRef}
+									onClick={(e) => {
+										handleCopyingText();
+										navigator.clipboard.writeText(e.target.textContent);
+									}}
+									onDoubleClick={() => {
+										setEdit(true);
+										setTimeout(() => {
+											editRef.current.focus();
+										}, 100);
+									}}
+									className={`${showMore ? "line-clamp-none" : "line-clamp-1"} text-lg md:text-2xl w-full`}
+								>
+									{todoLists.todo.trim()}
+								</p>
+							</div>
 						)}
 
 						{hideShowMore && (
@@ -145,7 +392,7 @@ const TodoLists = ({ todoLists, bodyBgColor, editing, heart, heartFilled, trash,
 				</div>
 				<div className="flex justify-start lg:justify-center items-center gap-2">
 					<p
-						className="text-md btn text-[#0E51FF] underline w-32 text-center block sm:hidden"
+						className="text-sm btn text-[#0E51FF] underline w-fit text-center block sm:hidden"
 						onClick={() => setShowMore(!showMore)}
 					>
 						{showMore ? "show less" : "show more"}
@@ -164,12 +411,26 @@ const TodoLists = ({ todoLists, bodyBgColor, editing, heart, heartFilled, trash,
 					<button className="btn" onClick={() => setHearted(!hearted)}>
 						{hearted ? heartFilled : heart}
 					</button>
-					<button className="btn" onClick={(e) => deleteTodos(todoLists.id)}>
+					<button ref={deleteRef} className="btn" onClick={() => handleDeletionSystem()}>
 						{trash}
 					</button>
 				</div>
 			</div>
-		</React.Fragment>
+			<div className="flex justify-between items-center gap-1 w-full cursor-default">
+				{/* TODO: make this apart of settings as: disable labels */}
+				<div className="flex justify-center items-center">
+					<div
+						className={`flex justify-center items-center gap-2 px-2 text-[14px] rounded-lg relative top-1 ${
+							bodyBgColor ? "bg-[#333]" : "hover:bg-gray-300 bg-gray-200 border-2"
+						}`}
+					>
+						<p className={`w-fit h-fit`}>label 1</p>
+						<span>{del}</span>
+					</div>
+				</div>
+				<p className={`text-[11px] ${bodyBgColor ? "text-[#555]" : "text-gray-400"}`}>{handleTimeSystem()}</p>
+			</div>
+		</div>
 	);
 };
 
@@ -240,19 +501,25 @@ const TodoListIcons = ({ bodyBgColor }) => {
 		</svg>
 	);
 
-	const checkboxOutlined = (
-		<svg
-			xmlns="http://www.w3.org/2000/svg"
-			height="25"
-			width="25"
-			viewBox="0 0 960 960"
-			fill={bodyBgColor ? `white` : `black`}
-		>
-			<path d="M180 936q-24 0-42-18t-18-42V276q0-24 18-42t42-18h600q24 0 42 18t18 42v600q0 24-18 42t-42 18H180Zm0-60h600V276H180v600Z" />
+	const undo = (
+		<svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 96 960 960" width="20" fill="white">
+			<path d="M310 856q-13 0-21.5-8.5T280 826q0-13 8.5-21.5T310 796h259q70 0 120.5-46.5T740 634q0-69-50.5-115.5T569 472H274l93 93q9 9 9 21t-9 21q-9 9-21 9t-21-9L181 463q-5-5-7-10t-2-11q0-6 2-11t7-10l144-144q9-9 21-9t21 9q9 9 9 21t-9 21l-93 93h294q95 0 163.5 64T800 634q0 94-68.5 158T568 856H310Z" />
 		</svg>
 	);
 
-	return { dropdown, editing, heart, heartFilled, trash, checkboxOutlined };
+	const del = (
+		<svg
+			xmlns="http://www.w3.org/2000/svg"
+			height="15"
+			viewBox="0 96 960 960"
+			width="15"
+			fill={bodyBgColor ? `white` : `black`}
+		>
+			<path d="M480 618 270 828q-9 9-21 9t-21-9q-9-9-9-21t9-21l210-210-210-210q-9-9-9-21t9-21q9-9 21-9t21 9l210 210 210-210q9-9 21-9t21 9q9 9 9 21t-9 21L522 576l210 210q9 9 9 21t-9 21q-9 9-21 9t-21-9L480 618Z" />
+		</svg>
+	);
+
+	return { dropdown, editing, heart, heartFilled, trash, undo, del };
 };
 
 export default MainTodoListIcons;
