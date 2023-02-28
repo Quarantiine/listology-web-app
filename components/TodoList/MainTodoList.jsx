@@ -5,14 +5,17 @@ import data from "@emoji-mart/data";
 import Picker from "@emoji-mart/react";
 
 const MainTodoListIcons = ({ folder }) => {
-	const { editFolders, bodyBgColor, editTodos, deleteTodos, todoLists } = useContext(StatesManagerCtx);
+	const { editFolders, bodyBgColor, editTodos, deleteTodos, todoLists, setFolderBtnClicked } =
+		useContext(StatesManagerCtx);
 	const { dropdown, editing, heart, heartFilled, trash, undo, del } = TodoListIcons({ bodyBgColor });
+	const todoListRef = useRef();
 	const [showTodoTitle, setShowTodoTitle] = useState(false);
 	const [emoji, setEmoji] = useState(``);
 	const [emojiPalette, setEmojiPalette] = useState(false);
 	const [editModeActive, setEditModeActive] = useState(false);
 	const [editTodoListTitle, setEditTodoListTitle] = useState(``);
 	const [editDescription, setEditDscription] = useState(``);
+	const [checkLengthOfTodoList, setCheckLengthOfTodoList] = useState(false);
 
 	const submitEdit = () => {
 		editFolders(
@@ -177,7 +180,7 @@ const MainTodoListIcons = ({ folder }) => {
 						</>
 					)}
 				</div>
-				<div className="flex flex-col justify-center items-start w-full h-fit gap-6 text-lg">
+				<div ref={todoListRef} className="flex flex-col justify-center items-start w-full h-fit gap-6 text-lg">
 					{todoLists?.length > 0 ? (
 						todoLists?.map((todoLists) => {
 							if (todoLists.folder === folder.folderName) {
@@ -333,7 +336,7 @@ const TodoLists = ({
 
 	return (
 		<div
-			className={`relative flex flex-col justify-center items-start w-full h-fit rounded-md border-2 ${
+			className={`relative flex flex-col justify-center items-start w-full h-fit py-2 rounded-md border-2 ${
 				deleted ? "border-red-500" : "border-transparent"
 			}`}
 		>
