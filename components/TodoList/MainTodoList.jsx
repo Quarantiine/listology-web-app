@@ -159,12 +159,22 @@ const MainTodoListIcons = ({ folder }) => {
 						/>
 					</svg>
 					{editModeActive && (
-						<button
-							onClick={submitEdit}
-							className="btn base-bg px-2 rounded-md absolute sm:relative top-5 sm:top-0 right-0 text-sm text-white"
-						>
-							Submit
-						</button>
+						<>
+							<div className="flex flex-col justify-center items-center gap-1">
+								<button
+									onClick={submitEdit}
+									className="btn base-bg px-2 rounded-md absolute sm:relative top-5 sm:top-0 right-0 text-sm text-white"
+								>
+									Save
+								</button>
+								<button
+									onClick={() => setEditModeActive(false)}
+									className="btn bg-red-500 px-2 rounded-md absolute sm:relative top-12 sm:top-0 right-0 text-sm text-white"
+								>
+									Discard
+								</button>
+							</div>
+						</>
 					)}
 				</div>
 				<div className="flex flex-col justify-center items-start w-full h-fit gap-6 text-lg">
@@ -323,7 +333,7 @@ const TodoLists = ({
 
 	return (
 		<div
-			className={`relative flex flex-col justify-center items-start w-full h-fit p-2 rounded-md border-2 ${
+			className={`relative flex flex-col justify-center items-start w-full h-fit rounded-md border-2 ${
 				deleted ? "border-red-500" : "border-transparent"
 			}`}
 		>
