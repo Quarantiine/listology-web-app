@@ -8,14 +8,12 @@ const MainTodoListIcons = ({ folder }) => {
 	const { editFolders, bodyBgColor, editTodos, deleteTodos, todoLists, setFolderBtnClicked } =
 		useContext(StatesManagerCtx);
 	const { dropdown, editing, heart, heartFilled, trash, undo, del } = TodoListIcons({ bodyBgColor });
-	const todoListRef = useRef();
 	const [showTodoTitle, setShowTodoTitle] = useState(false);
 	const [emoji, setEmoji] = useState(``);
 	const [emojiPalette, setEmojiPalette] = useState(false);
 	const [editModeActive, setEditModeActive] = useState(false);
 	const [editTodoListTitle, setEditTodoListTitle] = useState(``);
 	const [editDescription, setEditDscription] = useState(``);
-	const [checkLengthOfTodoList, setCheckLengthOfTodoList] = useState(false);
 
 	const submitEdit = () => {
 		editFolders(
@@ -180,7 +178,7 @@ const MainTodoListIcons = ({ folder }) => {
 						</>
 					)}
 				</div>
-				<div ref={todoListRef} className="flex flex-col justify-center items-start w-full h-fit gap-6 text-lg">
+				<div className="flex flex-col justify-center items-start w-full h-fit gap-6 text-lg">
 					{todoLists?.length > 0 ? (
 						todoLists?.map((todoLists) => {
 							if (todoLists.folder === folder.folderName) {
