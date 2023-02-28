@@ -1,6 +1,6 @@
 import Head from "next/head";
 import MainHeroSection from "../components/HeroSection/MainHeroSection";
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useRef } from "react";
 import { StatesManagerCtx } from "@/components/Layout";
 import UploadModal from "@/components/HeroSection/UploadModal";
 import FilterBar from "@/components/FilterBar/FilterBar";
@@ -14,28 +14,37 @@ import FolderModal from "@/components/FolderSidebar/FolderModal";
 gsap.registerPlugin(ScrollTrigger);
 
 export default function Home() {
-	const { uploadModal, filterModal, folderModal, setFolderModal, addFolderModal, folders, folderClicked } =
-		useContext(StatesManagerCtx);
+	const {
+		folderBtnClicked,
+		uploadModal,
+		filterModal,
+		folderModal,
+		setFolderModal,
+		addFolderModal,
+		folders,
+		folderClicked,
+	} = useContext(StatesManagerCtx);
+	const mainTodoListRef = useRef();
 
-	const tailwindGSAP = "opacity-100";
-	// useEffect(() => {
-	// 	const ctx = gsap.context(() => {
-	// 		if (!folderModal) {
-	// 			gsap.timeline().to(".folder-icon", {
-	// 				scrollTrigger: {
-	// 					scrub: true,
-	// 					// markers: true,
-	// 					trigger: ".main-content-section",
-	// 					start: "top 60%",
-	// 					end: "top 60%",
-	// 				},
-	// 				opacity: 1,
-	// 			});
-	// 		}
-	// 	});
+	const tailwindGSAP = "opacity-0";
+	useEffect(() => {
+		const ctx = gsap.context(() => {
+			if (!folderModal) {
+				gsap.timeline().to(".folder-icon", {
+					scrollTrigger: {
+						scrub: true,
+						// markers: true,
+						trigger: ".main-content-section",
+						start: "top 60%",
+						end: "top 60%",
+					},
+					opacity: 1,
+				});
+			}
+		});
 
-	// 	return () => ctx.revert();
-	// });
+		return () => ctx.revert();
+	});
 
 	return (
 		<>
@@ -67,17 +76,24 @@ export default function Home() {
 			<main className="main-content-section relative flex flex-col justify-center items-center gap-16 my-32 mx-auto w-[90%] sm:w-[70%] 2xl:w-[1200px]">
 				<FilterBar />
 				{/* {<MainTodoList />} */}
-				{folders.length > 0 ? (
-					folders.map((folder, i) => {
-						if (folder.folderName === folderClicked) {
-							return <MainTodoList key={folder.id} folder={folder} />;
-						}
-					})
-				) : (
-					<>
-						<div>Waiting on folder data...</div>
-					</>
-				)}
+				<div ref={mainTodoListRef} className="w-full h-fit flex justify-center items-center">
+					{folders.length > 0 && folderBtnClicked && mainTodoListRef.current?.childNodes.length > 0 ? (
+						folders.map((folder, i) => {
+							if (folder.folderName === folderClicked) {
+								return <MainTodoList key={folder.id} folder={folder} />;
+							}
+						})
+					) : (
+						<>
+							<h1
+								onClick={() => setFolderModal(true)}
+								className="text-xl text-white btn font-semibold base-bg px-4 py-1 rounded-md"
+							>
+								{folders.length > 0 ? "Click A Folder" : "Add A Folder"}
+							</h1>
+						</>
+					)}
+				</div>
 			</main>
 		</>
 	);

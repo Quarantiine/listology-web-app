@@ -6,6 +6,7 @@ const FolderModal = () => {
 	// TODO: Make it required for user to input all fields before submitting
 
 	const {
+		setDisable,
 		description,
 		setDescription,
 		todoTitle,
@@ -21,11 +22,12 @@ const FolderModal = () => {
 		deleteFolders,
 	} = useContext(StatesManagerCtx);
 
+	const [checkInfo, setCheckInfo] = useState(false);
+
 	useEffect(() => {
 		const closeAddFolderModal = (e) => {
 			if (!e.target.closest(".add-folder-modal")) {
 				setAddFolderModal(false);
-				setFolderModal(true);
 			}
 		};
 
@@ -33,20 +35,38 @@ const FolderModal = () => {
 		return () => document.removeEventListener("mousedown", closeAddFolderModal);
 	});
 
+	useEffect(() => {
+		if (folderName.length > 2) {
+			setCheckInfo(true);
+		} else {
+			setCheckInfo(false);
+		}
+	}, [setCheckInfo, folderName]);
+
 	const handleCancelBtn = () => {
 		setFolderName(``);
 		setTodoTitle(``);
 		setDescription(``);
 		setAddFolderModal(false);
+		setDisable(false);
 	};
 
 	const handleAddingFolder = () => {
-		setAddFolderModal(false);
-		addFolders(folderName, todoTitle, description);
-		setFolderClicked(folderName);
+		if (checkInfo) {
+			setAddFolderModal(false);
+			addFolders(
+				folderName,
+				todoTitle.length > 0 ? todoTitle : "Untitled Todo List",
+				description.length > 0 ? description : "Add a description"
+			);
+			setFolderClicked(folderName);
+			setTimeout(() => {
+				setFolderName(``);
+				setTodoTitle(``);
+				setDescription(``);
+			}, 1000);
+		}
 	};
-
-	useEffect(() => console.log(folders));
 
 	return (
 		<>
@@ -80,12 +100,12 @@ const FolderModal = () => {
 										onChange={(e) => {
 											setFolderName(e.target.value);
 										}}
-										placeholder="Folder Title"
+										placeholder="Folder Name (Required)"
 									/>
 								</div>
 								<div className={`flex flex-col gap-1 justify-center items-start`}>
 									<label className="text-lg font-semibold" htmlFor="folder-title">
-										Todo Title
+										Todo List Title
 									</label>
 									<input
 										className="bg-gray-200 border outline-none px-4 py-1 rounded-md w-full lg:w-96"
@@ -93,24 +113,36 @@ const FolderModal = () => {
 										name="text"
 										value={todoTitle}
 										onChange={(e) => setTodoTitle(e.target.value)}
-										placeholder="Todo Title"
+										placeholder="Todo List Title (Optional)"
 									/>
 								</div>
 								<div className={`flex flex-col gap-1 justify-center items-start`}>
 									<label className="text-lg font-semibold" htmlFor="folder-title">
 										Description
 									</label>
-									<input
-										className="bg-gray-200 border outline-none px-4 py-1 rounded-md w-full lg:w-96"
+									<textarea
+										className="bg-gray-200 border outline-none px-4 py-1 rounded-md w-full lg:w-96 max-h-32 min-h-[50px]"
 										type="text"
 										name="text"
 										value={description}
 										onChange={(e) => setDescription(e.target.value)}
-										placeholder="Description"
+										placeholder="Description (Optional)"
 									/>
 								</div>
 							</div>
 							<div className="flex flex-col sm:flex-row justify-center items-center w-[90%] h-fit gap-5">
+								<input
+									onClick={(e) => {
+										e.preventDefault();
+										handleAddingFolder();
+									}}
+									className={`px-5 py-1 rounded-md w-full ${
+										checkInfo ? "base-bg text-white btn" : "bg-gray-400 text-[#ccc]"
+									}`}
+									disabled={checkInfo ? false : true}
+									type="submit"
+									value={"Add Folder"}
+								/>
 								<input
 									onClick={(e) => {
 										e.preventDefault();
@@ -119,15 +151,6 @@ const FolderModal = () => {
 									className="btn px-5 py-1 rounded-md border-2 border-[#] w-full"
 									type="submit"
 									value={"Cancel"}
-								/>
-								<input
-									onClick={(e) => {
-										e.preventDefault();
-										handleAddingFolder();
-									}}
-									className="btn px-5 py-1 rounded-md base-bg text-white w-full"
-									type="submit"
-									value={"Add Folder"}
 								/>
 							</div>
 						</form>

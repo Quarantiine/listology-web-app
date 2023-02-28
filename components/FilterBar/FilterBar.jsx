@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { StatesManagerCtx } from "../Layout";
 
 const FilterBar = () => {
@@ -13,6 +13,7 @@ const FilterBar = () => {
 		setAllChecked,
 		addTodos,
 		folderClicked,
+		folders,
 	} = useContext(StatesManagerCtx);
 
 	const { addTodo, dropdown, completed, activeAssignment, label, heart, grid, list, deselectAll, selectedAll } =
@@ -29,13 +30,15 @@ const FilterBar = () => {
 				} flex flex-col justify-center items-center`}
 			>
 				<div className="w-full h-fit p-1 flex justify-around items-center gap-5 px-3">
-					<button
-						onClick={() => {
-							addTodos(folderClicked);
-						}}
-					>
-						{addTodo}
-					</button>
+					{folders.length > 0 && (
+						<button
+							onClick={() => {
+								addTodos(folderClicked);
+							}}
+						>
+							{addTodo}
+						</button>
+					)}
 					<div className="filter-scroll-bar flex justify-start items-center pb-2 lg:pb-0 overflow-x-scroll overflow-y-hidden gap-5">
 						<button
 							onClick={(e) => {
@@ -236,7 +239,7 @@ const FilterIcons = ({ bodyBgColor, layoutView }) => {
 		<svg width="17" height="23" viewBox="0 0 24 23" fill="none" xmlns="http://www.w3.org/2000/svg">
 			<path
 				d="M11.5377 21.849L11.5398 21.8505C11.6791 21.9492 11.8395 21.9996 12.0003 22C12.161 21.9996 12.3214 21.9494 12.4607 21.8508L12.4623 21.8496C16.9228 18.7058 18.8144 16.5801 19.8337 15.2906C22.0202 12.523 23.0281 9.7422 22.9994 6.75626C22.9678 3.5258 20.4833 1 17.5912 1C15.4733 1 13.967 2.23294 13.0318 3.36329L13.0284 3.36748C12.9046 3.51547 12.7493 3.63685 12.5715 3.72102C12.3936 3.80525 12.1986 3.84958 12 3.84958C11.8014 3.84958 11.6064 3.80525 11.4285 3.72102C11.2507 3.63685 11.0954 3.51547 10.9716 3.36748L10.9685 3.36367L10.9685 3.36366C10.0329 2.23384 8.52643 1 6.40876 1C3.5166 1 1.03224 3.52586 1.00059 6.75566L11.5377 21.849ZM11.5377 21.849C7.07731 18.7053 5.18572 16.5796 4.16638 15.2901L11.5377 21.849ZM4.1663 15.29C1.97886 12.522 0.971984 9.7413 1.00059 6.75584L4.1663 15.29Z"
-				fill="white"
+				fill={bodyBgColor ? `#222` : `white`}
 				stroke={bodyBgColor ? `white` : `black`}
 				strokeWidth="2"
 			/>

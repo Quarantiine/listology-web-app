@@ -5,20 +5,27 @@ import data from "@emoji-mart/data";
 import Picker from "@emoji-mart/react";
 
 const MainTodoListIcons = ({ folder }) => {
-	const { bodyBgColor } = useContext(StatesManagerCtx);
+	const { editFolders, bodyBgColor, editTodos, deleteTodos, todoLists } = useContext(StatesManagerCtx);
 	const { dropdown, editing, heart, heartFilled, trash, undo, del } = TodoListIcons({ bodyBgColor });
-	const { editTodos, deleteTodos, todoLists } = FirebaseAPI();
-	const [titleSectionEdit, setTitleSectionEdit] = useState(false);
 	const [showTodoTitle, setShowTodoTitle] = useState(false);
-	const [folderTitleChanged, setFolderTitleChanged] = useState(`UNTITLED FOLDER TITLE`);
-	const [todoTitleChanged, setTodoTitleChanged] = useState(`Untitled Title`);
-	const [descriptionChanged, setDescriptionChanged] = useState(`Write a description about this todo list`);
 	const [emoji, setEmoji] = useState(``);
 	const [emojiPalette, setEmojiPalette] = useState(false);
+	const [editModeActive, setEditModeActive] = useState(false);
+	const [editTodoListTitle, setEditTodoListTitle] = useState(``);
+	const [editDescription, setEditDscription] = useState(``);
+
+	const submitEdit = () => {
+		editFolders(
+			editTodoListTitle.length < 1 ? "Untitled Todo List" : editTodoListTitle,
+			editDescription.length < 1 ? "Add a description" : editDescription,
+			folder.id
+		);
+		setEditModeActive(false);
+	};
 
 	const handleEnter = (key) => {
 		if (key === "Enter") {
-			setTitleSectionEdit(false);
+			setEditModeActive(false);
 		}
 	};
 
@@ -31,7 +38,7 @@ const MainTodoListIcons = ({ folder }) => {
 
 		document.addEventListener("mousedown", closeEmojiPalette);
 		return () => document.removeEventListener("mousedown", closeEmojiPalette);
-	});
+	}, [setEmojiPalette]);
 
 	return (
 		<>
@@ -53,7 +60,7 @@ const MainTodoListIcons = ({ folder }) => {
 							) : (
 								<div
 									onClick={() => setEmojiPalette(!emojiPalette)}
-									className="bg-gray-400 w-10 h-10 rounded-full animate-pulse"
+									className={`${bodyBgColor ? "bg-[#333]" : "bg-gray-400"} w-10 h-10 rounded-full animate-pulse`}
 								/>
 							)}
 
@@ -64,35 +71,19 @@ const MainTodoListIcons = ({ folder }) => {
 							)}
 						</div>
 						<div className={`flex justify-center sm:justify-start items-center gap-3 w-full`}>
-							{titleSectionEdit ? (
-								<input
-									className={`${
-										bodyBgColor ? "bg-[#333]" : "bg-gray-200 border"
-									} w-full h-full px-2 py-1 text-center sm:text-start rounded-md`}
-									type="text"
-									name="text"
-									value={folder.folderName}
-									onChange={(e) => {
-										// setFolderTitleChanged(e.target.value)
-									}}
-								/>
-							) : (
-								<h3 className="text-center sm:text-start">{`FOLDER: ${folder.folderName.toUpperCase()}`}</h3>
-							)}
+							<h3 className="text-center sm:text-start font-semibold">{`FOLDER: ${folder.folderName.toUpperCase()}`}</h3>
 						</div>
 						<div className="flex flex-col sm:flex-row justify-center sm:justify-between items-center gap-5 w-full">
 							<div className={`flex justify-center sm:justify-start items-center gap-3 w-full`}>
-								{titleSectionEdit ? (
+								{editModeActive ? (
 									<input
 										className={`${
 											bodyBgColor ? "bg-[#333]" : "bg-gray-200 border"
 										} w-full h-full px-2 py-1 text-center sm:text-start rounded-md`}
 										type="text"
 										name="text"
-										value={folder.todoTitle}
-										onChange={(e) => {
-											// setTodoTitleChanged(e.target.value)
-										}}
+										value={editTodoListTitle}
+										onChange={(e) => setEditTodoListTitle(e.target.value)}
 									/>
 								) : (
 									<div className="flex flex-col justify-ceter items-center sm:items-start">
@@ -121,7 +112,7 @@ const MainTodoListIcons = ({ folder }) => {
 								) : (
 									<div
 										onClick={() => setEmojiPalette(!emojiPalette)}
-										className="bg-gray-400 w-10 h-10 rounded-full animate-pulse"
+										className={`${bodyBgColor ? "bg-[#333]" : "bg-gray-400"} w-10 h-10 rounded-full animate-pulse`}
 									/>
 								)}
 
@@ -134,17 +125,15 @@ const MainTodoListIcons = ({ folder }) => {
 						</div>
 						<div className={`flex justify-center sm:justify-start items-center gap-3 w-full`}>
 							{/* TODO: make this apart of the of the settings to give user an option to: diable todo list description */}
-							{titleSectionEdit ? (
+							{editModeActive ? (
 								<textarea
 									className={`${
 										bodyBgColor ? "bg-[#333]" : "bg-gray-200 border"
 									} w-full h-full px-2 py-1 text-center sm:text-start rounded-md`}
 									type="text"
 									name="text"
-									value={folder.description}
-									onChange={(e) => {
-										// setDescriptionChanged(e.target.value)
-									}}
+									value={editDescription}
+									onChange={(e) => setEditDscription(e.target.value)}
 								/>
 							) : (
 								<p className={`text-sm text-center sm:text-start`}>{folder.description}</p>
@@ -152,9 +141,7 @@ const MainTodoListIcons = ({ folder }) => {
 						</div>
 					</div>
 					<svg
-						onClick={() => {
-							// setTitleSectionEdit(!titleSectionEdit)
-						}}
+						onClick={() => setEditModeActive(!editModeActive)}
 						className="btn absolute sm:relative top-0 right-0"
 						width="15"
 						height="15"
@@ -171,6 +158,14 @@ const MainTodoListIcons = ({ folder }) => {
 							fill={bodyBgColor ? `white` : `black`}
 						/>
 					</svg>
+					{editModeActive && (
+						<button
+							onClick={submitEdit}
+							className="btn base-bg px-2 rounded-md absolute sm:relative top-5 sm:top-0 right-0 text-sm text-white"
+						>
+							Submit
+						</button>
+					)}
 				</div>
 				<div className="flex flex-col justify-center items-start w-full h-fit gap-6 text-lg">
 					{todoLists?.length > 0 ? (

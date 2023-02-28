@@ -49,7 +49,7 @@ const FirebaseAPI = () => {
 					id: doc.id,
 				});
 			});
-			console.log(todoList);
+			// console.log(todoList);
 		});
 	}, []);
 
@@ -63,7 +63,7 @@ const FirebaseAPI = () => {
 					id: doc.id,
 				});
 			});
-			console.log(folderList);
+			// console.log(folderList);
 		});
 	}, []);
 
@@ -107,6 +107,15 @@ const FirebaseAPI = () => {
 			});
 		};
 
+		editFolders = async (todoTitle: string, description: string, id: string) => {
+			const docRef = doc(colRefFolders, id);
+			await updateDoc(docRef, {
+				todoTitle: todoTitle,
+				description: description,
+				lastedEdited: serverTimestamp(),
+			});
+		};
+
 		deleteFolders = async (id: string) => {
 			const docRef = doc(colRefFolders, id);
 			await deleteDoc(docRef);
@@ -114,11 +123,13 @@ const FirebaseAPI = () => {
 	}
 	const FS = new FolderSystem();
 	const addFolders = FS.addFolders;
+	const editFolders = FS.editFolders;
 	const deleteFolders = FS.deleteFolders;
 
 	return {
 		setValue,
 		addFolders,
+		editFolders,
 		deleteFolders,
 		folders,
 		todoLists,

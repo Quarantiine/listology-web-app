@@ -3,8 +3,19 @@ import { StatesManagerCtx } from "../Layout";
 import Image from "next/image";
 
 const FolderSystem = ({ folders }) => {
-	const { addTodos, setValue, bodyBgColor, setFolderModal, setAddFolderModal, folderClicked, setFolderClicked } =
-		useContext(StatesManagerCtx);
+	const {
+		disable,
+		setDisable,
+		setFolderBtnClicked,
+		addTodos,
+		setValue,
+		bodyBgColor,
+		setFolderModal,
+		setAddFolderModal,
+		folderClicked,
+		setFolderClicked,
+		deleteFolders,
+	} = useContext(StatesManagerCtx);
 	const { disabledCheckbox, filledCheckbox } = FolderIcons({ bodyBgColor });
 
 	useEffect(() => {
@@ -33,7 +44,7 @@ const FolderSystem = ({ folders }) => {
 							: "bg-white text-black shadow-[10px_0px_20px_0px_rgba(0,0,0,0.1)]"
 					}`}
 				>
-					<div className="flex justify-center items-center gap-4 relative">
+					<div className="flex justify-center items-center gap-4 relative w-full">
 						<h1 className="text-5xl font-base">Folders</h1>
 						<div
 							onClick={() => setFolderModal(false)}
@@ -42,7 +53,7 @@ const FolderSystem = ({ folders }) => {
 							<Image src="/icons/simple-icons/folder_open.svg" alt="folder icon" width={25} height={25} />
 						</div>
 					</div>
-					<div className="folder-modal-scroll flex flex-col justify-start items-start gap-3 overflow-y-scroll overflow-x-hidden w-full px-5">
+					<div className="folder-modal-scroll flex flex-col justify-center items-center gap-3 overflow-y-scroll overflow-x-hidden w-full px-5">
 						<div
 							className={`btn w-full h-fit py-1 px-2 rounded-md text-center text-lg font-medium mb-10 ${
 								bodyBgColor ? "bg-[#444] hover:bg-[#555]" : "bg-[#eee] hover:bg-[#ccc]"
@@ -56,9 +67,14 @@ const FolderSystem = ({ folders }) => {
 								return (
 									<FolderTodoList
 										key={folder.id}
+										disable={disable}
+										setDisable={setDisable}
+										setFolderBtnClicked={setFolderBtnClicked}
+										deleteFolders={deleteFolders}
 										addTodos={addTodos}
 										setValue={setValue}
-										setAddFolderModal={setAddFolderModal}
+										setFolderModal={setFolderModal}
+										folderClicked={folderClicked}
 										setFolderClicked={setFolderClicked}
 										folder={folder}
 										bodyBgColor={bodyBgColor}
@@ -80,50 +96,58 @@ const FolderSystem = ({ folders }) => {
 };
 
 const FolderTodoList = ({
+	disable,
+	setDisable,
+	setFolderBtnClicked,
+	deleteFolders,
 	addTodos,
 	setValue,
-	setAddFolderModal,
+	setFolderModal,
 	folder,
 	bodyBgColor,
 	filledCheckbox,
 	disabledCheckbox,
+	folderClicked,
 	setFolderClicked,
 }) => {
-	const [check, setCheck] = useState(false);
-
 	const handleChangingFolders = () => {
 		setFolderClicked(folder.folderName);
-		setAddFolderModal(false);
 		setValue(folder.folderName);
-		// addTodos();
+		setFolderModal(false);
+		setFolderBtnClicked(true);
+		setDisable(false);
 	};
 
 	return (
 		<React.Fragment>
 			<div
-				onClick={() => {
-					null;
-				}}
-				className="flex flex-col justify-start items-start gap-2 w-full"
+				className={`flex justify-between items-center border-2 gap-5 w-32 px-2 sm:w-52 sm:px-3 py-2 rounded-md text-lg ${
+					bodyBgColor ? "bg-[#444]" : "bg-[#eee]"
+				} ${folderClicked == folder.folderName && !disable ? "border-[#0E51FF]" : ""}`}
 			>
 				<div
-					onClick={handleChangingFolders}
-					className={`flex btn justify-center items-center gap-5 cursor-pointer ${
-						bodyBgColor ? "bg-[#444]" : "bg-[#eee]"
-					} px-6 py-2 rounded-md text-lg`}
+					onClick={() => {
+						handleChangingFolders();
+					}}
+					className={`flex justify-center items-center w-full btn text-center`}
 				>
-					<h1 className="text-xl font-base">{folder.folderName}</h1>
-					<div className="flex justify-center items-center gap-2">
-						<button onClick={() => setCheck(!check)}>{check ? filledCheckbox : disabledCheckbox}</button>
-						<Image
-							// onClick={deleteFolder(.id)}
-							className="btn"
-							src={"/icons/simple-icons/Delete.svg"}
-							alt=""
-							width={20}
-							height={20}
-						/>
-					</div>
+					<h1 title={folder.folderName} className="text-xl font-base line-clamp-1">
+						{folder.folderName}
+					</h1>
+				</div>
+				<div className="flex justify-center items-center gap-2 max-w-[20px] max-h-[20px]">
+					<Image
+						onClick={() => {
+							deleteFolders(folder.id);
+							setFolderBtnClicked(false);
+							setDisable(true);
+						}}
+						className="btn"
+						src={"/icons/simple-icons/Delete.svg"}
+						alt=""
+						width={20}
+						height={20}
+					/>
 				</div>
 			</div>
 		</React.Fragment>
