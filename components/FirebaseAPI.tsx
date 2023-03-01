@@ -98,20 +98,22 @@ const FirebaseAPI = () => {
 	class FolderSystem {
 		constructor() {}
 
-		addFolders = async (folderName: string, todoTitle: string, description: string) => {
+		addFolders = async (folderName: string, todoTitle: string, description: string, emoji: any) => {
 			await addDoc(colRefFolders, {
 				folderName: folderName,
 				todoTitle: todoTitle,
 				description: description,
+				emoji: emoji.native ? emoji.native : "Add Emoji",
 				createdTime: serverTimestamp(),
 			});
 		};
 
-		editFolders = async (todoTitle: string, description: string, id: string) => {
+		editFolders = async (todoTitle: string, description: string, id: string, emoji: any) => {
 			const docRef = doc(colRefFolders, id);
 			await updateDoc(docRef, {
 				todoTitle: todoTitle,
 				description: description,
+				emoji: emoji.native ? emoji.native : "Add Emoji",
 				lastedEdited: serverTimestamp(),
 			});
 		};

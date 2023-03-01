@@ -1,6 +1,5 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { StatesManagerCtx } from "../Layout";
-import FirebaseAPI from "../FirebaseAPI";
 import data from "@emoji-mart/data";
 import Picker from "@emoji-mart/react";
 
@@ -19,7 +18,8 @@ const MainTodoListIcons = ({ folder }) => {
 		editFolders(
 			editTodoListTitle.length < 1 ? "Untitled Todo List" : editTodoListTitle,
 			editDescription.length < 1 ? "Add a description" : editDescription,
-			folder.id
+			folder.id,
+			emoji
 		);
 		setEditModeActive(false);
 	};
@@ -53,20 +53,37 @@ const MainTodoListIcons = ({ folder }) => {
 						onKeyDown={(e) => handleEnter(e.key)}
 						className="w-full flex flex-col justify-center items-center sm:items-start gap-3"
 					>
-						<div className="flex sm:hidden justify-center items-center gap-2 cursor-pointer relative z-10">
-							{emoji ? (
-								<p onClick={() => setEmojiPalette(!emojiPalette)} className="text-5xl">
-									{emoji.native}
-								</p>
+						<div className={`flex sm:hidden cursor-default justify-center items-center gap-2 relative z-10`}>
+							{folder.emoji ? (
+								editModeActive ? (
+									<>
+										{emoji.native ? (
+											<p
+												onClick={() => setEmojiPalette(!emojiPalette)}
+												className={`text-4xl sm:text-6xl ${editModeActive ? "cursor-pointer" : "cursor-default"}`}
+											>
+												{emoji.native}
+											</p>
+										) : (
+											<div
+												onClick={() => setEmojiPalette(!emojiPalette)}
+												className={`${
+													bodyBgColor ? "bg-[#333]" : "bg-gray-400"
+												} btn w-10 h-10 rounded-full animate-pulse`}
+											/>
+										)}
+									</>
+								) : (
+									<p className={`${folder.emoji === "Add Emoji" ? "text-xl" : "text-4xl sm:text-6xl"}`}>
+										{folder.emoji}
+									</p>
+								)
 							) : (
-								<div
-									onClick={() => setEmojiPalette(!emojiPalette)}
-									className={`${bodyBgColor ? "bg-[#333]" : "bg-gray-400"} w-10 h-10 rounded-full animate-pulse`}
-								/>
+								<div className={`${bodyBgColor ? "bg-[#333]" : "bg-gray-400"} w-10 h-10 rounded-full animate-pulse`} />
 							)}
 
-							{emojiPalette && (
-								<div className="emoji-palette w-fit h-full absolute top-12 -left-36">
+							{emojiPalette && editModeActive && (
+								<div className="emoji-palette w-fit h-full absolute top-16 -left-36">
 									<Picker data={data} onEmojiSelect={setEmoji}></Picker>
 								</div>
 							)}
@@ -105,20 +122,37 @@ const MainTodoListIcons = ({ folder }) => {
 									</div>
 								)}
 							</div>
-							<div className="hidden sm:flex justify-center items-center gap-2 cursor-pointer relative z-10">
-								{emoji ? (
-									<p onClick={() => setEmojiPalette(!emojiPalette)} className="text-5xl">
-										{emoji.native}
-									</p>
+							<div className={`hidden sm:flex cursor-default justify-center items-center gap-2 relative z-10`}>
+								{folder.emoji ? (
+									editModeActive ? (
+										<>
+											{emoji.native ? (
+												<p
+													onClick={() => setEmojiPalette(!emojiPalette)}
+													className={`text-6xl ${editModeActive ? "cursor-pointer" : "cursor-default"}`}
+												>
+													{emoji.native}
+												</p>
+											) : (
+												<div
+													onClick={() => setEmojiPalette(!emojiPalette)}
+													className={`${
+														bodyBgColor ? "bg-[#333]" : "bg-gray-400"
+													} w-10 h-10 rounded-full animate-pulse btn`}
+												/>
+											)}
+										</>
+									) : (
+										<p className={`${folder.emoji === "Add Emoji" ? "text-xl" : "text-6xl"}`}>{folder.emoji}</p>
+									)
 								) : (
 									<div
-										onClick={() => setEmojiPalette(!emojiPalette)}
 										className={`${bodyBgColor ? "bg-[#333]" : "bg-gray-400"} w-10 h-10 rounded-full animate-pulse`}
 									/>
 								)}
 
-								{emojiPalette && (
-									<div className="emoji-palette w-fit h-full absolute top-12 right-0">
+								{emojiPalette && editModeActive && (
+									<div className="emoji-palette w-fit h-full absolute top-16 -left-36">
 										<Picker data={data} onEmojiSelect={setEmoji}></Picker>
 									</div>
 								)}
@@ -142,7 +176,10 @@ const MainTodoListIcons = ({ folder }) => {
 						</div>
 					</div>
 					<svg
-						onClick={() => setEditModeActive(!editModeActive)}
+						onClick={() => {
+							setEditModeActive(!editModeActive);
+							setEmojiPalette(!emojiPalette);
+						}}
 						className="btn absolute sm:relative top-0 right-0"
 						width="15"
 						height="15"

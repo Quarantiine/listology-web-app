@@ -1,6 +1,8 @@
 import React, { useContext, useEffect, useState } from "react";
 import { StatesManagerCtx } from "../Layout";
 import Image from "next/image";
+import data from "@emoji-mart/data";
+import Picker from "@emoji-mart/react";
 
 const FolderModal = () => {
 	// TODO: Make it required for user to input all fields before submitting
@@ -23,6 +25,19 @@ const FolderModal = () => {
 	} = useContext(StatesManagerCtx);
 
 	const [checkInfo, setCheckInfo] = useState(false);
+	const [emoji, setEmoji] = useState(``);
+	const [emojiPalette, setEmojiPalette] = useState(false);
+
+	useEffect(() => {
+		const closeEmojiPalette = (e) => {
+			if (!e.target.closest(".emoji-palette")) {
+				setEmojiPalette(false);
+			}
+		};
+
+		document.addEventListener("mousedown", closeEmojiPalette);
+		return () => document.removeEventListener("mousedown", closeEmojiPalette);
+	}, [setEmojiPalette]);
 
 	useEffect(() => {
 		const closeAddFolderModal = (e) => {
@@ -36,12 +51,23 @@ const FolderModal = () => {
 	});
 
 	useEffect(() => {
-		if (folderName.length > 2) {
-			setCheckInfo(true);
-		} else {
+		if (
+			folders
+				.map((name) => {
+					return name.folderName.includes(folderName);
+				})
+				.includes(true) &&
+			folderName.length > 2
+		) {
 			setCheckInfo(false);
+		} else {
+			if (folderName.length > 0) {
+				setCheckInfo(true);
+			} else {
+				setCheckInfo(false);
+			}
 		}
-	}, [setCheckInfo, folderName]);
+	}, [folderName, folders]);
 
 	const handleCancelBtn = () => {
 		setFolderName(``);
@@ -57,7 +83,8 @@ const FolderModal = () => {
 			addFolders(
 				folderName,
 				todoTitle.length > 0 ? todoTitle : "Untitled Todo List",
-				description.length > 0 ? description : "Add a description"
+				description.length > 0 ? description : "Add a description",
+				emoji
 			);
 			setFolderClicked(folderName);
 			setTimeout(() => {
@@ -87,6 +114,24 @@ const FolderModal = () => {
 					</>
 					<>
 						<form className="w-full h-fit flex flex-col justify-center items-center gap-8">
+							<div className="flex justify-center items-center gap-2 cursor-pointer relative z-10">
+								{emoji ? (
+									<p onClick={() => setEmojiPalette(!emojiPalette)} className="text-6xl">
+										{emoji.native}
+									</p>
+								) : (
+									<div
+										onClick={() => setEmojiPalette(!emojiPalette)}
+										className={`bg-gray-400 w-10 h-10 rounded-full animate-pulse`}
+									/>
+								)}
+
+								{emojiPalette && (
+									<div className="emoji-palette w-fit h-full absolute top-12 -left-36">
+										<Picker data={data} onEmojiSelect={setEmoji}></Picker>
+									</div>
+								)}
+							</div>
 							<div className="w-full h-fit flex flex-col justify-center items-center gap-5">
 								<div className={`flex flex-col gap-1 justify-center items-start`}>
 									<label className="text-lg font-semibold" htmlFor="folder-title">
