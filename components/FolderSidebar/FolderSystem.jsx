@@ -110,6 +110,8 @@ const FolderTodoList = ({
 	folderClicked,
 	setFolderClicked,
 }) => {
+	const [checked, setChecked] = useState(false);
+
 	const handleChangingFolders = () => {
 		setFolderClicked(folder.folderName);
 		setValue(folder.folderName);
@@ -118,10 +120,43 @@ const FolderTodoList = ({
 		setDisable(false);
 	};
 
+	const handleTimeSystem = () => {
+		// TODO: Add in settings if they want to turn on: display time stamps
+		const timeSystem = () => {
+			const date = new Date(folder?.createdTime?.seconds * 1000);
+			const hour = date.getHours();
+			const min = date.getMinutes();
+			// const sec = date.getSeconds();
+			const time = `${hour > 12 ? hour - 12 : hour}:${
+				hour > 11 ? (min < 10 ? `0${min} pm` : `${min} pm`) : min < 10 ? `0${min} am` : `${min} am`
+			}`;
+			// console.log(time);
+
+			return time;
+		};
+
+		const dateSystem = () => {
+			const currentDate = new Date(folder?.createdTime?.seconds * 1000);
+			const date = new Date(currentDate);
+			const day = date.getDate();
+			const month = date.getMonth();
+			const year = date.getFullYear();
+			const fullDate = `${month + 1}/${day}/${year}`;
+
+			return fullDate;
+		};
+		dateSystem();
+
+		// console.log(`${timeSystem()} - ${dateSystem()}`);
+		return `${timeSystem() || "time"} - ${dateSystem() || "date"}`;
+	};
+
+	// TODO: Finish the check mark folder system
+
 	return (
-		<React.Fragment>
+		<div className={"flex flex-col justify-start items-start gap-1"}>
 			<div
-				className={`flex justify-between items-center border-2 gap-5 w-32 px-2 sm:w-52 sm:px-3 py-2 rounded-md text-lg ${
+				className={`flex justify-center items-center border-2 gap-3 w-44 px-5 sm:w-52 sm:px-3 py-2 rounded-md text-lg ${
 					bodyBgColor ? "bg-[#444]" : "bg-[#eee]"
 				} ${folderClicked == folder.folderName && !disable ? "border-[#0E51FF]" : ""}`}
 			>
@@ -129,13 +164,22 @@ const FolderTodoList = ({
 					onClick={() => {
 						handleChangingFolders();
 					}}
-					className={`flex justify-center items-center w-full btn text-center`}
+					className={`flex justify-start items-center w-full btn text-center`}
 				>
 					<h1 title={folder.folderName} className="text-xl font-base line-clamp-1">
 						{folder.folderName}
 					</h1>
 				</div>
-				<div className="flex justify-center items-center gap-2 max-w-[20px] max-h-[20px]">
+				<div className="flex justify-center items-center gap-2 w-fit h-fit">
+					{!checked ? (
+						<p onClick={() => setChecked(!checked)} className="">
+							{disabledCheckbox}
+						</p>
+					) : (
+						<p onClick={() => setChecked(!checked)} className="">
+							{filledCheckbox}
+						</p>
+					)}
 					<Image
 						onClick={() => {
 							deleteFolders(folder.id);
@@ -150,7 +194,8 @@ const FolderTodoList = ({
 					/>
 				</div>
 			</div>
-		</React.Fragment>
+			<p className={`text-sm ${bodyBgColor ? "text-[#333]" : "text-gray-400"}`}>{handleTimeSystem()}</p>
+		</div>
 	);
 };
 
@@ -176,7 +221,7 @@ const FolderIcons = ({ bodyBgColor }) => {
 		</svg>
 	);
 	const filledCheckbox = (
-		<svg width="20" height="20" viewBox="0 0 8 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+		<svg className="btn" width="20" height="20" viewBox="0 0 8 8" fill="none" xmlns="http://www.w3.org/2000/svg">
 			<rect width="8" height="8" rx="2" fill="#04DC00" />
 			<path
 				d="M5.81825 2.18182L3.27279 5.09091L2.18188 4.00001"

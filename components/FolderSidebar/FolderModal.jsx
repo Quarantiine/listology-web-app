@@ -27,6 +27,7 @@ const FolderModal = () => {
 	const [checkInfo, setCheckInfo] = useState(false);
 	const [emoji, setEmoji] = useState(``);
 	const [emojiPalette, setEmojiPalette] = useState(false);
+	const [showInfo, setShowInfo] = useState(``);
 
 	useEffect(() => {
 		const closeEmojiPalette = (e) => {
@@ -56,12 +57,11 @@ const FolderModal = () => {
 				.map((name) => {
 					return name.folderName.includes(folderName);
 				})
-				.includes(true) &&
-			folderName.length > 2
+				.includes(true)
 		) {
 			setCheckInfo(false);
 		} else {
-			if (folderName.length > 0) {
+			if (folderName.length > 2) {
 				setCheckInfo(true);
 			} else {
 				setCheckInfo(false);
@@ -133,9 +133,27 @@ const FolderModal = () => {
 								)}
 							</div>
 							<div className="w-full h-fit flex flex-col justify-center items-center gap-5">
-								<div className={`flex flex-col gap-1 justify-center items-start`}>
-									<label className="text-lg font-semibold" htmlFor="folder-title">
+								<div className={`relative flex flex-col gap-1 justify-center items-start`}>
+									{showInfo === "folder name" && (
+										<ul className="absolute list-disc w-full h-20 bg-white text-black px-2 py-1 flex flex-col justify-center items-start shadow-lg rounded-md top-7 left-0">
+											<li className="relative left-5">{`Greater than 2 letters`}</li>
+											<li className="relative left-5">{`Cant be the same name as other folders`}</li>
+										</ul>
+									)}
+									<label
+										className="text-lg font-semibold flex justify-between items-center gap-1 w-full"
+										htmlFor="folder-title"
+									>
 										Folder Name
+										<Image
+											id="folder name"
+											onMouseOver={(e) => setShowInfo(e.target.id)}
+											onMouseLeave={() => setShowInfo(``)}
+											src="/icons/simple-icons/info.svg"
+											alt=""
+											width={20}
+											height={20}
+										/>
 									</label>
 									<input
 										className="bg-gray-200 border outline-none px-4 py-1 rounded-md w-full lg:w-96"
@@ -149,7 +167,10 @@ const FolderModal = () => {
 									/>
 								</div>
 								<div className={`flex flex-col gap-1 justify-center items-start`}>
-									<label className="text-lg font-semibold" htmlFor="folder-title">
+									<label
+										className="text-lg font-semibold flex justify-between items-center gap-1 w-full"
+										htmlFor="folder-title"
+									>
 										Todo List Title
 									</label>
 									<input
@@ -162,7 +183,10 @@ const FolderModal = () => {
 									/>
 								</div>
 								<div className={`flex flex-col gap-1 justify-center items-start`}>
-									<label className="text-lg font-semibold" htmlFor="folder-title">
+									<label
+										className="text-lg font-semibold flex justify-between items-center gap-1 w-full"
+										htmlFor="folder-title"
+									>
 										Description
 									</label>
 									<textarea

@@ -355,15 +355,16 @@ const TodoLists = ({
 		};
 
 		const dateSystem = () => {
-			const date = new Date();
+			const currentDate = new Date(todoLists?.createdTime?.seconds * 1000);
+			const date = new Date(currentDate);
 			const day = date.getDate();
 			const month = date.getMonth();
 			const year = date.getFullYear();
 			const fullDate = `${month + 1}/${day}/${year}`;
-			// console.log(fullDate);
 
 			return fullDate;
 		};
+		dateSystem();
 
 		// console.log(`${timeSystem()} - ${dateSystem()}`);
 		return `${timeSystem() || "time"} - ${dateSystem() || "date"}`;
