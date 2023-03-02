@@ -1,9 +1,10 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { StatesManagerCtx } from "../Layout";
 import Image from "next/image";
 
 const FolderSystem = ({ folders }) => {
 	const {
+		editCheckmark,
 		disable,
 		setDisable,
 		setFolderBtnClicked,
@@ -67,6 +68,7 @@ const FolderSystem = ({ folders }) => {
 								return (
 									<FolderTodoList
 										key={folder.id}
+										editCheckmark={editCheckmark}
 										disable={disable}
 										setDisable={setDisable}
 										setFolderBtnClicked={setFolderBtnClicked}
@@ -96,6 +98,7 @@ const FolderSystem = ({ folders }) => {
 };
 
 const FolderTodoList = ({
+	editCheckmark,
 	disable,
 	setDisable,
 	setFolderBtnClicked,
@@ -110,7 +113,7 @@ const FolderTodoList = ({
 	folderClicked,
 	setFolderClicked,
 }) => {
-	const [checked, setChecked] = useState(false);
+	const [checkmarks, setCheckmarks] = useState(false);
 
 	const handleChangingFolders = () => {
 		setFolderClicked(folder.folderName);
@@ -151,42 +154,53 @@ const FolderTodoList = ({
 		return `${timeSystem() || "time"} - ${dateSystem() || "date"}`;
 	};
 
-	// TODO: Finish the check mark folder system
+	const handleDelete = () => {
+		deleteFolders(folder.id);
+		setFolderBtnClicked(false);
+		setDisable(true);
+	};
+
+	const handleCheckmark = (bool) => {
+		setCheckmarks(bool);
+		editCheckmark(bool, folder.id);
+	};
 
 	return (
-		<div className={"flex flex-col justify-start items-start gap-1"}>
+		<div className={`flex flex-col justify-start items-start gap-1`}>
 			<div
-				className={`flex justify-center items-center border-2 gap-3 w-44 px-5 sm:w-52 sm:px-3 py-2 rounded-md text-lg ${
+				className={`flex relative justify-center items-center border-2 gap-3 w-44 px-5 sm:w-52 sm:px-3 py-2 rounded-md text-lg ${
 					bodyBgColor ? "bg-[#444]" : "bg-[#eee]"
 				} ${folderClicked == folder.folderName && !disable ? "border-[#0E51FF]" : ""}`}
 			>
+				{folder.checkmark && (
+					<div class="z-10 bg-black cursor-not-allowed rounded-md opacity-70 absolute w-full h-full"></div>
+				)}
 				<div
 					onClick={() => {
 						handleChangingFolders();
 					}}
-					className={`flex justify-start items-center w-full btn text-center`}
+					className={`flex justify-start items-center w-full btn text-start`}
 				>
-					<h1 title={folder.folderName} className="text-xl font-base line-clamp-1">
+					<h1
+						title={folder.folderName}
+						className={`${folder.checkmark ? "line-through" : ""} text-xl font-base line-clamp-1`}
+					>
 						{folder.folderName}
 					</h1>
 				</div>
 				<div className="flex justify-center items-center gap-2 w-fit h-fit">
-					{!checked ? (
-						<p onClick={() => setChecked(!checked)} className="">
+					{!folder.checkmark ? (
+						<p onClick={() => handleCheckmark(true)} className="z-10 select-none">
 							{disabledCheckbox}
 						</p>
 					) : (
-						<p onClick={() => setChecked(!checked)} className="">
+						<p onClick={() => handleCheckmark(false)} className="z-10 select-none">
 							{filledCheckbox}
 						</p>
 					)}
 					<Image
-						onClick={() => {
-							deleteFolders(folder.id);
-							setFolderBtnClicked(false);
-							setDisable(true);
-						}}
-						className="btn"
+						onClick={handleDelete}
+						className="btn z-10 select-none"
 						src={"/icons/simple-icons/Delete.svg"}
 						alt=""
 						width={20}
@@ -194,7 +208,7 @@ const FolderTodoList = ({
 					/>
 				</div>
 			</div>
-			<p className={`text-sm ${bodyBgColor ? "text-[#333]" : "text-gray-400"}`}>{handleTimeSystem()}</p>
+			<p className={`text-sm ${bodyBgColor ? "text-[#444]" : "text-gray-400"}`}>{handleTimeSystem()}</p>
 		</div>
 	);
 };

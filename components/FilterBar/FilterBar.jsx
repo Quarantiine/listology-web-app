@@ -29,7 +29,7 @@ const FilterBar = () => {
 					bodyBgColor ? "bg-[#222] border-[#444]" : "bg-[#e9e9e9] border-[#b8b8b8]"
 				} flex flex-col justify-center items-center`}
 			>
-				<div className="w-full h-fit p-1 flex justify-around items-center gap-5 px-3">
+				<div className="w-full h-fit p-1 flex justify-between items-center gap-5 px-5 sm:px-10">
 					{folders.length > 0 && (
 						<button
 							onClick={() => {

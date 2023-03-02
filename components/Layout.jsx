@@ -38,6 +38,8 @@ const Layout = ({ children }) => {
 	} = FilterStates();
 
 	const {
+		checkmark,
+		setCheckmark,
 		disable,
 		setDisable,
 		folderBtnClicked,
@@ -54,12 +56,24 @@ const Layout = ({ children }) => {
 		setDescription,
 	} = FoldersStates();
 
-	const { addTodos, editTodos, deleteTodos, todoLists, folders, addFolders, editFolders, deleteFolders, setValue } =
-		FirebaseAPI();
+	const {
+		addTodos,
+		editTodos,
+		editCheckmark,
+		deleteTodos,
+		todoLists,
+		folders,
+		addFolders,
+		editFolders,
+		deleteFolders,
+		setValue,
+	} = FirebaseAPI();
 
 	return (
 		<StatesManagerCtx.Provider
 			value={{
+				checkmark,
+				setCheckmark,
 				disable,
 				setDisable,
 				folderBtnClicked,
@@ -74,6 +88,7 @@ const Layout = ({ children }) => {
 				folderClicked,
 				setFolderClicked,
 				addFolders,
+				editCheckmark,
 				editFolders,
 				deleteFolders,
 				folders,
@@ -180,6 +195,7 @@ const FilterStates = () => {
 
 const FoldersStates = () => {
 	const [checked, setChecked] = useState(false);
+	const [checkmark, setCheckmark] = useState(false);
 	const [addFolderModal, setAddFolderModal] = useState(false);
 	const [folderName, setFolderName] = useState(``);
 	const [todoTitle, setTodoTitle] = useState(``);
@@ -188,6 +204,8 @@ const FoldersStates = () => {
 	const [disable, setDisable] = useState(false);
 
 	return {
+		checkmark,
+		setCheckmark,
 		disable,
 		setDisable,
 		checked,

@@ -18,6 +18,7 @@ import { useContext, useEffect, useState } from "react";
 const FirebaseAPI = () => {
 	const [todoLists, setTodoLists] = useState([]);
 	const [folders, setFolders] = useState([]);
+	const [checkmarks, setCheckmarks] = useState([]);
 	const [value, setValue] = useState<string>(``);
 
 	const firebaseConfig = {
@@ -37,6 +38,8 @@ const FirebaseAPI = () => {
 
 	const colRefTodoList = collection(db, `todos/folder/todo-items`);
 	const qTodoList = query(colRefTodoList, orderBy("createdTime"));
+
+	const colRefChecked = collection(db, `todos/folder/checked`);
 
 	useEffect(() => {
 		// Todo List =====
@@ -64,6 +67,20 @@ const FirebaseAPI = () => {
 				});
 			});
 			// console.log(folderList);
+		});
+	}, []);
+
+	useEffect(() => {
+		onSnapshot(colRefChecked, (ss) => {
+			let checks = [];
+			setCheckmarks(checks);
+			ss.docs.map((doc) => {
+				checks.unshift({
+					...doc.data(),
+					id: doc.id,
+				});
+			});
+			// console.log(checks);
 		});
 	}, []);
 
@@ -98,23 +115,38 @@ const FirebaseAPI = () => {
 	class FolderSystem {
 		constructor() {}
 
-		addFolders = async (folderName: string, todoTitle: string, description: string, emoji: any) => {
+		addFolders = async (
+			folderName: string,
+			todoTitle: string,
+			description: string,
+			emoji: any,
+			checkmark: boolean = false
+		) => {
 			await addDoc(colRefFolders, {
 				folderName: folderName,
 				todoTitle: todoTitle,
 				description: description,
 				emoji: emoji.native ? emoji.native : "Add Emoji",
+				checkmark: checkmark,
 				createdTime: serverTimestamp(),
 			});
 		};
 
-		editFolders = async (todoTitle: string, description: string, id: string, emoji: any) => {
+		editFolders = async (todoTitle: string, description: string, id: string, emoji: any, checkmark: boolean) => {
 			const docRef = doc(colRefFolders, id);
 			await updateDoc(docRef, {
 				todoTitle: todoTitle,
 				description: description,
 				emoji: emoji.native ? emoji.native : "Add Emoji",
+				checkmark: checkmark ? checkmark : false,
 				lastedEdited: serverTimestamp(),
+			});
+		};
+
+		editCheckmark = async (checkmark: boolean, id: string) => {
+			const docRef = doc(colRefFolders, id);
+			updateDoc(docRef, {
+				checkmark: checkmark,
 			});
 		};
 
@@ -126,11 +158,13 @@ const FirebaseAPI = () => {
 	const FS = new FolderSystem();
 	const addFolders = FS.addFolders;
 	const editFolders = FS.editFolders;
+	const editCheckmark = FS.editCheckmark;
 	const deleteFolders = FS.deleteFolders;
 
 	return {
 		setValue,
 		addFolders,
+		editCheckmark,
 		editFolders,
 		deleteFolders,
 		folders,

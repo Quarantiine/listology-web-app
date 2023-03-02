@@ -8,6 +8,8 @@ const FolderModal = () => {
 	// TODO: Make it required for user to input all fields before submitting
 
 	const {
+		checkmark,
+		setCheckmark,
 		setDisable,
 		description,
 		setDescription,
@@ -84,7 +86,8 @@ const FolderModal = () => {
 				folderName,
 				todoTitle.length > 0 ? todoTitle : "Untitled Todo List",
 				description.length > 0 ? description : "Add a description",
-				emoji
+				emoji,
+				checkmark
 			);
 			setFolderClicked(folderName);
 			setTimeout(() => {
@@ -127,7 +130,10 @@ const FolderModal = () => {
 								)}
 
 								{emojiPalette && (
-									<div className="emoji-palette w-fit h-full absolute top-12 -left-36">
+									<div
+										onClick={() => setEmojiPalette(!emojiPalette)}
+										className="emoji-palette w-fit h-full absolute top-12 -left-36"
+									>
 										<Picker data={data} onEmojiSelect={setEmoji}></Picker>
 									</div>
 								)}
