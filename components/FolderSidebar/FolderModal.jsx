@@ -5,29 +5,25 @@ import data from "@emoji-mart/data";
 import Picker from "@emoji-mart/react";
 
 const FolderModal = () => {
-	// TODO: Make it required for user to input all fields before submitting
-
 	const {
+		emoji,
+		setEmoji,
 		checkmark,
-		setCheckmark,
 		setDisable,
-		description,
-		setDescription,
-		todoTitle,
-		setTodoTitle,
+		editDescription,
+		setEditDscription,
+		editTodoListTitle,
+		setEditTodoListTitle,
 		folderName,
 		setFolderName,
-		folderClicked,
 		setFolderClicked,
 		setAddFolderModal,
 		setFolderModal,
 		folders,
 		addFolders,
-		deleteFolders,
 	} = useContext(StatesManagerCtx);
 
 	const [checkInfo, setCheckInfo] = useState(false);
-	const [emoji, setEmoji] = useState(``);
 	const [emojiPalette, setEmojiPalette] = useState(false);
 	const [showInfo, setShowInfo] = useState(``);
 
@@ -73,8 +69,8 @@ const FolderModal = () => {
 
 	const handleCancelBtn = () => {
 		setFolderName(``);
-		setTodoTitle(``);
-		setDescription(``);
+		setEditTodoListTitle(``);
+		setEditDscription(``);
 		setAddFolderModal(false);
 		setDisable(false);
 	};
@@ -82,18 +78,12 @@ const FolderModal = () => {
 	const handleAddingFolder = () => {
 		if (checkInfo) {
 			setAddFolderModal(false);
-			addFolders(
-				folderName,
-				todoTitle.length > 0 ? todoTitle : "Untitled Todo List",
-				description.length > 0 ? description : "Add a description",
-				emoji,
-				checkmark
-			);
+			addFolders(folderName, "Untitled Todo List", "Add a description", emoji, checkmark);
 			setFolderClicked(folderName);
 			setTimeout(() => {
 				setFolderName(``);
-				setTodoTitle(``);
-				setDescription(``);
+				setEditTodoListTitle(``);
+				setEditDscription(``);
 			}, 1000);
 		}
 	};
@@ -172,7 +162,7 @@ const FolderModal = () => {
 										placeholder="Folder Name (Required)"
 									/>
 								</div>
-								<div className={`flex flex-col gap-1 justify-center items-start`}>
+								{/* <div className={`flex flex-col gap-1 justify-center items-start`}>
 									<label
 										className="text-lg font-semibold flex justify-between items-center gap-1 w-full"
 										htmlFor="folder-title"
@@ -183,8 +173,8 @@ const FolderModal = () => {
 										className="bg-gray-200 border outline-none px-4 py-1 rounded-md w-full lg:w-96"
 										type="text"
 										name="text"
-										value={todoTitle}
-										onChange={(e) => setTodoTitle(e.target.value)}
+										value={editTodoListTitle}
+										onChange={(e) => setEditTodoListTitle(e.target.value)}
 										placeholder="Todo List Title (Optional)"
 									/>
 								</div>
@@ -199,11 +189,11 @@ const FolderModal = () => {
 										className="bg-gray-200 border outline-none px-4 py-1 rounded-md w-full lg:w-96 max-h-32 min-h-[50px]"
 										type="text"
 										name="text"
-										value={description}
-										onChange={(e) => setDescription(e.target.value)}
+										value={editDescription}
+										onChange={(e) => setEditDscription(e.target.value)}
 										placeholder="Description (Optional)"
 									/>
-								</div>
+								</div> */}
 							</div>
 							<div className="flex flex-col sm:flex-row justify-center items-center w-[90%] h-fit gap-5">
 								<input

@@ -1,18 +1,28 @@
-import React, { useCallback, useContext, useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { StatesManagerCtx } from "../Layout";
 import data from "@emoji-mart/data";
 import Picker from "@emoji-mart/react";
 import TodoLists from "../TodoList/TodoLists";
 
 const MainTodoListIcons = ({ folder }) => {
-	const { editFolders, bodyBgColor, editTodos, deleteTodos, todoLists, layoutView } = useContext(StatesManagerCtx);
+	const {
+		emoji,
+		setEmoji,
+		editFolders,
+		bodyBgColor,
+		editTodos,
+		deleteTodos,
+		todoLists,
+		layoutView,
+		editTodoListTitle,
+		setEditTodoListTitle,
+		editDescription,
+		setEditDscription,
+	} = useContext(StatesManagerCtx);
 	const { dropdown, editing, heart, heartFilled, trash, undo, del } = TodoListIcons({ bodyBgColor });
 	const [showTodoTitle, setShowTodoTitle] = useState(false);
-	const [emoji, setEmoji] = useState(``);
 	const [emojiPalette, setEmojiPalette] = useState(false);
 	const [editModeActive, setEditModeActive] = useState(false);
-	const [editTodoListTitle, setEditTodoListTitle] = useState(``);
-	const [editDescription, setEditDscription] = useState(``);
 
 	const submitEdit = () => {
 		editFolders(

@@ -38,6 +38,12 @@ const Layout = ({ children }) => {
 	} = FilterStates();
 
 	const {
+		emoji,
+		setEmoji,
+		editDescription,
+		setEditDscription,
+		editTodoListTitle,
+		setEditTodoListTitle,
 		checkmark,
 		setCheckmark,
 		disable,
@@ -50,10 +56,6 @@ const Layout = ({ children }) => {
 		setAddFolderModal,
 		folderName,
 		setFolderName,
-		todoTitle,
-		setTodoTitle,
-		description,
-		setDescription,
 	} = FoldersStates();
 
 	const {
@@ -72,6 +74,12 @@ const Layout = ({ children }) => {
 	return (
 		<StatesManagerCtx.Provider
 			value={{
+				emoji,
+				setEmoji,
+				editDescription,
+				setEditDscription,
+				editTodoListTitle,
+				setEditTodoListTitle,
 				checkmark,
 				setCheckmark,
 				disable,
@@ -81,10 +89,6 @@ const Layout = ({ children }) => {
 				setValue,
 				folderName,
 				setFolderName,
-				todoTitle,
-				setTodoTitle,
-				description,
-				setDescription,
 				folderClicked,
 				setFolderClicked,
 				addFolders,
@@ -198,12 +202,19 @@ const FoldersStates = () => {
 	const [checkmark, setCheckmark] = useState(false);
 	const [addFolderModal, setAddFolderModal] = useState(false);
 	const [folderName, setFolderName] = useState(``);
-	const [todoTitle, setTodoTitle] = useState(``);
-	const [description, setDescription] = useState(``);
+	const [editTodoListTitle, setEditTodoListTitle] = useState(``);
+	const [editDescription, setEditDscription] = useState(``);
+	const [emoji, setEmoji] = useState(``);
 	const [folderBtnClicked, setFolderBtnClicked] = useState(false);
 	const [disable, setDisable] = useState(false);
 
 	return {
+		emoji,
+		setEmoji,
+		editDescription,
+		setEditDscription,
+		editTodoListTitle,
+		setEditTodoListTitle,
 		checkmark,
 		setCheckmark,
 		disable,
@@ -214,10 +225,6 @@ const FoldersStates = () => {
 		setAddFolderModal,
 		folderName,
 		setFolderName,
-		todoTitle,
-		setTodoTitle,
-		description,
-		setDescription,
 		folderBtnClicked,
 		setFolderBtnClicked,
 	};
