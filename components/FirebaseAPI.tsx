@@ -1,19 +1,32 @@
+// @ts-ignore
 import { initializeApp } from "firebase/app";
 import {
+	// @ts-ignore
 	getFirestore,
+	// @ts-ignore
 	collection,
-	getDocs,
+	// @ts-ignore
+	// ? getDocs,
+	// @ts-ignore
 	onSnapshot,
+	// @ts-ignore
 	addDoc,
+	// @ts-ignore
 	updateDoc,
+	// @ts-ignore
 	deleteDoc,
+	// @ts-ignore
 	doc,
+	// @ts-ignore
 	orderBy,
-	where,
+	// @ts-ignore
+	// ? where,
+	// @ts-ignore
 	query,
+	// @ts-ignore
 	serverTimestamp,
 } from "firebase/firestore";
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 const FirebaseAPI = () => {
 	const [todoLists, setTodoLists] = useState([]);
@@ -43,10 +56,10 @@ const FirebaseAPI = () => {
 
 	useEffect(() => {
 		// Todo List =====
-		onSnapshot(qTodoList, (ss) => {
+		onSnapshot(qTodoList, (ss: any) => {
 			let todoList = [];
 			setTodoLists(todoList);
-			ss.docs.map((doc) => {
+			ss.docs.map((doc: any) => {
 				todoList.unshift({
 					...doc.data(),
 					id: doc.id,
@@ -57,10 +70,10 @@ const FirebaseAPI = () => {
 	}, []);
 
 	useEffect(() => {
-		onSnapshot(qFolders, (ss) => {
+		onSnapshot(qFolders, (ss: any) => {
 			let folderList = [];
 			setFolders(folderList);
-			ss.docs.map((doc) => {
+			ss.docs.map((doc: any) => {
 				folderList.unshift({
 					...doc.data(),
 					id: doc.id,
@@ -71,10 +84,10 @@ const FirebaseAPI = () => {
 	}, []);
 
 	useEffect(() => {
-		onSnapshot(colRefChecked, (ss) => {
+		onSnapshot(colRefChecked, (ss: any) => {
 			let checks = [];
 			setCheckmarks(checks);
-			ss.docs.map((doc) => {
+			ss.docs.map((doc: any) => {
 				checks.unshift({
 					...doc.data(),
 					id: doc.id,

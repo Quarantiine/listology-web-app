@@ -6,6 +6,8 @@ import TodoLists from "../TodoList/TodoLists";
 
 const MainTodoListIcons = ({ folder }) => {
 	const {
+		editModeActive,
+		setEditModeActive,
 		emoji,
 		setEmoji,
 		editFolders,
@@ -22,7 +24,6 @@ const MainTodoListIcons = ({ folder }) => {
 	const { dropdown, editing, heart, heartFilled, trash, undo, del } = TodoListIcons({ bodyBgColor });
 	const [showTodoTitle, setShowTodoTitle] = useState(false);
 	const [emojiPalette, setEmojiPalette] = useState(false);
-	const [editModeActive, setEditModeActive] = useState(false);
 
 	const submitEdit = () => {
 		editFolders(

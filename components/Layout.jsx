@@ -8,6 +8,19 @@ const Layout = ({ children }) => {
 	const [folderModal, setFolderModal] = useState(false);
 
 	const {
+		addTodos,
+		editTodos,
+		editCheckmark,
+		deleteTodos,
+		todoLists,
+		folders,
+		addFolders,
+		editFolders,
+		deleteFolders,
+		setValue,
+	} = FirebaseAPI();
+
+	const {
 		seachQuery,
 		setSeachQuery,
 		searched,
@@ -58,22 +71,15 @@ const Layout = ({ children }) => {
 		setFolderName,
 	} = FoldersStates();
 
-	const {
-		addTodos,
-		editTodos,
-		editCheckmark,
-		deleteTodos,
-		todoLists,
-		folders,
-		addFolders,
-		editFolders,
-		deleteFolders,
-		setValue,
-	} = FirebaseAPI();
+	const { editModeActive, setEditModeActive, edit, setEdit } = EditingStates();
 
 	return (
 		<StatesManagerCtx.Provider
 			value={{
+				editModeActive,
+				setEditModeActive,
+				edit,
+				setEdit,
 				emoji,
 				setEmoji,
 				editDescription,
@@ -228,4 +234,11 @@ const FoldersStates = () => {
 		folderBtnClicked,
 		setFolderBtnClicked,
 	};
+};
+
+const EditingStates = () => {
+	const [editModeActive, setEditModeActive] = useState(false);
+	const [edit, setEdit] = useState(false);
+
+	return { editModeActive, setEditModeActive, edit, setEdit };
 };

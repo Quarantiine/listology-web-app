@@ -1,6 +1,6 @@
 import Head from "next/head";
 import MainHeroSection from "../components/HeroSection/MainHeroSection";
-import React, { useContext, useEffect, useRef } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { StatesManagerCtx } from "@/components/Layout";
 import UploadModal from "@/components/HeroSection/UploadModal";
 import FilterBar from "@/components/FilterBar/FilterBar";
@@ -15,6 +15,8 @@ gsap.registerPlugin(ScrollTrigger);
 
 export default function Home() {
 	const {
+		edit,
+		editModeActive,
 		folderBtnClicked,
 		uploadModal,
 		filterModal,
@@ -25,6 +27,24 @@ export default function Home() {
 		folderClicked,
 	} = useContext(StatesManagerCtx);
 	const mainTodoListRef = useRef();
+
+	useEffect(() => {
+		const handleOpenFolderWithKey = (e) => {
+			if (e === "f" && !uploadModal && !addFolderModal && !edit && !editModeActive) {
+				setFolderModal(!folderModal);
+			} else {
+				setFolderModal(false);
+			}
+		};
+
+		document.addEventListener("keydown", (e) => {
+			const timeout = setTimeout(() => {
+				clearTimeout(timeout);
+				handleOpenFolderWithKey(e.key);
+			}, 100);
+		});
+		return document.removeEventListener("keydown", (e) => handleOpenFolderWithKey(e.key));
+	}, [setFolderModal, folderModal, addFolderModal, uploadModal, edit, editModeActive]);
 
 	const tailwindGSAP = "opacity-0";
 	useEffect(() => {
