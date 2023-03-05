@@ -68,10 +68,7 @@ const MainTodoListIcons = ({ folder }) => {
 								editModeActive ? (
 									<>
 										{emoji.native ? (
-											<p
-												onClick={() => setEmojiPalette(!emojiPalette)}
-												className={`text-4xl sm:text-6xl ${editModeActive ? "cursor-pointer" : "cursor-default"}`}
-											>
+											<p className={`text-4xl sm:text-6xl ${editModeActive ? "cursor-pointer" : "cursor-default"}`}>
 												{emoji.native}
 											</p>
 										) : (

@@ -296,7 +296,7 @@ export default function TodoLists({
 					<p className={`text-[11px] z-[-1] absolute top-10 right-0 ${bodyBgColor ? "text-[#555]" : "text-gray-400"}`}>
 						{handleTimeSystem()}
 					</p>
-					<p className="text-sm btn text-[#0E51FF] underline w-full text-start" onClick={() => setShowMore(!showMore)}>
+					<p className="text-sm btn text-[#0E51FF] underline w-fit text-start" onClick={() => setShowMore(!showMore)}>
 						{showMore ? "show less" : "show more"}
 					</p>
 
@@ -471,11 +471,16 @@ export default function TodoLists({
 							</div>
 						</>
 					</div>
-					<p className="text-sm btn text-[#0E51FF] underline w-full text-start" onClick={() => setShowMore(!showMore)}>
+					<p className={`text-[11px] z-[-1] absolute top-10 right-0 ${bodyBgColor ? "text-[#555]" : "text-gray-400"}`}>
+						{handleTimeSystem()}
+					</p>
+					<p className="text-sm btn text-[#0E51FF] underline w-fit text-start" onClick={() => setShowMore(!showMore)}>
 						{showMore ? "show less" : "show more"}
 					</p>
-					<div className="flex justify-between items-center gap-1 w-full cursor-default">
-						{/* TODO: make this apart of settings as: disable labels */}
+
+					{/* TODO: Add Labels Section: ====== */}
+					{/* TODO: make this apart of settings as: disable labels */}
+					{/* <div className="flex justify-between items-center gap-1 w-full cursor-default">
 						<div className="flex justify-center items-center">
 							<div
 								className={`flex justify-center items-center gap-2 px-2 text-[14px] rounded-lg relative top-1 ${
@@ -486,8 +491,7 @@ export default function TodoLists({
 								<span>{del}</span>
 							</div>
 						</div>
-						<p className={`text-[11px] ${bodyBgColor ? "text-[#555]" : "text-gray-400"}`}>{handleTimeSystem()}</p>
-					</div>
+					</div> */}
 				</div>
 			)}
 		</>

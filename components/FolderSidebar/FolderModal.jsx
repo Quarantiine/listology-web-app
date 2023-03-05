@@ -109,9 +109,7 @@ const FolderModal = () => {
 						<form className="w-full h-fit flex flex-col justify-center items-center gap-8">
 							<div className="flex justify-center items-center gap-2 cursor-pointer relative z-10">
 								{emoji ? (
-									<p onClick={() => setEmojiPalette(!emojiPalette)} className="text-6xl">
-										{emoji.native}
-									</p>
+									<p className="text-6xl">{emoji.native}</p>
 								) : (
 									<div
 										onClick={() => setEmojiPalette(!emojiPalette)}
@@ -120,10 +118,7 @@ const FolderModal = () => {
 								)}
 
 								{emojiPalette && (
-									<div
-										onClick={() => setEmojiPalette(!emojiPalette)}
-										className="emoji-palette w-fit h-full absolute top-12 -left-36"
-									>
+									<div className="emoji-palette w-fit h-full absolute top-12 -left-36">
 										<Picker data={data} onEmojiSelect={setEmoji}></Picker>
 									</div>
 								)}
