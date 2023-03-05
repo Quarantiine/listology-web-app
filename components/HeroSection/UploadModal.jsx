@@ -1,24 +1,34 @@
 import Image from "next/image";
 import React, { useCallback, useContext, useEffect, useState } from "react";
 import { StatesManagerCtx } from "../Layout";
-import FirebaseAPI from "../FirebaseAPI";
+import imageCompressed from "browser-image-compression";
 
 const UploadModal = () => {
-	const { uploadedImage, setUploadedImage, setUploadModal, setHeroImgSrc, saved, setSaved } =
-		useContext(StatesManagerCtx);
-	const { saveBgImg } = FirebaseAPI();
+	const { uploadedImage, setUploadedImage, setUploadModal, setHeroImgSrc, setSaved } = useContext(StatesManagerCtx);
+
+	const compressedImageSystem = async (e) => {
+		const img = e?.target.files[0];
+		if (img) {
+			const options = {
+				maxSizeMB: 3,
+				maxWidthOrHeight: 900,
+			};
+			const compressedImgProcess = await imageCompressed(img, options);
+			setUploadedImage(compressedImgProcess);
+		}
+	};
+	compressedImageSystem().catch((err) => console.log(err.message));
 
 	const handleSave = useCallback(() => {
 		if (uploadedImage) {
 			setSaved(true);
 			setUploadModal(false);
 			setHeroImgSrc(uploadedImage);
-			saveBgImg(uploadedImage);
 			setTimeout(() => {
 				setSaved(false);
 			}, 3000);
 		}
-	}, [setHeroImgSrc, uploadedImage, setUploadModal, setUploadedImage]);
+	}, [setHeroImgSrc, uploadedImage, setUploadModal, setSaved]);
 
 	useEffect(() => {
 		const closeUploadModal = (e) => {
@@ -33,15 +43,10 @@ const UploadModal = () => {
 
 	return (
 		<>
-			<div className="absolute z-50 flex flex-col justify-center items-center top-0 left-0 w-full h-full bg-[rgba(0,0,0,0.7)] backdrop-blur-lg">
+			<div className="fixed z-50 flex flex-col justify-center items-center top-0 left-0 w-full h-full bg-[rgba(0,0,0,0.7)] backdrop-blur-lg">
 				<div className="upload-modal-container relative w-full sm:w-[500px] h-full sm:h-[500px] sm:rounded-lg bg-white flex flex-col gap-4 justify-center items-center">
 					<>
-						<input
-							onChange={(e) => setUploadedImage(e.target?.files[0])}
-							className="btn w-[100px]"
-							type="file"
-							name="file"
-						/>
+						<input onChange={(e) => compressedImageSystem(e)} className="btn w-[100px]" type="file" name="file" />
 						{uploadedImage ? (
 							<Image
 								src={URL.createObjectURL(uploadedImage)}
