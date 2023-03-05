@@ -53,7 +53,7 @@ const FilterBar = () => {
 							<span>All</span>
 							{checkFilterBtnClick !== "all" ? selectedAll : deselectAll}
 						</button>
-						<button
+						{/* <button
 							onClick={(e) => {
 								setCheckFilterBtnClick(e.currentTarget.id);
 								setFilterModal(true);
@@ -65,7 +65,7 @@ const FilterBar = () => {
 						>
 							<span>Select</span>
 							<span>{dropdown}</span>
-						</button>
+						</button> */}
 						<button
 							onClick={(e) => setCheckFilterBtnClick(e.currentTarget.id)}
 							id="completed"
@@ -86,7 +86,7 @@ const FilterBar = () => {
 							<span>Active</span>
 							<span>{activeAssignment}</span>
 						</button>
-						<button
+						{/* <button
 							onClick={(e) => {
 								setCheckFilterBtnClick(e.currentTarget.id);
 								setFilterModal(true);
@@ -98,7 +98,7 @@ const FilterBar = () => {
 						>
 							<span>Labels</span>
 							<span>{label}</span>
-						</button>
+						</button> */}
 						<button
 							onClick={(e) => setCheckFilterBtnClick(e.currentTarget.id)}
 							id="favorites"

@@ -173,7 +173,7 @@ const FolderTodoList = ({
 				} ${folderClicked == folder.folderName && !disable ? "border-[#0E51FF]" : ""}`}
 			>
 				{folder.checkmark && (
-					<div class="z-10 bg-black cursor-not-allowed rounded-md opacity-70 absolute w-full h-full"></div>
+					<div className="z-10 bg-black cursor-not-allowed rounded-md opacity-70 absolute w-full h-full"></div>
 				)}
 				<div
 					onClick={() => {

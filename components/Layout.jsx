@@ -174,7 +174,7 @@ const HeroSectionStates = () => {
 
 const FilterStates = () => {
 	const [checkFilterBtnClick, setCheckFilterBtnClick] = useState(``);
-	const [layoutView, setLayoutView] = useState(`grid`);
+	const [layoutView, setLayoutView] = useState(`list`);
 	const [filterModal, setFilterModal] = useState(false);
 	const [allChecked, setAllChecked] = useState(false);
 	const [folderClicked, setFolderClicked] = useState(``);
