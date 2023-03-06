@@ -18,7 +18,7 @@ export default function TodoLists({
 	undo,
 	// del,
 }) {
-	const { edit, setEdit } = useContext(StatesManagerCtx);
+	const { editingActive, setEditingActive } = useContext(StatesManagerCtx);
 	const todoRef = useRef();
 	const todoListRef = useRef();
 	const deleteRef = useRef();
@@ -29,6 +29,7 @@ export default function TodoLists({
 	const [hideShowMore, setHideShowMore] = useState(false);
 	const [checked, setChecked] = useState(false);
 	const [changedTodo, setChangedTodo] = useState(``);
+	const [edit, setEdit] = useState(false);
 	const [deleted, setDeleted] = useState(false);
 	const [deletionTime, setDeletionTime] = useState(5000);
 	let [deletionTimer, setDeletionTimer] = useState(5);
@@ -157,6 +158,8 @@ export default function TodoLists({
 			todoLists={todoLists}
 			deletionTimer={deletionTimer}
 			setDeletionTimer={setDeletionTimer}
+			editingActive={editingActive}
+			setEditingActive={setEditingActive}
 			deleteRef={deleteRef}
 			todoListRef={todoListRef}
 			changedTodo={changedTodo}
@@ -192,6 +195,8 @@ export default function TodoLists({
 			trash={trash}
 			undo={undo}
 			todoLists={todoLists}
+			editingActive={editingActive}
+			setEditingActive={setEditingActive}
 			deleteRef={deleteRef}
 			todoListRef={todoListRef}
 			changedTodo={changedTodo}

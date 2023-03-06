@@ -23,13 +23,14 @@ const FilterBar = () => {
 		});
 
 	return (
-		<div className="flex flex-col justify-center items-start gap-5 w-full">
+		<div className="filter-bar flex flex-col justify-center items-start gap-5 w-full">
 			<div
 				className={`${bodyBgColor ? "text-white" : "text-black"} border w-full h-16 rounded-lg ${
 					bodyBgColor ? "bg-[#222] border-[#444]" : "bg-[#e9e9e9] border-[#b8b8b8]"
 				} flex flex-col justify-center items-center`}
 			>
 				<div className="w-full h-fit p-1 flex justify-between items-center gap-5 px-5 sm:px-10">
+					{/* TODO: Make this scroll down the page with the user */}
 					{folders.length > 0 && (
 						<button
 							onClick={() => {

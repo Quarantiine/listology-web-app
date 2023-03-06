@@ -15,8 +15,6 @@ gsap.registerPlugin(ScrollTrigger);
 
 export default function Home() {
 	const {
-		edit,
-		editModeActive,
 		folderBtnClicked,
 		uploadModal,
 		filterModal,
@@ -24,39 +22,37 @@ export default function Home() {
 		setFolderModal,
 		addFolderModal,
 		folders,
+		addTodos,
 		folderClicked,
+		bodyBgColor,
 	} = useContext(StatesManagerCtx);
 	const mainTodoListRef = useRef();
 
-	useEffect(() => {
-		const handleOpenFolderWithKey = (e) => {
-			if (e === "f" && !uploadModal && !addFolderModal && !edit && !editModeActive) {
-				setFolderModal(!folderModal);
-			} else {
-				setFolderModal(false);
-			}
-		};
-
-		document.addEventListener("keydown", (e) => {
-			const timeout = setTimeout(() => {
-				clearTimeout(timeout);
-				handleOpenFolderWithKey(e.key);
-			}, 100);
-		});
-		return document.removeEventListener("keydown", (e) => handleOpenFolderWithKey(e.key));
-	}, [setFolderModal, folderModal, addFolderModal, uploadModal, edit, editModeActive]);
-
 	const tailwindGSAP = "opacity-0";
+	const addBtnTailwind = "opacity-0";
 	useEffect(() => {
 		const ctx = gsap.context(() => {
 			if (!folderModal) {
-				gsap.timeline().to(".folder-icon", {
+				const folderLine = gsap.timeline();
+				const addBtnLine = gsap.timeline();
+				folderLine.to(".folder-icon", {
 					scrollTrigger: {
 						scrub: true,
 						// markers: true,
 						trigger: ".main-content-section",
 						start: "top 60%",
 						end: "top 60%",
+					},
+					opacity: 1,
+				});
+
+				addBtnLine.to(".add-btn", {
+					scrollTrigger: {
+						scrub: true,
+						// markers: true,
+						trigger: ".filter-bar",
+						start: "55% top",
+						end: "bottom top",
 					},
 					opacity: 1,
 				});
@@ -77,6 +73,47 @@ export default function Home() {
 				{filterModal && <FilterModal />}
 				{addFolderModal && <FolderModal />}
 			</>
+			<div
+				className={`${addBtnTailwind} flex justify-center items-center add-btn fixed top-10 right-0 ${
+					bodyBgColor ? "bg-black" : "bg-white border sm:border-none"
+				} sm:bg-transparent rounded-l-lg sm:rounded-none px-2 py-1 sm:px-0 sm:left-10 z-40 w-fit`}
+			>
+				<button
+					onClick={() => {
+						addTodos(folderClicked);
+					}}
+				>
+					<svg
+						className="relative btn"
+						width="25"
+						height="31"
+						viewBox="0 0 31 31"
+						fill="none"
+						xmlns="http://www.w3.org/2000/svg"
+					>
+						<path
+							d="M29.333 15.1665C29.333 7.34541 22.9876 1 15.1665 1C7.34541 1 1 7.34541 1 15.1665C1 22.9876 7.34541 29.333 15.1665 29.333C22.9876 29.333 29.333 22.9876 29.333 15.1665Z"
+							stroke={bodyBgColor ? `white` : `black`}
+							strokeWidth="2"
+							strokeMiterlimit="10"
+						/>
+						<path
+							d="M15.1665 9.26376V21.0692"
+							stroke={bodyBgColor ? `white` : `black`}
+							strokeWidth="2"
+							strokeLinecap="round"
+							strokeLinejoin="round"
+						/>
+						<path
+							d="M21.069 15.1665H9.26355"
+							stroke={bodyBgColor ? `white` : `black`}
+							strokeWidth="2"
+							strokeLinecap="round"
+							strokeLinejoin="round"
+						/>
+					</svg>
+				</button>
+			</div>
 			<>
 				{/* FOLDER SYSTEM */}
 				{folderModal ? (

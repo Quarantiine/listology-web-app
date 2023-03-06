@@ -71,15 +71,13 @@ const Layout = ({ children }) => {
 		setFolderName,
 	} = FoldersStates();
 
-	const { editModeActive, setEditModeActive, edit, setEdit } = EditingStates();
+	const { editModeActive, setEditModeActive } = EditingStates();
 
 	return (
 		<StatesManagerCtx.Provider
 			value={{
 				editModeActive,
 				setEditModeActive,
-				edit,
-				setEdit,
 				emoji,
 				setEmoji,
 				editDescription,
@@ -238,7 +236,6 @@ const FoldersStates = () => {
 
 const EditingStates = () => {
 	const [editModeActive, setEditModeActive] = useState(false);
-	const [edit, setEdit] = useState(false);
 
-	return { editModeActive, setEditModeActive, edit, setEdit };
+	return { editModeActive, setEditModeActive };
 };

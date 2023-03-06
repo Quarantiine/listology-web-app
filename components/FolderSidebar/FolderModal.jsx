@@ -127,8 +127,8 @@ const FolderModal = () => {
 								<div className={`relative flex flex-col gap-1 justify-center items-start`}>
 									{showInfo === "folder name" && (
 										<ul className="absolute list-disc w-full h-20 bg-white text-black px-2 py-1 flex flex-col justify-center items-start shadow-lg rounded-md top-7 left-0">
-											<li className="relative left-5">{`Greater than 2 letters`}</li>
-											<li className="relative left-5">{`Cant be the same name as other folders`}</li>
+											<li className="relative left-5 text-sm">{`Greater than 2 letters`}</li>
+											<li className="relative left-5 text-sm">{`Cant be the same name as other folders`}</li>
 										</ul>
 									)}
 									<label
