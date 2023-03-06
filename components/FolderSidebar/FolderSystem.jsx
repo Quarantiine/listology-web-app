@@ -130,7 +130,7 @@ const FolderTodoList = ({
 			const hour = date.getHours();
 			const min = date.getMinutes();
 			// const sec = date.getSeconds();
-			const time = `${hour > 12 ? hour - 12 : hour}:${
+			const time = `${hour > 12 ? hour - 12 : hour === 1 ? hour : hour + 12}:${
 				hour > 11 ? (min < 10 ? `0${min} pm` : `${min} pm`) : min < 10 ? `0${min} am` : `${min} am`
 			}`;
 			// console.log(time);
