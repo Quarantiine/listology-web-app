@@ -80,7 +80,7 @@ export default function Home() {
 			>
 				<button
 					onClick={() => {
-						addTodos(folderClicked);
+						addTodos(folderClicked, false);
 					}}
 				>
 					<svg

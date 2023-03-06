@@ -100,10 +100,11 @@ const FirebaseAPI = () => {
 	class TodoListSystem {
 		constructor() {}
 
-		addTodo = async (folder: string) => {
+		addTodo = async (folder: string, completed: boolean) => {
 			await addDoc(colRefTodoList, {
 				todo: "Untitled",
 				folder: folder,
+				completed: completed,
 				createdTime: serverTimestamp(),
 			});
 		};
@@ -115,6 +116,13 @@ const FirebaseAPI = () => {
 			});
 		};
 
+		editCompletion = async (completed: boolean, id: string) => {
+			const docRef = doc(colRefTodoList, id);
+			await updateDoc(docRef, {
+				completed: completed,
+			}).catch((err: any) => console.log(err.message));
+		};
+
 		deleteTodo = async (id: string) => {
 			const docRef = doc(colRefTodoList, id);
 			await deleteDoc(docRef);
@@ -123,6 +131,7 @@ const FirebaseAPI = () => {
 	const TLS = new TodoListSystem();
 	const addTodos = TLS.addTodo;
 	const editTodos = TLS.editTodo;
+	const editCompletion = TLS.editCompletion;
 	const deleteTodos = TLS.deleteTodo;
 
 	class FolderSystem {
@@ -183,6 +192,7 @@ const FirebaseAPI = () => {
 		folders,
 		todoLists,
 		deleteTodos,
+		editCompletion,
 		editTodos,
 		addTodos,
 	};

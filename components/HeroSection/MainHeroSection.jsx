@@ -113,7 +113,7 @@ const MainHeroSection = () => {
 							</div>
 						</div>
 						<div className="flex justify-center items-center">
-							<h1 className="relative top-16 lg:top-0 text-base sm:text-xl lg:text-6xl w-full sm:w-96 text-transparent bg-clip-text bg-gradient-to-l to-[white] from-[#eee] text-center lg:text-end">
+							<h1 className="relative top-16 lg:top-0 text-base sm:text-xl lg:text-6xl w-full sm:w-96 text-transparent bg-clip-text bg-gradient-to-l to-[white] from-[#eee] text-center lg:text-start">
 								WELCOME, USER
 							</h1>
 						</div>

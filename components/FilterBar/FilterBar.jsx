@@ -30,11 +30,10 @@ const FilterBar = () => {
 				} flex flex-col justify-center items-center`}
 			>
 				<div className="w-full h-fit p-1 flex justify-between items-center gap-5 px-5 sm:px-10">
-					{/* TODO: Make this scroll down the page with the user */}
 					{folders.length > 0 && (
 						<button
 							onClick={() => {
-								addTodos(folderClicked);
+								addTodos(folderClicked, false);
 							}}
 						>
 							{addTodo}

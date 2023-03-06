@@ -167,7 +167,6 @@ const MainTodoListIcons = ({ folder }) => {
 							</div>
 						</div>
 						<div className={`flex justify-center sm:justify-start items-center gap-3 w-full`}>
-							{/* TODO: make this apart of the of the settings to give user an option to: diable todo list description */}
 							{editModeActive ? (
 								<textarea
 									className={`${
@@ -222,7 +221,11 @@ const MainTodoListIcons = ({ folder }) => {
 						</>
 					)}
 				</div>
-				<div className="flex flex-col justify-center items-start w-full h-fit gap-6 text-lg">
+				<div
+					className={`flex ${
+						layoutView === "list" ? "flex-col" : "flex-wrap"
+					} justify-center sm:justify-start items-start w-full h-fit gap-6 text-lg`}
+				>
 					{todoLists.length > 0 ? (
 						todoLists?.map((todoLists) => {
 							if (todoLists.folder === folder.folderName) {

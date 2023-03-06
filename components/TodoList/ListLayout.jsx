@@ -1,4 +1,5 @@
 export default function ListLayout({
+	handleComplete,
 	handleKey,
 	handleEdit,
 	handleCopyingText,
@@ -35,11 +36,7 @@ export default function ListLayout({
 }) {
 	return (
 		<>
-			<div
-				className={`relative flex flex-col justify-center items-start w-full h-fit py-2 rounded-md border-2 ${
-					deleted ? "border-red-500" : "border-transparent"
-				}`}
-			>
+			<div className={`relative flex flex-col justify-center items-start w-full h-fit py-2 rounded-md`}>
 				{deleted && (
 					<button
 						onClick={handleUndoDeletionSystem}
@@ -49,22 +46,59 @@ export default function ListLayout({
 						<p>{deletionTimer}</p>
 					</button>
 				)}
-				<div ref={todoRef} className="flex gap-5 w-full justify-between items-center relative">
+				<div
+					ref={todoRef}
+					className={`${
+						deleted ? "border-red-500" : "border-transparent"
+					} flex border rounded-md gap-5 w-full justify-between items-center relative`}
+				>
 					<div className="flex justify-start items-center gap-2 w-full">
-						{checked ? (
+						{!todoLists.completed && todoLists.completed ? (
 							<div
 								className="min-w-[20px] min-h-[20px] base-bg border rounded-md"
-								onClick={() => setChecked(!checked)}
+								onClick={() => {
+									handleComplete(false);
+								}}
 							/>
 						) : (
 							<div
 								className={`min-w-[20px] min-h-[20px] border ${
 									bodyBgColor ? "border-white" : "border-black"
 								} rounded-md`}
-								onClick={() => setChecked(!checked)}
+								onClick={() => {
+									handleComplete(true);
+								}}
 							/>
 						)}
-						<div className="flex justify-between items-center w-full gap-3">
+						{todoLists.completed && (
+							<div
+								className={`bg-[rgba(0,0,0,0.7)] w-full h-full absolute rounded-md flex justify-between items-center z-10`}
+							>
+								{todoLists.completed ? (
+									<div
+										className="min-w-[20px] min-h-[20px] w-[20px] base-bg border rounded-md"
+										onClick={() => {
+											handleComplete(false);
+										}}
+									/>
+								) : (
+									<div
+										className={`min-w-[20px] min-h-[20px] w-[20px] border ${
+											bodyBgColor ? "border-white" : "border-black"
+										} rounded-md`}
+										onClick={() => {
+											handleComplete(true);
+										}}
+									/>
+								)}
+								<div className="hidden lg:flex justify-start lg:justify-center items-center gap-2">
+									<button ref={deleteRef} className="btn" onClick={() => handleDeletionSystem()}>
+										{trash}
+									</button>
+								</div>
+							</div>
+						)}
+						<div className="flex justify-between items-center w-full gap-3 relative">
 							<input
 								ref={editRef}
 								className={`edit-input w-full ${
@@ -102,7 +136,7 @@ export default function ListLayout({
 										}}
 										className={`${
 											showMore ? "line-clamp-none" : "line-clamp-1"
-										} text-lg md:text-2xl w-full pr-5 sm:pr-0`}
+										} text-lg md:text-2xl w-full pr-5 sm:pr-0 ${todoLists.completed ? "line-through" : ""}`}
 									>
 										{todoLists.todo.trim()}
 									</p>
@@ -141,7 +175,7 @@ export default function ListLayout({
 						</div>
 						<div className="flex lg:hidden justify-center items-center w-fit">
 							<div
-								className={`dropdown-todo-items absolute flex flex-col justify-start items-start gap-2 top-0 right-0 ${
+								className={`dropdown-todo-items absolute z-20 flex flex-col justify-start items-start gap-2 top-0 right-0 ${
 									bodyBgColor ? "bg-[#333]" : "bg-white"
 								} p-2 rounded-full overflow-hidden min-w-[36px] text-center ${
 									dropdownItems ? "h-fit shadow-lg" : "h-9 shadow-none"
@@ -200,7 +234,6 @@ export default function ListLayout({
 				</p>
 
 				{/* TODO: Add Labels Section: ====== */}
-				{/* TODO: make this apart of settings as: disable labels */}
 				{/* <div className="flex justify-between items-center gap-1 w-full cursor-default">
 			<div className="flex justify-center items-center">
 				<div

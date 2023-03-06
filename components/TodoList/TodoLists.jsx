@@ -18,7 +18,7 @@ export default function TodoLists({
 	undo,
 	// del,
 }) {
-	const { editingActive, setEditingActive } = useContext(StatesManagerCtx);
+	const { editingActive, setEditingActive, editCompletion } = useContext(StatesManagerCtx);
 	const todoRef = useRef();
 	const todoListRef = useRef();
 	const deleteRef = useRef();
@@ -52,6 +52,10 @@ export default function TodoLists({
 		}
 	};
 
+	const handleComplete = (completed) => {
+		editCompletion(completed, todoLists.id);
+	};
+
 	useEffect(() => {
 		const closeEditInput = (e) => {
 			if (!e.target.closest(".edit-input")) {
@@ -77,7 +81,6 @@ export default function TodoLists({
 	useEffect(() => (changedTodo.length > 80 ? setHideShowMore(true) : setHideShowMore(false)), [changedTodo]);
 
 	const handleCopyingText = (text) => {
-		// TODO: Add in settings if they want to turn on: copying mode
 		setCopied(true);
 		navigator.clipboard.writeText(text);
 		clearTimeout(todoListRef.current);
@@ -87,7 +90,6 @@ export default function TodoLists({
 	};
 
 	const handleDeletionSystem = () => {
-		// TODO: Add this in settings as: disable timer
 		clearTimeout(deleteRef.current);
 		setDeleted(true);
 		deleteTimerRef.current = setInterval(() => {
@@ -110,13 +112,12 @@ export default function TodoLists({
 	};
 
 	const handleTimeSystem = () => {
-		// TODO: Add in settings if they want to turn on: display time stamps
 		const timeSystem = () => {
 			const date = new Date(todoLists?.createdTime?.seconds * 1000);
 			const hour = date.getHours();
 			const min = date.getMinutes();
 			// const sec = date.getSeconds();
-			const time = `${hour > 12 ? hour - 12 : hour === 1 ? hour : hour + 12}:${
+			const time = `${hour > 12 ? hour - 12 : hour === 1 ? hour : hour > 12 ? hour + 12 : hour}:${
 				hour > 11 ? (min < 10 ? `0${min} pm` : `${min} pm`) : min < 10 ? `0${min} am` : `${min} am`
 			}`;
 			// console.log(time);
@@ -142,6 +143,7 @@ export default function TodoLists({
 
 	return layoutView === "list" ? (
 		<ListLayout
+			handleComplete={handleComplete}
 			handleKey={handleKey}
 			handleEdit={handleEdit}
 			handleCopyingText={handleCopyingText}
@@ -181,6 +183,7 @@ export default function TodoLists({
 		/>
 	) : (
 		<GridLayout
+			handleComplete={handleComplete}
 			handleKey={handleKey}
 			handleEdit={handleEdit}
 			handleCopyingText={handleCopyingText}

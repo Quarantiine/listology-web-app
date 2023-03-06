@@ -62,7 +62,6 @@ const FolderSystem = ({ folders }) => {
 						>
 							<p onClick={handleAddingFolder}>ADD FOLDER</p>
 						</div>
-						{/* TODO: **************** Map out the folder database here */}
 						{folders.length > 0 ? (
 							folders.map((folder, i) => {
 								return (
@@ -124,13 +123,12 @@ const FolderTodoList = ({
 	};
 
 	const handleTimeSystem = () => {
-		// TODO: Add in settings if they want to turn on: display time stamps
 		const timeSystem = () => {
 			const date = new Date(folder?.createdTime?.seconds * 1000);
 			const hour = date.getHours();
 			const min = date.getMinutes();
 			// const sec = date.getSeconds();
-			const time = `${hour > 12 ? hour - 12 : hour === 1 ? hour : hour + 12}:${
+			const time = `${hour > 12 ? hour - 12 : hour === 1 ? hour : hour > 12 ? hour + 12 : hour}:${
 				hour > 11 ? (min < 10 ? `0${min} pm` : `${min} pm`) : min < 10 ? `0${min} am` : `${min} am`
 			}`;
 			// console.log(time);
