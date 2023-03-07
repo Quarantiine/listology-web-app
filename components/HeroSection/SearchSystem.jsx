@@ -63,7 +63,7 @@ const SearchSystem = ({}) => {
 				<input
 					ref={inputSearch}
 					className={`pl-12 pr-1 py-2 border bg-transparent rounded-md w-full outline-none`}
-					placeholder="Search todos and folders"
+					placeholder="Search todos"
 					autoComplete="off"
 					type="search"
 					name="search"
