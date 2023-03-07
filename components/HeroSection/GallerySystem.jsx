@@ -3,8 +3,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { StatesManagerCtx } from "../Layout";
 
 const GallerySystem = () => {
-	const { positionImage, setPositionImage, setUploadModal, heroImages, setOpenGalleryModal } =
-		useContext(StatesManagerCtx);
+	const { positionImage, setPositionImage, setUploadModal, heroImages } = useContext(StatesManagerCtx);
 	const [galleryOpen, setGalleryOpen] = useState(false);
 
 	useEffect(() => {
@@ -69,16 +68,6 @@ const GallerySystem = () => {
 							>
 								Upload
 							</p>
-							{heroImages.length > 0 && (
-								<p
-									onClick={(e) => {
-										setOpenGalleryModal(true);
-									}}
-									className="py-1 px-1 hover:bg-[#0E51FF] hover:text-white cursor-pointer transition-all w-full text-center"
-								>
-									Gallery
-								</p>
-							)}
 						</div>
 					</>
 				)}

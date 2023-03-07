@@ -30,8 +30,6 @@ const Layout = ({ children }) => {
 	} = FirebaseAPI();
 
 	const {
-		openGalleryModal,
-		setOpenGalleryModal,
 		seachQuery,
 		setSeachQuery,
 		searched,
@@ -90,8 +88,6 @@ const Layout = ({ children }) => {
 				themeMode,
 				addTheme,
 				changeTheme,
-				openGalleryModal,
-				setOpenGalleryModal,
 				heroImages,
 				addingHeroImage,
 				changingHeroImage,
@@ -182,11 +178,8 @@ const HeroSectionStates = () => {
 	const [uploadedImage, setUploadedImage] = useState(``);
 	const [uploadModal, setUploadModal] = useState(false);
 	const [saved, setSaved] = useState(false);
-	const [openGalleryModal, setOpenGalleryModal] = useState(false);
 
 	return {
-		openGalleryModal,
-		setOpenGalleryModal,
 		seachQuery,
 		setSeachQuery,
 		searched,

@@ -11,12 +11,10 @@ import MainTodoList from "@/components/TodoList/MainTodoList";
 import { gsap } from "gsap/dist/gsap";
 import { ScrollTrigger } from "gsap/dist/ScrollTrigger";
 import FolderModal from "@/components/FolderSidebar/FolderModal";
-import GalleryModal from "@/components/HeroSection/GalleryModal";
 gsap.registerPlugin(ScrollTrigger);
 
 export default function Home() {
 	const {
-		openGalleryModal,
 		folderBtnClicked,
 		uploadModal,
 		filterModal,
@@ -74,7 +72,6 @@ export default function Home() {
 				{uploadModal && <UploadModal />}
 				{filterModal && <FilterModal />}
 				{addFolderModal && <FolderModal />}
-				{openGalleryModal && <GalleryModal />}
 			</>
 			<div
 				className={`${addBtnTailwind} flex justify-center items-center add-btn fixed top-10 right-0 ${
