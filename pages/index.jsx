@@ -1,6 +1,6 @@
 import Head from "next/head";
 import MainHeroSection from "../components/HeroSection/MainHeroSection";
-import React, { useContext, useEffect, useRef, useState } from "react";
+import React, { Suspense, useContext, useEffect, useRef, useState } from "react";
 import { StatesManagerCtx } from "@/components/Layout";
 import UploadModal from "@/components/HeroSection/UploadModal";
 import FilterBar from "@/components/FilterBar/FilterBar";
@@ -27,6 +27,11 @@ export default function Home() {
 		themeMode,
 	} = useContext(StatesManagerCtx);
 	const mainTodoListRef = useRef();
+	const [docLoaded, setDocLoaded] = useState(false);
+
+	useEffect(() => {
+		document.readyState ? setDocLoaded(true) : setDocLoaded(false);
+	}, [setDocLoaded]);
 
 	const tailwindGSAP = "opacity-0";
 	const addBtnTailwind = "opacity-0";
@@ -67,6 +72,13 @@ export default function Home() {
 			<Head>
 				<meta name="viewport" content="width=device-width, initial-scale=1" />
 			</Head>
+			{!docLoaded && (
+				<div
+					className={`fixed top-0 left-0 z-[9999] bg-[rgba(0,0,0,0.7)] backdrop-blur-md w-full h-full flex justify-center items-center`}
+				>
+					<div className="border-4 w-20 h-20 border-t-transparent rounded-full animate-spin" />
+				</div>
+			)}
 			<>
 				{/* MODAL COMPONTENTS */}
 				{uploadModal && <UploadModal />}
