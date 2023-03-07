@@ -10,14 +10,14 @@ const FolderSystem = ({ folders }) => {
 		setFolderBtnClicked,
 		addTodos,
 		setValue,
-		bodyBgColor,
+		themeMode,
 		setFolderModal,
 		setAddFolderModal,
 		folderClicked,
 		setFolderClicked,
 		deleteFolders,
 	} = useContext(StatesManagerCtx);
-	const { disabledCheckbox, filledCheckbox } = FolderIcons({ bodyBgColor });
+	const { disabledCheckbox, filledCheckbox } = FolderIcons({ themeMode });
 
 	useEffect(() => {
 		const closeFolderModal = (e) => {
@@ -40,7 +40,7 @@ const FolderSystem = ({ folders }) => {
 			<div className={`fixed flex flex-col justify-center items-start w-full h-full z-50 bg-[rgba(0,0,0,0)]`}>
 				<div
 					className={`folder-modal flex flex-col justify-start items-start px-5 sm:px-10 py-5 gap-10 w-fit h-full ${
-						bodyBgColor
+						themeMode[0]?.mode
 							? "bg-[#222] text-white shadow-[10px_0px_20px_0px_rgba(0,0,0,0.3)]"
 							: "bg-white text-black shadow-[10px_0px_20px_0px_rgba(0,0,0,0.1)]"
 					}`}
@@ -57,7 +57,7 @@ const FolderSystem = ({ folders }) => {
 					<div className="folder-modal-scroll flex flex-col justify-center items-center gap-3 overflow-y-scroll overflow-x-hidden w-full px-5">
 						<div
 							className={`btn w-full h-fit py-1 px-2 rounded-md text-center text-lg font-medium mb-10 ${
-								bodyBgColor ? "bg-[#444] hover:bg-[#555]" : "bg-[#eee] hover:bg-[#ccc]"
+								themeMode[0]?.mode ? "bg-[#444] hover:bg-[#555]" : "bg-[#eee] hover:bg-[#ccc]"
 							}`}
 						>
 							<p onClick={handleAddingFolder}>ADD FOLDER</p>
@@ -78,7 +78,7 @@ const FolderSystem = ({ folders }) => {
 										folderClicked={folderClicked}
 										setFolderClicked={setFolderClicked}
 										folder={folder}
-										bodyBgColor={bodyBgColor}
+										themeMode={themeMode}
 										filledCheckbox={filledCheckbox}
 										disabledCheckbox={disabledCheckbox}
 									/>
@@ -102,11 +102,10 @@ const FolderTodoList = ({
 	setDisable,
 	setFolderBtnClicked,
 	deleteFolders,
-	// ? addTodos,
 	setValue,
 	setFolderModal,
 	folder,
-	bodyBgColor,
+	themeMode,
 	filledCheckbox,
 	disabledCheckbox,
 	folderClicked,
@@ -167,7 +166,7 @@ const FolderTodoList = ({
 		<div className={`flex flex-col justify-start items-start gap-1`}>
 			<div
 				className={`flex relative justify-center items-center border-2 gap-3 w-44 px-5 sm:w-52 sm:px-3 py-2 rounded-md text-lg ${
-					bodyBgColor ? "bg-[#444]" : "bg-[#eee]"
+					themeMode[0]?.mode ? "bg-[#444]" : "bg-[#eee]"
 				} ${folderClicked == folder.folderName && !disable ? "border-[#0E51FF]" : ""}`}
 			>
 				{folder.checkmark && (
@@ -206,17 +205,17 @@ const FolderTodoList = ({
 					/>
 				</div>
 			</div>
-			<p className={`text-sm ${bodyBgColor ? "text-[#444]" : "text-gray-400"}`}>{handleTimeSystem()}</p>
+			<p className={`text-sm ${themeMode[0]?.mode ? "text-[#444]" : "text-gray-400"}`}>{handleTimeSystem()}</p>
 		</div>
 	);
 };
 
-const FolderIcons = ({ bodyBgColor }) => {
+const FolderIcons = ({ themeMode }) => {
 	const disabledCheckbox = (
 		<svg className="btn" width="20" height="20" viewBox="0 0 8 8" fill="none" xmlns="http://www.w3.org/2000/svg">
 			<path
 				d="M5.81825 2.18182L3.27279 5.09091L2.18188 4.00001"
-				stroke={`${bodyBgColor ? "white" : "black"}`}
+				stroke={`${themeMode[0]?.mode ? "white" : "black"}`}
 				strokeWidth="0.6"
 				strokeLinecap="round"
 				strokeLinejoin="round"
@@ -227,7 +226,7 @@ const FolderIcons = ({ bodyBgColor }) => {
 				width="7.4"
 				height="7.4"
 				rx="1.7"
-				stroke={`${bodyBgColor ? "white" : "black"}`}
+				stroke={`${themeMode[0]?.mode ? "white" : "black"}`}
 				strokeWidth="0.6"
 			/>
 		</svg>

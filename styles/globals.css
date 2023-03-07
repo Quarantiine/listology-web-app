@@ -31,3 +31,13 @@
 .folder-modal-scroll::-webkit-scrollbar-track {
 	background-color: transparent;
 }
+
+.gallery-images-overflow::-webkit-scrollbar {
+	width: 5px;
+}
+.gallery-images-overflow::-webkit-scrollbar-thumb {
+	background-color: #0e51ff;
+}
+.gallery-images-overflow::-webkit-scrollbar-track {
+	background-color: transparent;
+}

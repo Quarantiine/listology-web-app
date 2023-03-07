@@ -4,10 +4,15 @@ import FirebaseAPI from "./FirebaseAPI";
 
 const StatesManagerCtx = createContext();
 const Layout = ({ children }) => {
-	const [bodyBgColor, setBodyBgColor] = useState(false);
 	const [folderModal, setFolderModal] = useState(false);
 
 	const {
+		themeMode,
+		addTheme,
+		changeTheme,
+		heroImages,
+		addingHeroImage,
+		changingHeroImage,
 		addTodos,
 		editTodos,
 		editCheckmark,
@@ -25,6 +30,8 @@ const Layout = ({ children }) => {
 	} = FirebaseAPI();
 
 	const {
+		openGalleryModal,
+		setOpenGalleryModal,
 		seachQuery,
 		setSeachQuery,
 		searched,
@@ -80,6 +87,14 @@ const Layout = ({ children }) => {
 	return (
 		<StatesManagerCtx.Provider
 			value={{
+				themeMode,
+				addTheme,
+				changeTheme,
+				openGalleryModal,
+				setOpenGalleryModal,
+				heroImages,
+				addingHeroImage,
+				changingHeroImage,
 				editModeActive,
 				setEditModeActive,
 				emoji,
@@ -114,8 +129,6 @@ const Layout = ({ children }) => {
 				deleteTodos,
 				todoLists,
 				addTodos,
-				bodyBgColor,
-				setBodyBgColor,
 				seachQuery,
 				setSeachQuery,
 				searched,
@@ -151,7 +164,7 @@ const Layout = ({ children }) => {
 			</Head>
 			<div
 				className={`${
-					bodyBgColor ? "bg-[#111]" : "bg-white"
+					themeMode[0]?.mode ? "bg-[#111]" : "bg-white"
 				} transition duration-500 z-[-100] fixed top-0 left-0 w-full h-full`}
 			></div>
 			<div>{children}</div>
@@ -169,8 +182,11 @@ const HeroSectionStates = () => {
 	const [uploadedImage, setUploadedImage] = useState(``);
 	const [uploadModal, setUploadModal] = useState(false);
 	const [saved, setSaved] = useState(false);
+	const [openGalleryModal, setOpenGalleryModal] = useState(false);
 
 	return {
+		openGalleryModal,
+		setOpenGalleryModal,
 		seachQuery,
 		setSeachQuery,
 		searched,

@@ -10,7 +10,7 @@ export default function ListLayout({
 	handleUndoDeletionSystem,
 	handleTimeSystem,
 	dropdown,
-	bodyBgColor,
+	themeMode,
 	editing,
 	heart,
 	heartFilled,
@@ -68,7 +68,7 @@ export default function ListLayout({
 						) : (
 							<div
 								className={`min-w-[20px] min-h-[20px] border btn ${
-									bodyBgColor ? "border-white" : "border-black"
+									themeMode[0]?.mode ? "border-white" : "border-black"
 								} rounded-md`}
 								onClick={() => {
 									handleComplete(true);
@@ -93,7 +93,7 @@ export default function ListLayout({
 								) : (
 									<div
 										className={`min-w-[20px] min-h-[20px] w-[20px] border btn ${
-											bodyBgColor ? "border-white" : "border-black"
+											themeMode[0]?.mode ? "border-white" : "border-black"
 										} rounded-md`}
 										onClick={() => {
 											handleComplete(true);
@@ -114,7 +114,7 @@ export default function ListLayout({
 								ref={editRef}
 								className={`edit-input w-full ${
 									edit
-										? `block ${bodyBgColor ? "bg-[#333]" : "bg-gray-200"} outline-none px-2 py-1 rounded-md`
+										? `block ${themeMode[0]?.mode ? "bg-[#333]" : "bg-gray-200"} outline-none px-2 py-1 rounded-md`
 										: "hidden"
 								}`}
 								type="text"
@@ -188,7 +188,7 @@ export default function ListLayout({
 						<div className="flex lg:hidden justify-center items-center w-fit">
 							<div
 								className={`dropdown-todo-items absolute z-20 flex flex-col justify-start items-start gap-2 top-0 right-0 ${
-									bodyBgColor ? "bg-[#333]" : "bg-white"
+									themeMode[0]?.mode ? "bg-[#333]" : "bg-white"
 								} p-2 rounded-full overflow-hidden min-w-[36px] text-center ${
 									dropdownItems ? "h-fit shadow-lg" : "h-9 shadow-none"
 								} border`}
@@ -248,7 +248,11 @@ export default function ListLayout({
 						</div>
 					</>
 				</div>
-				<p className={`text-[11px] z-[-1] absolute top-10 right-0 ${bodyBgColor ? "text-[#555]" : "text-gray-400"}`}>
+				<p
+					className={`text-[11px] z-[-1] absolute top-10 right-0 ${
+						themeMode[0]?.mode ? "text-[#555]" : "text-gray-400"
+					}`}
+				>
 					{handleTimeSystem()}
 				</p>
 				<p className="text-sm btn text-[#0E51FF] underline w-fit text-start" onClick={() => setShowMore(!showMore)}>
@@ -260,7 +264,7 @@ export default function ListLayout({
 			<div className="flex justify-center items-center">
 				<div
 					className={`flex justify-center items-center gap-2 px-2 text-[14px] rounded-lg relative top-1 ${
-						bodyBgColor ? "bg-[#333]" : "hover:bg-gray-300 bg-gray-200 border-2"
+						themeMode[0]?.mode  ? "bg-[#333]" : "hover:bg-gray-300 bg-gray-200 border-2"
 					}`}
 				>
 					<p className={`w-fit h-fit`}>label 1</p>

@@ -1,9 +1,9 @@
 import Image from "next/image";
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { StatesManagerCtx } from "../Layout";
 
 const ThemeSystem = () => {
-	const { bodyBgColor, setBodyBgColor, positionImage } = useContext(StatesManagerCtx);
+	const { positionImage, themeMode, changeTheme } = useContext(StatesManagerCtx);
 
 	return (
 		<>
@@ -14,15 +14,15 @@ const ThemeSystem = () => {
 			>
 				<div
 					onClick={() => {
-						setBodyBgColor(!bodyBgColor);
+						changeTheme(false, themeMode[0].id);
 					}}
 					className={`select-none w-full bg-white flex justify-center items-center p-2 btn ${
-						bodyBgColor ? "" : "opacity-60"
+						themeMode[0]?.mode ? "" : "opacity-60"
 					}`}
 				>
 					<Image
 						className="h-auto"
-						src={`/icons/simple-icons/${bodyBgColor ? "light-mode-filled" : "light-mode"}.svg`}
+						src={`/icons/simple-icons/${themeMode[0]?.mode ? "light-mode-filled" : "light-mode"}.svg`}
 						alt="light mode btn"
 						width={20}
 						height={20}
@@ -30,15 +30,15 @@ const ThemeSystem = () => {
 				</div>
 				<div
 					onClick={() => {
-						setBodyBgColor(!bodyBgColor);
+						changeTheme(true, themeMode[0].id);
 					}}
 					className={`select-none bg-[#222] flex justify-center items-center p-2 btn ${
-						bodyBgColor ? "opacity-60" : ""
+						themeMode[0]?.mode ? "opacity-60" : ""
 					}`}
 				>
 					<Image
 						className="h-auto"
-						src={`/icons/simple-icons/${bodyBgColor ? "night-mode" : "night-mode-filled"}.svg`}
+						src={`/icons/simple-icons/${themeMode[0]?.mode ? "night-mode" : "night-mode-filled"}.svg`}
 						alt="dark mode btn"
 						width={20}
 						height={20}

@@ -3,7 +3,8 @@ import React, { useContext, useEffect, useState } from "react";
 import { StatesManagerCtx } from "../Layout";
 
 const GallerySystem = () => {
-	const { positionImage, setPositionImage, setUploadModal } = useContext(StatesManagerCtx);
+	const { positionImage, setPositionImage, setUploadModal, heroImages, setOpenGalleryModal } =
+		useContext(StatesManagerCtx);
 	const [galleryOpen, setGalleryOpen] = useState(false);
 
 	useEffect(() => {
@@ -58,16 +59,28 @@ const GallerySystem = () => {
 					</div>
 				)}
 				{galleryOpen && (
-					<div className="gallery-dropdown flex flex-col justify-center items-center gap-0 w-full h-fit bg-white shadow-lg rounded-md absolute left-0 top-12 overflow-hidden">
-						<p
-							onClick={(e) => {
-								setUploadModal(true);
-							}}
-							className="py-1 px-1 hover:bg-[#0E51FF] hover:text-white cursor-pointer transition-all w-full text-center"
-						>
-							Upload
-						</p>
-					</div>
+					<>
+						<div className="gallery-dropdown flex flex-col justify-center items-center gap-0 w-full h-fit bg-white shadow-lg rounded-md absolute left-0 top-12 overflow-hidden">
+							<p
+								onClick={(e) => {
+									setUploadModal(true);
+								}}
+								className="py-1 px-1 hover:bg-[#0E51FF] hover:text-white cursor-pointer transition-all w-full text-center"
+							>
+								Upload
+							</p>
+							{heroImages.length > 0 && (
+								<p
+									onClick={(e) => {
+										setOpenGalleryModal(true);
+									}}
+									className="py-1 px-1 hover:bg-[#0E51FF] hover:text-white cursor-pointer transition-all w-full text-center"
+								>
+									Gallery
+								</p>
+							)}
+						</div>
+					</>
 				)}
 			</div>
 		</>

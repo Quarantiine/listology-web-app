@@ -10,7 +10,7 @@ export default function GridLayout({
 	handleUndoDeletionSystem,
 	handleTimeSystem,
 	// ? dropdown,
-	bodyBgColor,
+	themeMode,
 	editing,
 	heart,
 	heartFilled,
@@ -41,7 +41,7 @@ export default function GridLayout({
 		<>
 			<div
 				className={`relative flex flex-col justify-center items-start w-[180px] border p-3 ${
-					bodyBgColor ? "bg-[#222]" : "bg-white"
+					themeMode[0]?.mode ? "bg-[#222]" : "bg-white"
 				} shadow-lg h-fit rounded-md ${deleted ? "border-red-500" : "border-transparent"}`}
 			>
 				{todoLists.completed && (
@@ -58,7 +58,7 @@ export default function GridLayout({
 						) : (
 							<div
 								className={`min-w-[20px] min-h-[20px] border btn ${
-									bodyBgColor ? "border-white" : "border-black"
+									themeMode[0]?.mode ? "border-white" : "border-black"
 								} rounded-md`}
 								onClick={() => {
 									handleComplete(true);
@@ -90,7 +90,7 @@ export default function GridLayout({
 								ref={editRef}
 								className={`edit-input w-full h-full ${
 									edit
-										? `block ${bodyBgColor ? "bg-[#333]" : "bg-gray-200"} outline-none px-2 py-1 rounded-md`
+										? `block ${themeMode[0]?.mode ? "bg-[#333]" : "bg-gray-200"} outline-none px-2 py-1 rounded-md`
 										: "hidden"
 								}`}
 								type="text"
@@ -146,7 +146,7 @@ export default function GridLayout({
 									) : (
 										<div
 											className={`min-w-[20px] min-h-[20px] border ${
-												bodyBgColor ? "border-white" : "border-black"
+												themeMode[0]?.mode ? "border-white" : "border-black"
 											} rounded-md btn`}
 											onClick={() => {
 												handleComplete(true);
@@ -201,7 +201,7 @@ export default function GridLayout({
 						</div>
 					</div>
 				</div>
-				<p className={`text-[11px] relative top-2 ${bodyBgColor ? "text-[#555]" : "text-gray-400"}`}>
+				<p className={`text-[11px] relative top-2 ${themeMode[0]?.mode ? "text-[#555]" : "text-gray-400"}`}>
 					{handleTimeSystem()}
 				</p>
 
@@ -210,7 +210,7 @@ export default function GridLayout({
 			<div className="flex justify-center items-center">
 				<div
 					className={`flex justify-center items-center gap-2 px-2 text-[14px] rounded-lg relative top-1 ${
-						bodyBgColor ? "bg-[#333]" : "hover:bg-gray-300 bg-gray-200 border-2"
+						themeMode[0]?.mode  ? "bg-[#333]" : "hover:bg-gray-300 bg-gray-200 border-2"
 					}`}
 				>
 					<p className={`w-fit h-fit`}>label 1</p>

@@ -32,6 +32,8 @@ const FirebaseAPI = () => {
 	const [todoLists, setTodoLists] = useState([]);
 	const [folders, setFolders] = useState([]);
 	const [checkmarks, setCheckmarks] = useState([]);
+	const [heroImages, setHeroImages] = useState([]);
+	const [themeMode, setThemeMode] = useState([]);
 	const [value, setValue] = useState<string>(``);
 
 	const firebaseConfig = {
@@ -53,6 +55,11 @@ const FirebaseAPI = () => {
 	const qTodoList = query(colRefTodoList, orderBy("createdTime"));
 
 	const colRefChecked = collection(db, `todos/folder/checked`);
+
+	const colRefHeroImage = collection(db, `banners/user/image-item`);
+	const qHeroImage = query(colRefHeroImage, orderBy("createdTime"));
+
+	const colRefTheme = collection(db, `theme/user/theme-item`);
 
 	useEffect(() => {
 		// Todo List =====
@@ -97,6 +104,34 @@ const FirebaseAPI = () => {
 		});
 	}, []);
 
+	useEffect(() => {
+		onSnapshot(qHeroImage, (ss: any) => {
+			let images = [];
+			setHeroImages(images);
+			ss.docs.map((doc: any) => {
+				images.unshift({
+					...doc.data(),
+					id: doc.id,
+				});
+			});
+			// console.log(images);
+		});
+	}, []);
+
+	useEffect(() => {
+		onSnapshot(colRefTheme, (ss: any) => {
+			let themes = [];
+			setThemeMode(themes);
+			ss.docs.map((doc: any) => {
+				themes.unshift({
+					...doc.data(),
+					id: doc.id,
+				});
+			});
+			// console.log(themes);
+		});
+	}, []);
+
 	class TodoListSystem {
 		constructor() {}
 
@@ -109,7 +144,7 @@ const FirebaseAPI = () => {
 		) => {
 			await addDoc(colRefTodoList, {
 				todo: "Untitled",
-				folder: folder,
+				folder: folder ? folder : null,
 				completed: completed,
 				completedTodo: completedTodo,
 				activeTodo: activeTodo,
@@ -214,7 +249,46 @@ const FirebaseAPI = () => {
 	const editCheckmark = FS.editCheckmark;
 	const deleteFolders = FS.deleteFolders;
 
+	class ThemeSystem {
+		constructor() {}
+
+		changeTheme = async (theme: boolean, id: string) => {
+			const docRef = doc(colRefTheme, id);
+			updateDoc(docRef, {
+				mode: theme,
+			});
+		};
+	}
+	const TS = new ThemeSystem();
+	const changeTheme = TS.changeTheme;
+
+	class HeroImageSystem {
+		constructor() {}
+
+		addingHeroImage = async (image: any) => {
+			addDoc(colRefHeroImage, {
+				image: URL.createObjectURL(image),
+				createdTime: serverTimestamp(),
+			}).catch((err: any) => console.log(err.message));
+		};
+
+		changingHeroImage = async (image: any, id: string) => {
+			const docRef = doc(colRefHeroImage, id);
+			updateDoc(docRef, {
+				image: image,
+			});
+		};
+	}
+	const HIS = new HeroImageSystem();
+	const addingHeroImage = HIS.addingHeroImage;
+	const changingHeroImage = HIS.changingHeroImage;
+
 	return {
+		changeTheme,
+		themeMode,
+		heroImages,
+		changingHeroImage,
+		addingHeroImage,
 		setValue,
 		addFolders,
 		editCheckmark,

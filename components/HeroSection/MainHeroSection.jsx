@@ -7,13 +7,15 @@ import SearchSystem from "./SearchSystem";
 import { StatesManagerCtx } from "../Layout";
 
 const MainHeroSection = () => {
-	const { positionImage, heroImgSrc } = useContext(StatesManagerCtx);
+	const { positionImage, heroImgSrc, heroImages } = useContext(StatesManagerCtx);
 
 	const [imageSizeChange, setImageSizeChange] = useState(false);
 	const [imgFailed, setImgFailed] = useState(false);
 
 	const [topArrow, setTopArrow] = useState(0);
 	const [rightArrow, setRightArrow] = useState(0);
+
+	// useEffect(() => console.log(heroImgSrc === ""));
 
 	useEffect(() => {
 		const imagesSizeChanges = () => {
@@ -40,13 +42,14 @@ const MainHeroSection = () => {
 						</div>
 					</>
 				)}
-				{heroImgSrc && <ImagePlaceholder removeAnimation={true} />}
+				{heroImages[0]?.image && <ImagePlaceholder removeAnimation={true} />}
+
 				<Image
 					className={`object-cover w-full h-[300%] transition-all duration-150`}
 					style={{
 						transform: `translate(${rightArrow}px, ${topArrow}px)`,
 					}}
-					src={heroImgSrc ? URL.createObjectURL(heroImgSrc) : `/images/bg-images/img-bg-1.jpg`}
+					src={heroImages[0]?.image ? heroImages[0]?.image : `/images/bg-images/img-bg-1.jpg`}
 					alt="hero bg"
 					width={1000}
 					height={1000}
@@ -54,6 +57,7 @@ const MainHeroSection = () => {
 					quality={100}
 					onError={() => setImgFailed(true)}
 				/>
+
 				{positionImage && (
 					<div className="flex justify-between items-center gap-2 absolute w-full h-full bg-transparent px-5 opacity-50">
 						{/* <Image

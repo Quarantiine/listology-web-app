@@ -11,10 +11,12 @@ import MainTodoList from "@/components/TodoList/MainTodoList";
 import { gsap } from "gsap/dist/gsap";
 import { ScrollTrigger } from "gsap/dist/ScrollTrigger";
 import FolderModal from "@/components/FolderSidebar/FolderModal";
+import GalleryModal from "@/components/HeroSection/GalleryModal";
 gsap.registerPlugin(ScrollTrigger);
 
 export default function Home() {
 	const {
+		openGalleryModal,
 		folderBtnClicked,
 		uploadModal,
 		filterModal,
@@ -24,7 +26,7 @@ export default function Home() {
 		folders,
 		addTodos,
 		folderClicked,
-		bodyBgColor,
+		themeMode,
 	} = useContext(StatesManagerCtx);
 	const mainTodoListRef = useRef();
 
@@ -32,7 +34,7 @@ export default function Home() {
 	const addBtnTailwind = "opacity-0";
 	useEffect(() => {
 		const ctx = gsap.context(() => {
-			if (!folderModal) {
+			if (!folderModal && folders.length > 0) {
 				const folderLine = gsap.timeline();
 				const addBtnLine = gsap.timeline();
 				folderLine.to(".folder-icon", {
@@ -72,10 +74,11 @@ export default function Home() {
 				{uploadModal && <UploadModal />}
 				{filterModal && <FilterModal />}
 				{addFolderModal && <FolderModal />}
+				{openGalleryModal && <GalleryModal />}
 			</>
 			<div
 				className={`${addBtnTailwind} flex justify-center items-center add-btn fixed top-10 right-0 ${
-					bodyBgColor ? "bg-black" : "bg-white border sm:border-none"
+					themeMode[0]?.mode ? "bg-black" : "bg-white border sm:border-none"
 				} sm:bg-transparent rounded-l-lg sm:rounded-none px-2 py-1 sm:px-0 sm:left-10 z-40 w-fit`}
 			>
 				<button
@@ -93,20 +96,20 @@ export default function Home() {
 					>
 						<path
 							d="M29.333 15.1665C29.333 7.34541 22.9876 1 15.1665 1C7.34541 1 1 7.34541 1 15.1665C1 22.9876 7.34541 29.333 15.1665 29.333C22.9876 29.333 29.333 22.9876 29.333 15.1665Z"
-							stroke={bodyBgColor ? `white` : `black`}
+							stroke={themeMode[0]?.mode ? `white` : `black`}
 							strokeWidth="2"
 							strokeMiterlimit="10"
 						/>
 						<path
 							d="M15.1665 9.26376V21.0692"
-							stroke={bodyBgColor ? `white` : `black`}
+							stroke={themeMode[0]?.mode ? `white` : `black`}
 							strokeWidth="2"
 							strokeLinecap="round"
 							strokeLinejoin="round"
 						/>
 						<path
 							d="M21.069 15.1665H9.26355"
-							stroke={bodyBgColor ? `white` : `black`}
+							stroke={themeMode[0]?.mode ? `white` : `black`}
 							strokeWidth="2"
 							strokeLinecap="round"
 							strokeLinejoin="round"
@@ -131,7 +134,7 @@ export default function Home() {
 			</>
 			<MainHeroSection />
 			<main className="main-content-section relative flex flex-col justify-center items-center gap-16 my-32 mx-auto w-[90%] lg:w-[800px] 2xl:w-[1200px]">
-				<FilterBar />
+				{folders.length > 0 && <FilterBar />}
 				{/* {<MainTodoList />} */}
 				<div ref={mainTodoListRef} className="w-full h-fit flex justify-center items-center">
 					{folders.length > 0 && folderBtnClicked && mainTodoListRef.current?.childNodes.length > 0 ? (
@@ -142,7 +145,6 @@ export default function Home() {
 						})
 					) : (
 						<>
-							{/* TODO: Add an image to this */}
 							<h1
 								onClick={() => setFolderModal(true)}
 								className="text-xl text-white btn font-semibold base-bg px-4 py-1 rounded-md"

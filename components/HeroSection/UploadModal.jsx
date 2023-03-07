@@ -4,14 +4,14 @@ import { StatesManagerCtx } from "../Layout";
 import imageCompressed from "browser-image-compression";
 
 const UploadModal = () => {
-	const { uploadedImage, setUploadedImage, setUploadModal, setHeroImgSrc, setSaved } = useContext(StatesManagerCtx);
+	const { uploadedImage, setUploadedImage, setUploadModal, setSaved, addingHeroImage } = useContext(StatesManagerCtx);
 
 	const compressedImageSystem = async (e) => {
 		const img = e?.target.files[0];
 		if (img) {
 			const options = {
-				maxSizeMB: 3,
-				maxWidthOrHeight: 900,
+				maxSizeMB: 10,
+				maxWidthOrHeight: 2000,
 			};
 			const compressedImgProcess = await imageCompressed(img, options);
 			setUploadedImage(compressedImgProcess);
@@ -23,12 +23,12 @@ const UploadModal = () => {
 		if (uploadedImage) {
 			setSaved(true);
 			setUploadModal(false);
-			setHeroImgSrc(uploadedImage);
+			addingHeroImage(uploadedImage);
 			setTimeout(() => {
 				setSaved(false);
-			}, 3000);
+			}, 2000);
 		}
-	}, [setHeroImgSrc, uploadedImage, setUploadModal, setSaved]);
+	}, [uploadedImage, setUploadModal, setSaved, addingHeroImage]);
 
 	useEffect(() => {
 		const closeUploadModal = (e) => {

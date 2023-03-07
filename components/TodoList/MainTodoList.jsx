@@ -14,7 +14,7 @@ const MainTodoListIcons = ({ folder }) => {
 		emoji,
 		setEmoji,
 		editFolders,
-		bodyBgColor,
+		themeMode,
 		editTodos,
 		deleteTodos,
 		todoLists,
@@ -24,7 +24,7 @@ const MainTodoListIcons = ({ folder }) => {
 		editDescription,
 		setEditDscription,
 	} = useContext(StatesManagerCtx);
-	const { dropdown, editing, heart, heartFilled, trash, undo, del } = TodoListIcons({ bodyBgColor });
+	const { dropdown, editing, heart, heartFilled, trash, undo, del } = TodoListIcons({ themeMode });
 	const [showTodoTitle, setShowTodoTitle] = useState(false);
 	const [emojiPalette, setEmojiPalette] = useState(false);
 
@@ -89,7 +89,7 @@ const MainTodoListIcons = ({ folder }) => {
 		<>
 			<div
 				className={`w-full h-fit flex flex-col justify-center items-start gap-10 ${
-					bodyBgColor ? "text-white" : "text-black"
+					themeMode[0]?.mode ? "text-white" : "text-black"
 				}`}
 			>
 				<div className="flex justify-center sm:justify-between items-start gap-5 w-full relative">
@@ -109,7 +109,7 @@ const MainTodoListIcons = ({ folder }) => {
 											<div
 												onClick={() => setEmojiPalette(!emojiPalette)}
 												className={`${
-													bodyBgColor ? "bg-[#333]" : "bg-gray-400"
+													themeMode[0]?.mode ? "bg-[#333]" : "bg-gray-400"
 												} btn w-10 h-10 rounded-full animate-pulse`}
 											/>
 										)}
@@ -120,7 +120,9 @@ const MainTodoListIcons = ({ folder }) => {
 									</p>
 								)
 							) : (
-								<div className={`${bodyBgColor ? "bg-[#333]" : "bg-gray-400"} w-10 h-10 rounded-full animate-pulse`} />
+								<div
+									className={`${themeMode[0]?.mode ? "bg-[#333]" : "bg-gray-400"} w-10 h-10 rounded-full animate-pulse`}
+								/>
 							)}
 
 							{emojiPalette && editModeActive && (
@@ -130,7 +132,9 @@ const MainTodoListIcons = ({ folder }) => {
 							)}
 						</div>
 						<div className={`flex flex-col justify-start items-center sm:items-start w-full`}>
-							<p className={`${bodyBgColor ? "text-[#333]" : "text-[#ccc]"} text-[10px]`}>{handleTimeSystem()}</p>
+							<p className={`${themeMode[0]?.mode ? "text-[#333]" : "text-[#ccc]"} text-[10px]`}>
+								{handleTimeSystem()}
+							</p>
 							<h3 className="text-center sm:text-start font-semibold">{`FOLDER: ${folder.folderName.toUpperCase()}`}</h3>
 						</div>
 						<div className="flex flex-col sm:flex-row justify-center sm:justify-between items-center gap-5 w-full">
@@ -138,7 +142,7 @@ const MainTodoListIcons = ({ folder }) => {
 								{editModeActive ? (
 									<input
 										className={`${
-											bodyBgColor ? "bg-[#333]" : "bg-gray-200 border"
+											themeMode[0]?.mode ? "bg-[#333]" : "bg-gray-200 border"
 										} w-full h-full px-2 py-1 text-center sm:text-start rounded-md`}
 										type="text"
 										name="text"
@@ -157,7 +161,7 @@ const MainTodoListIcons = ({ folder }) => {
 										</h1>
 										<p
 											onClick={() => setShowTodoTitle(!showTodoTitle)}
-											className={`${bodyBgColor ? "text-[#444]" : "text-gray-300"} text-sm cursor-pointer`}
+											className={`${themeMode[0]?.mode ? "text-[#444]" : "text-gray-300"} text-sm cursor-pointer`}
 										>
 											{showTodoTitle ? "show less" : "show more"}
 										</p>
@@ -179,7 +183,7 @@ const MainTodoListIcons = ({ folder }) => {
 												<div
 													onClick={() => setEmojiPalette(!emojiPalette)}
 													className={`${
-														bodyBgColor ? "bg-[#333]" : "bg-gray-400"
+														themeMode[0]?.mode ? "bg-[#333]" : "bg-gray-400"
 													} w-10 h-10 rounded-full animate-pulse btn`}
 												/>
 											)}
@@ -189,7 +193,9 @@ const MainTodoListIcons = ({ folder }) => {
 									)
 								) : (
 									<div
-										className={`${bodyBgColor ? "bg-[#333]" : "bg-gray-400"} w-10 h-10 rounded-full animate-pulse`}
+										className={`${
+											themeMode[0]?.mode ? "bg-[#333]" : "bg-gray-400"
+										} w-10 h-10 rounded-full animate-pulse`}
 									/>
 								)}
 
@@ -204,7 +210,7 @@ const MainTodoListIcons = ({ folder }) => {
 							{editModeActive ? (
 								<textarea
 									className={`${
-										bodyBgColor ? "bg-[#333]" : "bg-gray-200 border"
+										themeMode[0]?.mode ? "bg-[#333]" : "bg-gray-200 border"
 									} w-full h-full px-2 py-1 text-center sm:text-start rounded-md`}
 									type="text"
 									name="text"
@@ -229,11 +235,11 @@ const MainTodoListIcons = ({ folder }) => {
 					>
 						<path
 							d="M0 24.9998H5.20761L20.5666 9.64078L15.359 4.43317L0 19.7922V24.9998ZM2.77739 20.9448L15.359 8.36318L16.6366 9.64078L4.055 22.2224H2.77739V20.9448Z"
-							fill={bodyBgColor ? `white` : `black`}
+							fill={themeMode[0]?.mode ? `white` : `black`}
 						/>
 						<path
 							d="M21.344 0.406194C20.8024 -0.135398 19.9275 -0.135398 19.3859 0.406194L16.8446 2.94751L22.0522 8.15512L24.5935 5.61381C25.1351 5.07222 25.1351 4.19734 24.5935 3.65574L21.344 0.406194Z"
-							fill={bodyBgColor ? `white` : `black`}
+							fill={themeMode[0]?.mode ? `white` : `black`}
 						/>
 					</svg>
 					{editModeActive && (
@@ -261,7 +267,7 @@ const MainTodoListIcons = ({ folder }) => {
 					} justify-center sm:justify-start items-start w-full h-fit gap-6 text-lg`}
 				>
 					{/* =================================================== */}
-					{todoLists.length > 0 ? (
+					{todoLists.length > 0 && todoLists.folderName !== null ? (
 						todoLists?.map((todoLists) => {
 							if (
 								todoLists.todo
@@ -279,7 +285,7 @@ const MainTodoListIcons = ({ folder }) => {
 												dropdown={dropdown}
 												layoutView={layoutView}
 												todoLists={todoLists}
-												bodyBgColor={bodyBgColor}
+												themeMode={themeMode}
 												editing={editing}
 												heart={heart}
 												heartFilled={heartFilled}
@@ -299,7 +305,7 @@ const MainTodoListIcons = ({ folder }) => {
 												dropdown={dropdown}
 												layoutView={layoutView}
 												todoLists={todoLists}
-												bodyBgColor={bodyBgColor}
+												themeMode={themeMode}
 												editing={editing}
 												heart={heart}
 												heartFilled={heartFilled}
@@ -319,7 +325,7 @@ const MainTodoListIcons = ({ folder }) => {
 												dropdown={dropdown}
 												layoutView={layoutView}
 												todoLists={todoLists}
-												bodyBgColor={bodyBgColor}
+												themeMode={themeMode}
 												editing={editing}
 												heart={heart}
 												heartFilled={heartFilled}
@@ -339,7 +345,7 @@ const MainTodoListIcons = ({ folder }) => {
 												dropdown={dropdown}
 												layoutView={layoutView}
 												todoLists={todoLists}
-												bodyBgColor={bodyBgColor}
+												themeMode={themeMode}
 												editing={editing}
 												heart={heart}
 												heartFilled={heartFilled}
@@ -363,7 +369,7 @@ const MainTodoListIcons = ({ folder }) => {
 												dropdown={dropdown}
 												layoutView={layoutView}
 												todoLists={todoLists}
-												bodyBgColor={bodyBgColor}
+												themeMode={themeMode}
 												editing={editing}
 												heart={heart}
 												heartFilled={heartFilled}
@@ -383,7 +389,7 @@ const MainTodoListIcons = ({ folder }) => {
 												dropdown={dropdown}
 												layoutView={layoutView}
 												todoLists={todoLists}
-												bodyBgColor={bodyBgColor}
+												themeMode={themeMode}
 												editing={editing}
 												heart={heart}
 												heartFilled={heartFilled}
@@ -403,7 +409,7 @@ const MainTodoListIcons = ({ folder }) => {
 												dropdown={dropdown}
 												layoutView={layoutView}
 												todoLists={todoLists}
-												bodyBgColor={bodyBgColor}
+												themeMode={themeMode}
 												editing={editing}
 												heart={heart}
 												heartFilled={heartFilled}
@@ -423,7 +429,7 @@ const MainTodoListIcons = ({ folder }) => {
 												dropdown={dropdown}
 												layoutView={layoutView}
 												todoLists={todoLists}
-												bodyBgColor={bodyBgColor}
+												themeMode={themeMode}
 												editing={editing}
 												heart={heart}
 												heartFilled={heartFilled}
@@ -452,12 +458,12 @@ const MainTodoListIcons = ({ folder }) => {
 	);
 };
 
-const TodoListIcons = ({ bodyBgColor }) => {
+const TodoListIcons = ({ themeMode }) => {
 	const dropdown = (
 		<svg className="" width="20" height="20" viewBox="0 0 19 12" fill="none" xmlns="http://www.w3.org/2000/svg">
 			<path
 				d="M1 1L9.5 11L18 1"
-				stroke={bodyBgColor ? `white` : `black`}
+				stroke={themeMode[0]?.mode ? `white` : `black`}
 				strokeWidth="2"
 				strokeLinecap="round"
 				strokeLinejoin="round"
@@ -469,11 +475,11 @@ const TodoListIcons = ({ bodyBgColor }) => {
 		<svg width="20" height="20" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">
 			<path
 				d="M0 24.9998H5.20761L20.5666 9.64078L15.359 4.43317L0 19.7922V24.9998ZM2.77739 20.9448L15.359 8.36318L16.6366 9.64078L4.055 22.2224H2.77739V20.9448Z"
-				fill={bodyBgColor ? `white` : `black`}
+				fill={themeMode[0]?.mode ? `white` : `black`}
 			/>
 			<path
 				d="M21.344 0.406194C20.8024 -0.135398 19.9275 -0.135398 19.3859 0.406194L16.8446 2.94751L22.0522 8.15512L24.5935 5.61381C25.1351 5.07222 25.1351 4.19734 24.5935 3.65574L21.344 0.406194Z"
-				fill={bodyBgColor ? `white` : `black`}
+				fill={themeMode[0]?.mode ? `white` : `black`}
 			/>
 		</svg>
 	);
@@ -482,7 +488,7 @@ const TodoListIcons = ({ bodyBgColor }) => {
 		<svg width="20" height="20" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">
 			<path
 				d="M11.5377 21.849L11.5398 21.8505C11.6791 21.9492 11.8395 21.9996 12.0003 22C12.161 21.9996 12.3214 21.9494 12.4607 21.8508L12.4623 21.8496C16.9228 18.7058 18.8144 16.5801 19.8337 15.2906C22.0202 12.523 23.0281 9.7422 22.9994 6.75626C22.9678 3.5258 20.4833 1 17.5912 1C15.4733 1 13.967 2.23294 13.0318 3.36329L13.0284 3.36748C12.9046 3.51547 12.7493 3.63685 12.5715 3.72102C12.3936 3.80525 12.1986 3.84958 12 3.84958C11.8014 3.84958 11.6064 3.80525 11.4285 3.72102C11.2507 3.63685 11.0954 3.51547 10.9716 3.36748L10.9685 3.36367L10.9685 3.36366C10.0329 2.23384 8.52643 1 6.40876 1C3.5166 1 1.03224 3.52586 1.00059 6.75566L11.5377 21.849ZM11.5377 21.849C7.07731 18.7053 5.18572 16.5796 4.16638 15.2901L11.5377 21.849ZM4.1663 15.29C1.97886 12.522 0.971984 9.7413 1.00059 6.75584L4.1663 15.29Z"
-				stroke={bodyBgColor ? `white` : `black`}
+				stroke={themeMode[0]?.mode ? `white` : `black`}
 				strokeWidth="2"
 			/>
 		</svg>
@@ -492,8 +498,8 @@ const TodoListIcons = ({ bodyBgColor }) => {
 		<svg width="20" height="20" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">
 			<path
 				d="M11.5377 21.849L11.5398 21.8505C11.6791 21.9492 11.8395 21.9996 12.0003 22C12.161 21.9996 12.3214 21.9494 12.4607 21.8508L12.4623 21.8496C16.9228 18.7058 18.8144 16.5801 19.8337 15.2906C22.0202 12.523 23.0281 9.7422 22.9994 6.75626C22.9678 3.5258 20.4833 1 17.5912 1C15.4733 1 13.967 2.23294 13.0318 3.36329L13.0284 3.36748C12.9046 3.51547 12.7493 3.63685 12.5715 3.72102C12.3936 3.80525 12.1986 3.84958 12 3.84958C11.8014 3.84958 11.6064 3.80525 11.4285 3.72102C11.2507 3.63685 11.0954 3.51547 10.9716 3.36748L10.9685 3.36367L10.9685 3.36366C10.0329 2.23384 8.52643 1 6.40876 1C3.5166 1 1.03224 3.52586 1.00059 6.75566L11.5377 21.849ZM11.5377 21.849C7.07731 18.7053 5.18572 16.5796 4.16638 15.2901L11.5377 21.849ZM4.1663 15.29C1.97886 12.522 0.971984 9.7413 1.00059 6.75584L4.1663 15.29Z"
-				fill={bodyBgColor ? `white` : `black`}
-				stroke={bodyBgColor ? `white` : `black`}
+				fill={themeMode[0]?.mode ? `white` : `black`}
+				stroke={themeMode[0]?.mode ? `white` : `black`}
 				strokeWidth="2"
 			/>
 		</svg>
@@ -524,7 +530,7 @@ const TodoListIcons = ({ bodyBgColor }) => {
 			height="15"
 			viewBox="0 96 960 960"
 			width="15"
-			fill={bodyBgColor ? `white` : `black`}
+			fill={themeMode[0]?.mode ? `white` : `black`}
 		>
 			<path d="M480 618 270 828q-9 9-21 9t-21-9q-9-9-9-21t9-21l210-210-210-210q-9-9-9-21t9-21q9-9 21-9t21 9l210 210 210-210q9-9 21-9t21 9q9 9 9 21t-9 21L522 576l210 210q9 9 9 21t-9 21q-9 9-21 9t-21-9L480 618Z" />
 		</svg>

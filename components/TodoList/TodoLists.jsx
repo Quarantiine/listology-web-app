@@ -8,7 +8,7 @@ export default function TodoLists({
 	dropdown,
 	layoutView,
 	todoLists,
-	bodyBgColor,
+	themeMode,
 	editing,
 	heart,
 	heartFilled,
@@ -166,7 +166,7 @@ export default function TodoLists({
 			handleUndoDeletionSystem={handleUndoDeletionSystem}
 			handleTimeSystem={handleTimeSystem}
 			dropdown={dropdown}
-			bodyBgColor={bodyBgColor}
+			themeMode={themeMode}
 			editing={editing}
 			heart={heart}
 			heartFilled={heartFilled}
@@ -209,7 +209,7 @@ export default function TodoLists({
 			handleUndoDeletionSystem={handleUndoDeletionSystem}
 			handleTimeSystem={handleTimeSystem}
 			dropdown={dropdown}
-			bodyBgColor={bodyBgColor}
+			themeMode={themeMode}
 			editing={editing}
 			heart={heart}
 			heartFilled={heartFilled}
