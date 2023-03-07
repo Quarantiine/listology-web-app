@@ -15,6 +15,9 @@ const Layout = ({ children }) => {
 		todoLists,
 		folders,
 		addFolders,
+		completedTodos,
+		activeTodos,
+		favoritesTodos,
 		editCompletion,
 		editFolders,
 		deleteFolders,
@@ -103,6 +106,9 @@ const Layout = ({ children }) => {
 				folders,
 				addFolderModal,
 				setAddFolderModal,
+				completedTodos,
+				activeTodos,
+				favoritesTodos,
 				editCompletion,
 				editTodos,
 				deleteTodos,
@@ -183,7 +189,7 @@ const HeroSectionStates = () => {
 };
 
 const FilterStates = () => {
-	const [checkFilterBtnClick, setCheckFilterBtnClick] = useState(``);
+	const [checkFilterBtnClick, setCheckFilterBtnClick] = useState(`all`);
 	const [layoutView, setLayoutView] = useState(`list`);
 	const [filterModal, setFilterModal] = useState(false);
 	const [allChecked, setAllChecked] = useState(false);

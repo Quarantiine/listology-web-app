@@ -18,7 +18,8 @@ export default function TodoLists({
 	undo,
 	// del,
 }) {
-	const { editingActive, setEditingActive, editCompletion } = useContext(StatesManagerCtx);
+	const { editingActive, setEditingActive, editCompletion, completedTodos, activeTodos, favoritesTodos } =
+		useContext(StatesManagerCtx);
 	const todoRef = useRef();
 	const todoListRef = useRef();
 	const deleteRef = useRef();
@@ -50,6 +51,18 @@ export default function TodoLists({
 		} else {
 			editTodos("Untitled", todoLists.id);
 		}
+	};
+
+	const handleCompletedTodos = (completed) => {
+		completedTodos(completed, todoLists.id);
+	};
+
+	const handleActiveTodos = (completed) => {
+		activeTodos(completed, todoLists.id);
+	};
+
+	const handleFavoritesTodos = (completed) => {
+		favoritesTodos(completed, todoLists.id);
 	};
 
 	const handleComplete = (completed) => {
@@ -90,7 +103,6 @@ export default function TodoLists({
 	};
 
 	const handleDeletionSystem = () => {
-		clearTimeout(deleteRef.current);
 		setDeleted(true);
 		deleteTimerRef.current = setInterval(() => {
 			setDeletionTimer((deletionTimer -= 1));
@@ -143,6 +155,9 @@ export default function TodoLists({
 
 	return layoutView === "list" ? (
 		<ListLayout
+			handleCompletedTodos={handleCompletedTodos}
+			handleActiveTodos={handleActiveTodos}
+			handleFavoritesTodos={handleFavoritesTodos}
 			handleComplete={handleComplete}
 			handleKey={handleKey}
 			handleEdit={handleEdit}
@@ -183,6 +198,9 @@ export default function TodoLists({
 		/>
 	) : (
 		<GridLayout
+			handleCompletedTodos={handleCompletedTodos}
+			handleActiveTodos={handleActiveTodos}
+			handleFavoritesTodos={handleFavoritesTodos}
 			handleComplete={handleComplete}
 			handleKey={handleKey}
 			handleEdit={handleEdit}
@@ -198,6 +216,8 @@ export default function TodoLists({
 			trash={trash}
 			undo={undo}
 			todoLists={todoLists}
+			deletionTimer={deletionTimer}
+			setDeletionTimer={setDeletionTimer}
 			editingActive={editingActive}
 			setEditingActive={setEditingActive}
 			deleteRef={deleteRef}

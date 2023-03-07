@@ -100,11 +100,20 @@ const FirebaseAPI = () => {
 	class TodoListSystem {
 		constructor() {}
 
-		addTodo = async (folder: string, completed: boolean) => {
+		addTodo = async (
+			folder: string,
+			completed: boolean,
+			completedTodo: boolean = false,
+			activeTodo: boolean = true,
+			favoritesTodo: boolean = false
+		) => {
 			await addDoc(colRefTodoList, {
 				todo: "Untitled",
 				folder: folder,
 				completed: completed,
+				completedTodo: completedTodo,
+				activeTodo: activeTodo,
+				favoritesTodo: favoritesTodo,
 				createdTime: serverTimestamp(),
 			});
 		};
@@ -123,6 +132,25 @@ const FirebaseAPI = () => {
 			}).catch((err: any) => console.log(err.message));
 		};
 
+		completedTodos = async (completedTodo: boolean, id: string) => {
+			const docRef = doc(colRefTodoList, id);
+			updateDoc(docRef, {
+				completedTodo: completedTodo,
+			});
+		};
+		activeTodos = async (activeTodo: boolean, id: string) => {
+			const docRef = doc(colRefTodoList, id);
+			updateDoc(docRef, {
+				activeTodo: activeTodo,
+			});
+		};
+		favoritesTodos = async (favoritesTodo: boolean, id: string) => {
+			const docRef = doc(colRefTodoList, id);
+			updateDoc(docRef, {
+				favoritesTodo: favoritesTodo,
+			});
+		};
+
 		deleteTodo = async (id: string) => {
 			const docRef = doc(colRefTodoList, id);
 			await deleteDoc(docRef);
@@ -132,6 +160,9 @@ const FirebaseAPI = () => {
 	const addTodos = TLS.addTodo;
 	const editTodos = TLS.editTodo;
 	const editCompletion = TLS.editCompletion;
+	const completedTodos = TLS.completedTodos;
+	const activeTodos = TLS.activeTodos;
+	const favoritesTodos = TLS.favoritesTodos;
 	const deleteTodos = TLS.deleteTodo;
 
 	class FolderSystem {
@@ -192,6 +223,9 @@ const FirebaseAPI = () => {
 		folders,
 		todoLists,
 		deleteTodos,
+		completedTodos,
+		activeTodos,
+		favoritesTodos,
 		editCompletion,
 		editTodos,
 		addTodos,

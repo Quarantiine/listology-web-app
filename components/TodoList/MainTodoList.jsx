@@ -6,6 +6,9 @@ import TodoLists from "../TodoList/TodoLists";
 
 const MainTodoListIcons = ({ folder }) => {
 	const {
+		searched,
+		seachQuery,
+		checkFilterBtnClick,
 		editModeActive,
 		setEditModeActive,
 		emoji,
@@ -52,6 +55,36 @@ const MainTodoListIcons = ({ folder }) => {
 		return () => document.removeEventListener("mousedown", closeEmojiPalette);
 	}, [setEmojiPalette]);
 
+	const handleTimeSystem = () => {
+		const timeSystem = () => {
+			const date = new Date(folder?.createdTime?.seconds * 1000);
+			const hour = date.getHours();
+			const min = date.getMinutes();
+			// const sec = date.getSeconds();
+			const time = `${hour > 12 ? hour - 12 : hour === 1 ? hour : hour > 12 ? hour + 12 : hour}:${
+				hour > 11 ? (min < 10 ? `0${min} pm` : `${min} pm`) : min < 10 ? `0${min} am` : `${min} am`
+			}`;
+			// console.log(time);
+
+			return time;
+		};
+
+		const dateSystem = () => {
+			const currentDate = new Date(folder?.createdTime?.seconds * 1000);
+			const date = new Date(currentDate);
+			const day = date.getDate();
+			const month = date.getMonth();
+			const year = date.getFullYear();
+			const fullDate = `${month + 1}/${day}/${year}`;
+
+			return fullDate;
+		};
+		dateSystem();
+
+		// console.log(`${timeSystem()} - ${dateSystem()}`);
+		return `Last Edited: ${timeSystem() || "time"} - ${dateSystem() || "date"}`;
+	};
+
 	return (
 		<>
 			<div
@@ -96,7 +129,8 @@ const MainTodoListIcons = ({ folder }) => {
 								</div>
 							)}
 						</div>
-						<div className={`flex justify-center sm:justify-start items-center gap-3 w-full`}>
+						<div className={`flex flex-col justify-start items-center sm:items-start w-full`}>
+							<p className={`${bodyBgColor ? "text-[#333]" : "text-[#ccc]"} text-[10px]`}>{handleTimeSystem()}</p>
 							<h3 className="text-center sm:text-start font-semibold">{`FOLDER: ${folder.folderName.toUpperCase()}`}</h3>
 						</div>
 						<div className="flex flex-col sm:flex-row justify-center sm:justify-between items-center gap-5 w-full">
@@ -226,26 +260,182 @@ const MainTodoListIcons = ({ folder }) => {
 						layoutView === "list" ? "flex-col" : "flex-wrap"
 					} justify-center sm:justify-start items-start w-full h-fit gap-6 text-lg`}
 				>
+					{/* =================================================== */}
 					{todoLists.length > 0 ? (
 						todoLists?.map((todoLists) => {
-							if (todoLists.folder === folder.folderName) {
-								return (
-									<TodoLists
-										key={todoLists.id}
-										dropdown={dropdown}
-										layoutView={layoutView}
-										todoLists={todoLists}
-										bodyBgColor={bodyBgColor}
-										editing={editing}
-										heart={heart}
-										heartFilled={heartFilled}
-										trash={trash}
-										editTodos={editTodos}
-										deleteTodos={deleteTodos}
-										undo={undo}
-										del={del}
-									/>
-								);
+							if (
+								todoLists.todo
+									.normalize("NFD")
+									.replace(/\p{Diacritic}/gu, "")
+									.toLowerCase()
+									.includes(seachQuery.toLowerCase()) &&
+								searched
+							) {
+								if (todoLists.folder === folder.folderName) {
+									if (checkFilterBtnClick === "all") {
+										return (
+											<TodoLists
+												key={todoLists.id}
+												dropdown={dropdown}
+												layoutView={layoutView}
+												todoLists={todoLists}
+												bodyBgColor={bodyBgColor}
+												editing={editing}
+												heart={heart}
+												heartFilled={heartFilled}
+												trash={trash}
+												editTodos={editTodos}
+												deleteTodos={deleteTodos}
+												undo={undo}
+												del={del}
+											/>
+										);
+									}
+
+									if (todoLists.activeTodo === true && checkFilterBtnClick === "active") {
+										return (
+											<TodoLists
+												key={todoLists.id}
+												dropdown={dropdown}
+												layoutView={layoutView}
+												todoLists={todoLists}
+												bodyBgColor={bodyBgColor}
+												editing={editing}
+												heart={heart}
+												heartFilled={heartFilled}
+												trash={trash}
+												editTodos={editTodos}
+												deleteTodos={deleteTodos}
+												undo={undo}
+												del={del}
+											/>
+										);
+									}
+
+									if (todoLists.completed && todoLists.completedTodo && checkFilterBtnClick === "completed") {
+										return (
+											<TodoLists
+												key={todoLists.id}
+												dropdown={dropdown}
+												layoutView={layoutView}
+												todoLists={todoLists}
+												bodyBgColor={bodyBgColor}
+												editing={editing}
+												heart={heart}
+												heartFilled={heartFilled}
+												trash={trash}
+												editTodos={editTodos}
+												deleteTodos={deleteTodos}
+												undo={undo}
+												del={del}
+											/>
+										);
+									}
+
+									if (todoLists.favoritesTodo && checkFilterBtnClick === "favorites") {
+										return (
+											<TodoLists
+												key={todoLists.id}
+												dropdown={dropdown}
+												layoutView={layoutView}
+												todoLists={todoLists}
+												bodyBgColor={bodyBgColor}
+												editing={editing}
+												heart={heart}
+												heartFilled={heartFilled}
+												trash={trash}
+												editTodos={editTodos}
+												deleteTodos={deleteTodos}
+												undo={undo}
+												del={del}
+											/>
+										);
+									}
+								}
+							}
+
+							if (!searched) {
+								if (todoLists.folder === folder.folderName) {
+									if (checkFilterBtnClick === "all") {
+										return (
+											<TodoLists
+												key={todoLists.id}
+												dropdown={dropdown}
+												layoutView={layoutView}
+												todoLists={todoLists}
+												bodyBgColor={bodyBgColor}
+												editing={editing}
+												heart={heart}
+												heartFilled={heartFilled}
+												trash={trash}
+												editTodos={editTodos}
+												deleteTodos={deleteTodos}
+												undo={undo}
+												del={del}
+											/>
+										);
+									}
+
+									if (todoLists.activeTodo === true && checkFilterBtnClick === "active") {
+										return (
+											<TodoLists
+												key={todoLists.id}
+												dropdown={dropdown}
+												layoutView={layoutView}
+												todoLists={todoLists}
+												bodyBgColor={bodyBgColor}
+												editing={editing}
+												heart={heart}
+												heartFilled={heartFilled}
+												trash={trash}
+												editTodos={editTodos}
+												deleteTodos={deleteTodos}
+												undo={undo}
+												del={del}
+											/>
+										);
+									}
+
+									if (todoLists.completed && todoLists.completedTodo && checkFilterBtnClick === "completed") {
+										return (
+											<TodoLists
+												key={todoLists.id}
+												dropdown={dropdown}
+												layoutView={layoutView}
+												todoLists={todoLists}
+												bodyBgColor={bodyBgColor}
+												editing={editing}
+												heart={heart}
+												heartFilled={heartFilled}
+												trash={trash}
+												editTodos={editTodos}
+												deleteTodos={deleteTodos}
+												undo={undo}
+												del={del}
+											/>
+										);
+									}
+
+									if (todoLists.favoritesTodo && checkFilterBtnClick === "favorites") {
+										return (
+											<TodoLists
+												key={todoLists.id}
+												dropdown={dropdown}
+												layoutView={layoutView}
+												todoLists={todoLists}
+												bodyBgColor={bodyBgColor}
+												editing={editing}
+												heart={heart}
+												heartFilled={heartFilled}
+												trash={trash}
+												editTodos={editTodos}
+												deleteTodos={deleteTodos}
+												undo={undo}
+												del={del}
+											/>
+										);
+									}
+								}
 							}
 						})
 					) : (

@@ -60,7 +60,7 @@ export default function Home() {
 		});
 
 		return () => ctx.revert();
-	});
+	}, [folderModal]);
 
 	return (
 		<>
@@ -130,7 +130,7 @@ export default function Home() {
 				)}
 			</>
 			<MainHeroSection />
-			<main className="main-content-section relative flex flex-col justify-center items-center gap-16 my-32 mx-auto w-[90%] sm:w-[70%] 2xl:w-[1200px]">
+			<main className="main-content-section relative flex flex-col justify-center items-center gap-16 my-32 mx-auto w-[90%] lg:w-[800px] 2xl:w-[1200px]">
 				<FilterBar />
 				{/* {<MainTodoList />} */}
 				<div ref={mainTodoListRef} className="w-full h-fit flex justify-center items-center">
@@ -142,6 +142,7 @@ export default function Home() {
 						})
 					) : (
 						<>
+							{/* TODO: Add an image to this */}
 							<h1
 								onClick={() => setFolderModal(true)}
 								className="text-xl text-white btn font-semibold base-bg px-4 py-1 rounded-md"

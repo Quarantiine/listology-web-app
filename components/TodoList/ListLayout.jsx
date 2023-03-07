@@ -1,4 +1,7 @@
 export default function ListLayout({
+	handleCompletedTodos,
+	handleActiveTodos,
+	handleFavoritesTodos,
 	handleComplete,
 	handleKey,
 	handleEdit,
@@ -20,13 +23,13 @@ export default function ListLayout({
 	todoLists,
 	todoRef,
 	editRef,
-	hearted,
-	setHearted,
+	// ? hearted,
+	// ? setHearted,
 	showMore,
 	setShowMore,
 	hideShowMore,
-	checked,
-	setChecked,
+	// ? checked,
+	// ? setChecked,
 	edit,
 	setEdit,
 	deleted,
@@ -55,18 +58,22 @@ export default function ListLayout({
 					<div className="flex justify-start items-center gap-2 w-full">
 						{!todoLists.completed && todoLists.completed ? (
 							<div
-								className="min-w-[20px] min-h-[20px] base-bg border rounded-md"
+								className="min-w-[20px] min-h-[20px] base-bg border rounded-md btn"
 								onClick={() => {
 									handleComplete(false);
+									handleCompletedTodos(false);
+									handleActiveTodos(true);
 								}}
 							/>
 						) : (
 							<div
-								className={`min-w-[20px] min-h-[20px] border ${
+								className={`min-w-[20px] min-h-[20px] border btn ${
 									bodyBgColor ? "border-white" : "border-black"
 								} rounded-md`}
 								onClick={() => {
 									handleComplete(true);
+									handleCompletedTodos(true);
+									handleActiveTodos(false);
 								}}
 							/>
 						)}
@@ -76,18 +83,22 @@ export default function ListLayout({
 							>
 								{todoLists.completed ? (
 									<div
-										className="min-w-[20px] min-h-[20px] w-[20px] base-bg border rounded-md"
+										className="min-w-[20px] min-h-[20px] w-[20px] base-bg border rounded-md btn"
 										onClick={() => {
 											handleComplete(false);
+											handleCompletedTodos(false);
+											handleActiveTodos(true);
 										}}
 									/>
 								) : (
 									<div
-										className={`min-w-[20px] min-h-[20px] w-[20px] border ${
+										className={`min-w-[20px] min-h-[20px] w-[20px] border btn ${
 											bodyBgColor ? "border-white" : "border-black"
 										} rounded-md`}
 										onClick={() => {
 											handleComplete(true);
+											handleCompletedTodos(true);
+											handleActiveTodos(false);
 										}}
 									/>
 								)}
@@ -128,12 +139,6 @@ export default function ListLayout({
 												handleCopyingText(e.target.textContent);
 											}, 300);
 										}}
-										onDoubleClick={() => {
-											setEdit(true);
-											setTimeout(() => {
-												editRef.current.focus();
-											}, 100);
-										}}
 										className={`${
 											showMore ? "line-clamp-none" : "line-clamp-1"
 										} text-lg md:text-2xl w-full pr-5 sm:pr-0 ${todoLists.completed ? "line-through" : ""}`}
@@ -141,15 +146,6 @@ export default function ListLayout({
 										{todoLists.todo.trim()}
 									</p>
 								</div>
-							)}
-
-							{hideShowMore && (
-								<p
-									className="text-md btn text-[#0E51FF] underline min-w-[fit-content] text-center hidden sm:block"
-									onClick={() => setShowMore(!showMore)}
-								>
-									{showMore ? "show less" : "show more"}
-								</p>
 							)}
 						</div>
 					</div>
@@ -166,9 +162,25 @@ export default function ListLayout({
 							>
 								{editing}
 							</button>
-							<button className="btn" onClick={() => setHearted(!hearted)}>
-								{hearted ? heartFilled : heart}
-							</button>
+							{todoLists.favoritesTodo ? (
+								<button
+									className="btn"
+									onClick={() => {
+										handleFavoritesTodos(false);
+									}}
+								>
+									{heartFilled}
+								</button>
+							) : (
+								<button
+									className="btn"
+									onClick={() => {
+										handleFavoritesTodos(true);
+									}}
+								>
+									{heart}
+								</button>
+							)}
 							<button ref={deleteRef} className="btn" onClick={() => handleDeletionSystem()}>
 								{trash}
 							</button>
@@ -203,15 +215,25 @@ export default function ListLayout({
 								>
 									{editing}
 								</button>
-								<button
-									className="btn"
-									onClick={() => {
-										setDropdownItems(false);
-										setHearted(!hearted);
-									}}
-								>
-									{hearted ? heartFilled : heart}
-								</button>
+								{todoLists.favoritesTodo ? (
+									<button
+										className="btn"
+										onClick={() => {
+											handleFavoritesTodos(false);
+										}}
+									>
+										{heartFilled}
+									</button>
+								) : (
+									<button
+										className="btn"
+										onClick={() => {
+											handleFavoritesTodos(true);
+										}}
+									>
+										{heart}
+									</button>
+								)}
 								<button
 									ref={deleteRef}
 									className="btn"

@@ -102,7 +102,7 @@ const FolderTodoList = ({
 	setDisable,
 	setFolderBtnClicked,
 	deleteFolders,
-	addTodos,
+	// ? addTodos,
 	setValue,
 	setFolderModal,
 	folder,
@@ -113,14 +113,6 @@ const FolderTodoList = ({
 	setFolderClicked,
 }) => {
 	const [checkmarks, setCheckmarks] = useState(false);
-
-	const handleChangingFolders = () => {
-		setFolderClicked(folder.folderName);
-		setValue(folder.folderName);
-		setFolderModal(false);
-		setFolderBtnClicked(true);
-		setDisable(false);
-	};
 
 	const handleTimeSystem = () => {
 		const timeSystem = () => {
@@ -150,6 +142,14 @@ const FolderTodoList = ({
 
 		// console.log(`${timeSystem()} - ${dateSystem()}`);
 		return `${timeSystem() || "time"} - ${dateSystem() || "date"}`;
+	};
+
+	const handleChangingFolders = () => {
+		setFolderClicked(folder.folderName);
+		setValue(folder.folderName);
+		setFolderModal(false);
+		setFolderBtnClicked(true);
+		setDisable(false);
 	};
 
 	const handleDelete = () => {

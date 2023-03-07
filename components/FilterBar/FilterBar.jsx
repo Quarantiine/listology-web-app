@@ -3,6 +3,9 @@ import { StatesManagerCtx } from "../Layout";
 
 const FilterBar = () => {
 	const {
+		setSeachQuery,
+		searched,
+		setSearched,
 		bodyBgColor,
 		layoutView,
 		setLayoutView,
@@ -51,7 +54,6 @@ const FilterBar = () => {
 							}`}
 						>
 							<span>All</span>
-							{checkFilterBtnClick !== "all" ? selectedAll : deselectAll}
 						</button>
 						{/* <button
 							onClick={(e) => {
@@ -68,16 +70,6 @@ const FilterBar = () => {
 						</button> */}
 						<button
 							onClick={(e) => setCheckFilterBtnClick(e.currentTarget.id)}
-							id="completed"
-							className={`${
-								checkFilterBtnClick === "completed" ? "text-[#0E51FF]" : ""
-							} btn text-lg flex justify-center items-center gap-2`}
-						>
-							<span>Completed</span>
-							<span>{completed}</span>
-						</button>
-						<button
-							onClick={(e) => setCheckFilterBtnClick(e.currentTarget.id)}
 							id="active"
 							className={`${
 								checkFilterBtnClick === "active" ? "text-[#0E51FF]" : ""
@@ -85,6 +77,16 @@ const FilterBar = () => {
 						>
 							<span>Active</span>
 							<span>{activeAssignment}</span>
+						</button>
+						<button
+							onClick={(e) => setCheckFilterBtnClick(e.currentTarget.id)}
+							id="completed"
+							className={`${
+								checkFilterBtnClick === "completed" ? "text-[#0E51FF]" : ""
+							} btn text-lg flex justify-center items-center gap-2`}
+						>
+							<span>Completed</span>
+							<span>{completed}</span>
 						</button>
 						{/* <button
 							onClick={(e) => {
@@ -133,18 +135,30 @@ const FilterBar = () => {
 					bodyBgColor ? "text-white" : "text-black"
 				}`}
 			>
-				{checkFilterBtnClick && (
+				{checkFilterBtnClick && checkFilterBtnClick !== "all" && (
 					<button
-						onClick={() => setCheckFilterBtnClick(false)}
+						onClick={() => {
+							setCheckFilterBtnClick("all");
+						}}
 						className="text-xl font-semibold btn base-bg px-4 py-1 rounded-md text-white w-full"
-					>{`Clear Filters`}</button>
+					>{`Clear Bar Filter`}</button>
 				)}
-				{checkFilterBtnClick && (
+
+				{searched && (
 					<button
-						onClick={() => setCheckFilterBtnClick(false)}
+						onClick={() => {
+							setSeachQuery(``);
+							setSearched(false);
+						}}
+						className="text-xl font-semibold btn base-bg px-4 py-1 rounded-md text-white w-full"
+					>{`Clear Search Filter`}</button>
+				)}
+				{/* {checkFilterBtnClick && checkFilterBtnClick !== "all" && (
+					<button
+						onClick={() => setCheckFilterBtnClick("all")}
 						className="text-xl font-semibold btn bg-red-500 px-4 py-1 rounded-md text-white w-full"
 					>{`Delete All`}</button>
-				)}
+				)} */}
 				<h1 className="text-xl font-semibold">{layoutView.toUpperCase()}</h1>
 			</div>
 		</div>
